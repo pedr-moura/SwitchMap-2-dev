@@ -444,7 +444,7 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
     const ip = document.getElementById('ip').value;
     const nome = document.getElementById('nome').value;
     const local = document.getElementById('local').value;
-    const tipo = document.getElementById('tipo').value;
+    // const tipo = document.getElementById('tipo').value;
     const ativo = document.getElementById('ativo').value;
 
     const messageDiv = document.getElementById('message');
