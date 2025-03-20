@@ -9,7 +9,7 @@ const menuContainer = document.getElementById('menu-container');
 const logoCliente = document.getElementById('logoCliente').src = "https://i.ibb.co/YBjYFc2W/SUZ-BIG-a2c344f0.png";
 
 // Estado global
-let server = "http://localhost:5000";
+let server = "http://172.16.196.36:5000";
 let showIconesMaps = 0;
 let showDependencias = 0;
 let mapaAtual;
