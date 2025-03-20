@@ -10,6 +10,8 @@ function exibirEditar() {
     editarEquipamento.style.display = 'block'
     adicionarEquipamento.style.display = 'none'
     homebox.style.display = 'none'
+    limparInput?.()
+    atualizarDadosManualmente()
 }
 function exibirAdicionar() {
     editarEquipamento.style.display = 'none'
