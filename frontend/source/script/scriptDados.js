@@ -197,6 +197,7 @@ function inicializarMapa() {
     // Remove the 'map =' declaration here and just assign to the global 'map'
     map = L.map('map', { 
         maxZoom: 18, 
+        minZoom: 4, 
         zoomControl: false, 
         doubleClickZoom: false, 
         attributionControl: false 
