@@ -459,7 +459,7 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
 
     isEditing = true; // Marca que uma edição está em andamento
     try {
-        const response = await fetch('http://127.0.0.1:5000/editar-host', {
+        const response = await fetch(`${server}/editar-host`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
