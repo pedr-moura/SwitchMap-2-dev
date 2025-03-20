@@ -30,6 +30,25 @@ toggleMap.style.display = "none";
 opcoesTitulo.style.display = "none";
 ocultarSw();
 
+function precarregarTilesRegioes(hosts) {
+    const tileLayer = mapaAtual; // Usa o mapa atual (claro, escuro ou satélite)
+    hosts.forEach(host => {
+        if (host.local) {
+            const [lat, lng] = host.local.split(', ').map(Number);
+            const bounds = L.latLngBounds(
+                [lat - 0.01, lng - 0.01], // Canto inferior esquerdo
+                [lat + 0.01, lng + 0.01]  // Canto superior direito
+            );
+            // Força o Leaflet a carregar os tiles dessa área
+            map.eachLayer(layer => {
+                if (layer instanceof L.TileLayer) {
+                    layer.getTileUrl({ latlng: { lat, lng }, z: 18 }); // Simula requisição para o nível de zoom desejado
+                }
+            });
+        }
+    });
+}
+
 // Funções de UI
 function exibirToggleMap() {
     toggleMap.style.display = "block";
@@ -498,9 +517,16 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
 // Funções de carregamento e atualização
 async function carregarDadosIniciais() {
     await fetchDadosHTTP();
+    precarregarTilesRegioes(dadosAtuais.hosts);
 }
 
-
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(reg => console.log('Service Worker registrado!'))
+            .catch(err => console.error('Erro ao registrar Service Worker:', err));
+    });
+}
 
 async function atualizarDadosManualmente() {
     console.log('Atualização manual solicitada');
