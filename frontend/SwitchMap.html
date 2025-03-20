@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Switches - Imperatriz</title>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="source/style.css">
+
+    <script src="source/script/locaisDeafult.js"></script>
+
+    <!-- websocket -->
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.min.js"></script>
+
+</head>
+<body>
+
+    <div class="theme" id="theme">
+        <style>
+            :root{
+                --color-glass: #16191ec2;
+                --color-background: #16191E;
+                --color-secondary: #404851;
+                --color-primary: #4A87C0;
+                --color-text: #e2e2e2;
+            }
+        </style>
+    </div>
+    <!-- Desenvolvido por pedromoura.idr@suzano.com.br -->
+
+    
+    <div id="map"></div>
+
+    <div class="mudartipo" id="mudartipo">
+        <div class="checkbox-wrapper-4">
+            <img src="source/sat.PNG" id="mapToggleImage" alt="Alternar mapa" onclick="alterarCor()"/>
+        </div>
+    </div>
+    
+    <span id="creditos">Desenvolvido por <b>Pedro Moura</b></span>
+    
+    <div class="barravertical">
+
+        <div class="alert" onclick="showRedHostsPopup()">
+
+            <div id="countAlert">
+                <div id="alertNum"></div>
+            </div>
+
+            <svg viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.2202 21.25H5.78015C5.14217 21.2775 4.50834 21.1347 3.94373 20.8364C3.37911 20.5381 2.90402 20.095 2.56714 19.5526C2.23026 19.0101 2.04372 18.3877 2.02667 17.7494C2.00963 17.111 2.1627 16.4797 2.47015 15.92L8.69013 5.10999C9.03495 4.54078 9.52077 4.07013 10.1006 3.74347C10.6804 3.41681 11.3346 3.24518 12.0001 3.24518C12.6656 3.24518 13.3199 3.41681 13.8997 3.74347C14.4795 4.07013 14.9654 4.54078 15.3102 5.10999L21.5302 15.92C21.8376 16.4797 21.9907 17.111 21.9736 17.7494C21.9566 18.3877 21.7701 19.0101 21.4332 19.5526C21.0963 20.095 20.6211 20.5381 20.0565 20.8364C19.4919 21.1347 18.8581 21.2775 18.2202 21.25V21.25Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10.8809 17.15C10.8809 17.0021 10.9102 16.8556 10.9671 16.7191C11.024 16.5825 11.1074 16.4586 11.2125 16.3545C11.3175 16.2504 11.4422 16.1681 11.5792 16.1124C11.7163 16.0567 11.8629 16.0287 12.0109 16.03C12.2291 16.034 12.4413 16.1021 12.621 16.226C12.8006 16.3499 12.9398 16.5241 13.0211 16.7266C13.1023 16.9292 13.122 17.1512 13.0778 17.3649C13.0335 17.5786 12.9272 17.7745 12.7722 17.9282C12.6172 18.0818 12.4203 18.1863 12.2062 18.2287C11.9921 18.2711 11.7703 18.2494 11.5685 18.1663C11.3666 18.0833 11.1938 17.9426 11.0715 17.7618C10.9492 17.5811 10.8829 17.3683 10.8809 17.15ZM11.2409 14.42L11.1009 9.20001C11.0876 9.07453 11.1008 8.94766 11.1398 8.82764C11.1787 8.70761 11.2424 8.5971 11.3268 8.5033C11.4112 8.40949 11.5144 8.33449 11.6296 8.28314C11.7449 8.2318 11.8697 8.20526 11.9959 8.20526C12.1221 8.20526 12.2469 8.2318 12.3621 8.28314C12.4774 8.33449 12.5805 8.40949 12.6649 8.5033C12.7493 8.5971 12.8131 8.70761 12.852 8.82764C12.8909 8.94766 12.9042 9.07453 12.8909 9.20001L12.7609 14.42C12.7609 14.6215 12.6808 14.8149 12.5383 14.9574C12.3957 15.0999 12.2024 15.18 12.0009 15.18C11.7993 15.18 11.606 15.0999 11.4635 14.9574C11.321 14.8149 11.2409 14.6215 11.2409 14.42Z" fill="#000000"/>
+                </svg>
+
+        </div>
+        <button id="update" onclick="atualizarDadosManualmente()"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+            width="155.724px" height="155.723px" viewBox="0 0 155.724 155.723" style="enable-background:new 0 0 155.724 155.723;"
+            xml:space="preserve">
+    <g>
+        <g id="_x33_50._Repeat">
+            <g>
+                <path d="M42.735,121.521c-12.77-10.273-20.942-26.025-20.942-43.691c0-26.114,17.882-47.992,42.051-54.23V9.154
+                    C31.854,15.646,7.776,43.927,7.776,77.83c0,20.951,9.199,39.738,23.767,52.578C42.819,140.911,49.827,126.894,42.735,121.521z
+                        M123.589,24.746c-7.18-6.485-17.693,4.028-10.801,9.236c12.888,10.27,21.143,26.097,21.143,43.848
+                    c0,26.118-17.885,48-42.052,54.234v14.449c31.99-6.499,56.068-34.776,56.068-68.684
+                    C147.947,56.602,138.502,37.596,123.589,24.746z M70.037,35.707l22.813-13.661c3.319-1.988,3.326-5.226,0.018-7.228L69.844,0.883
+                    c-3.312-1.999-5.985-0.49-5.969,3.381l0.124,28.035C64.009,36.168,66.714,37.695,70.037,35.707z M85.883,120.029l-23.027,13.935
+                    c-3.311,2.002-3.304,5.239,0.019,7.228l22.811,13.662c3.319,1.984,6.03,0.462,6.047-3.412l0.12-28.034
+                    C91.865,119.54,89.188,118.03,85.883,120.029z"/>
+            </g>
+        </g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    </svg>
+    </button>
+
+    
+    <div class="icons">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="exibirJanela('toggleTitulo'), exibirHome()">
+            <path opacity="0.5" d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"  stroke-width="1.5"/>
+            <path d="M15 18H9" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <br>
+
+            <div class="sectionData">
+                                   <!-- SVG como botão -->
+                                   <button id="toggleButtonPlus" onclick="showSection('editar'), exibirJanela('toggleTitulo'), exibirEditar()">
+                                    <svg id="toggleButtonPlusSVG" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20.5 20.5L22 22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M16 18.5C16 19.8807 17.1193 21 18.5 21C19.1916 21 19.8175 20.7192 20.2701 20.2654C20.7211 19.8132 21 19.1892 21 18.5C21 17.1193 19.8807 16 18.5 16C17.1193 16 16 17.1193 16 18.5Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M4 6V12C4 12 4 15 11 15C18 15 18 12 18 12V6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M11 3C18 3 18 6 18 6C18 6 18 9 11 9C4 9 4 6 4 6C4 6 4 3 11 3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M11 21C4 21 4 18 4 18V12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                        
+                                
+            </div>
+ <br>
+            <!-- Botões ocultos -->
+            <div id="buttonContainer" class="hidden" onclick="showSection('adicionar'), exibirJanela('toggleTitulo'), exibirAdicionar()">
+                <svg id="buttonAdd" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none"  clip-rule="evenodd" d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM12.5 5.5C13.0523 5.5 13.5 5.94772 13.5 6.5V10.5H17.5C18.0523 10.5 18.5 10.9477 18.5 11.5V12.5C18.5 13.0523 18.0523 13.5 17.5 13.5H13.5V17.5C13.5 18.0523 13.0523 18.5 12.5 18.5H11.5C10.9477 18.5 10.5 18.0523 10.5 17.5V13.5H6.5C5.94772 13.5 5.5 13.0523 5.5 12.5V11.5C5.5 10.9477 5.94772 10.5 6.5 10.5H10.5V6.5C10.5 5.94772 10.9477 5.5 11.5 5.5H12.5Z" fill="#000000"/>
+                    </svg>
+            </div>
+        
+    
+        <script>
+            buttonContainer.classList.toggle("hidden");
+
+            let janela = 0;
+
+           function exibirJanela(id) {
+            if (janela == 0) {
+                document.getElementById(id).click();
+            }
+           }
+           
+        //    document.getElementByClassName('leaflet-popup-close-button').click();
+        </script>
+    </div>
+
+    <button id="toggleThemeButton">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-text)" xmlns="http://www.w3.org/2000/svg">
+            <path  clip-rule="evenodd" d="M3.39703 11.6315C3.39703 16.602 7.42647 20.6315 12.397 20.6315C15.6858 20.6315 18.5656 18.8664 20.1358 16.23C16.7285 17.3289 12.6922 16.7548 9.98282 14.0455C7.25201 11.3146 6.72603 7.28415 7.86703 3.89293C5.20697 5.47927 3.39703 8.38932 3.39703 11.6315ZM21.187 13.5851C22.0125 13.1021 23.255 13.6488 23 14.5706C21.7144 19.2187 17.4543 22.6315 12.397 22.6315C6.3219 22.6315 1.39703 17.7066 1.39703 11.6315C1.39703 6.58874 4.93533 2.25845 9.61528 0.999986C10.5393 0.751502 11.0645 1.99378 10.5641 2.80935C8.70026 5.84656 8.83194 10.0661 11.397 12.6312C13.9319 15.1662 18.1365 15.3702 21.187 13.5851Z"/>
+        </svg>
+    </button>
+
+    </div>
+
+
+    <div class="titulo" id="tituloBox">
+
+        <button id="toggleTitulo"></button>
+
+    
+    <div class="homebox" id="homebox">
+            
+            <label for="ipBusca" class="pesquisa"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+                <input type="text" name="ipBusca" id="ipBusca" placeholder="Pesquisar por IP" onkeyup="pesquisarPorIP()">
+            </label>
+
+        <div class="imgCorp">
+            <img id="logoCliente" src="">
+        </div>
+
+        <div class="quantidadeEquipamentos">
+            
+           <span style="color: var(--color-text);"><b id="countEquipamentos"></b> Consultados</span>
+        <br>
+           <span style="color: var(--color-text);"><b id="countEquipamentosSemLocal"></b> Sem Local</span>
+        </div>
+
+        <!-- <div class="quantidadeEquipamentos">
+            <span style="color: var(--color-text);"><b id="countOff"></b> Sem Conexão</span>
+         </div> -->
+<br> <br><br><br>
+         <div class="unidadesAgregadas">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                viewBox="0 0 511.999 511.999" xml:space="preserve">
+            <g>
+                <g>
+                    <path d="M255.999,105.745c-27.617,0-50.085,22.468-50.085,50.085s22.468,50.085,50.085,50.085
+                        c27.617,0,50.085-22.468,50.085-50.085S283.616,105.745,255.999,105.745z M255.999,172.525c-9.206,0-16.695-7.489-16.695-16.695
+                        s7.489-16.695,16.695-16.695s16.695,7.489,16.695,16.695C272.694,165.035,265.205,172.525,255.999,172.525z"/>
+                </g>
+            </g>
+            <g>
+                <g>
+                    <path d="M511.131,451.06l-66.78-200.339c-2.273-6.817-8.652-11.416-15.838-11.416h-87.036
+                        c14.699-23.209,31.386-44.77,31.386-83.475c0-64.439-52.425-116.865-116.865-116.865S139.135,91.391,139.135,155.83
+                        c0,38.935,16.89,60.626,31.638,83.475H83.485c-7.187,0-13.565,4.599-15.838,11.416L0.867,451.06
+                        c-3.597,10.795,4.446,21.974,15.838,21.974h478.588C506.672,473.033,514.733,461.867,511.131,451.06z M255.999,72.355
+                        c46.028,0,83.475,37.447,83.475,83.475c0,15.854-4.459,31.274-12.893,44.591l-69.912,110.383l-70.862-109.779
+                        c-8.689-13.457-13.281-29.086-13.281-45.195C172.524,109.801,209.971,72.355,255.999,72.355z M39.868,439.645v-0.001
+                        l55.65-166.949h96.808l50.45,78.156c6.607,10.235,21.61,10.176,28.131-0.121l49.423-78.033h96.151l55.65,166.949H39.868z"/>
+                </g>
+            </g>
+            </svg>
+            <div class="quantidadeEquipamentos">
+                <span><b id="countUnidades">0</b> Localidades</span>
+            </div>
+
+         </div>
+    </div>
+
+    <div class="databox">
+        <div class="adicionarEquipamento" id="adicionarEquipamento">
+                <!-- Seção de Adição de Host -->
+
+                
+    <div id="adicionarSection" class="hidden">
+        <h2>Adicionar Host</h2>
+        <form id="adicionarHostForm">
+            <label for="novoIp">IP</label>
+            <input type="text" id="novoIp" name="ip" placeholder="IP do equipamento" required>
+
+            <label for="novoNome">Nome</label>
+            <input type="text" id="novoNome" name="nome" placeholder="Hostname" required>
+
+            <label for="novoLocal">Local</label>
+            <input type="text" id="novoLocal" name="local" placeholder="Latitude, Longitude">
+
+            <!-- <label for="novoTipo">Tipo:</label>
+            <select id="novoTipo" name="tipo">
+                <option value="sw">Switch</option>
+                <option value="router">Router</option>
+                <option value="server">Server</option>
+            </select> -->
+
+            <label for="novoAtivo">Status:</label>
+            <select id="novoAtivo" name="ativo">
+                <option value="green">Green</option>
+                <option value="red">Red</option>
+            </select>
+            <br><br>
+            <button id="submit" type="submit">Adicionar Host</button>
+        </form>
+    </div>
+        </div>
+
+<div class="editarEquipamento" id="editarEquipamento">
+    <h2>Editar Host</h2>
+    <div id="editarSection">
+        <div class="editarbox">
+
+            <div class="search-container">
+                <label for="search" class="search"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                    </svg>
+                    <div class="boxinputsearch">
+                        <input type="text" name="search" id="search" placeholder="Pesquisar por IP" oninput="filterHosts()"></div>
+                </label>
+            </div>
+            <div class="exibirSemLocal">
+
+                <label class="checkbox-container">
+                    <input class="custom-checkbox" type="checkbox" id="showOnlyWithoutLocation" onchange="filterHosts()"><span class="checkmark"></span> Exibir Sem Local 
+                    
+                   
+                </label>
+                <br><br>
+                <style>
+                    /* From Uiverse.io by DaniloMGutavo */ 
+                .checkbox-container {
+                  display: inline-block;
+                  position: relative;
+                  margin-bottom: 12px;
+                  font-size: 12px;
+                  user-select: none;
+                  width: 100%;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 10px;
+                border-bottom: 1px solid
+                }
+                .custom-checkbox {
+                  position: absolute;
+                  opacity: 0;
+                  height: 0;
+                  width: 0;
+                }
+                
+                .checkmark {
+                  position: relative;
+                  top: 0;
+                  height: 10px;
+                  width: 10px;
+                  background-color: var(--color-background);
+                  border: 1px solid var(--color-primary);
+                  border-radius: 20px;
+                  transition: background-color 0.3s;
+                  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                }
+                
+            
+                
+                .custom-checkbox:checked ~ .checkmark {
+                  background-color: var(--color-primary);
+                  box-shadow: 0 3px 7px var(--color-secondary);
+                }
+                
+                .custom-checkbox:checked ~ .checkmark:after {
+                  display: block;
+                }
+                
+                @keyframes checkAnim {
+                  0% {
+                    height: 0;
+                  }
+                
+                  100% {
+                    height: 10px;
+                  }
+                }
+                
+                .custom-checkbox:checked ~ .checkmark:after {
+                  animation: checkAnim 0.2s forwards;
+                }
+                
+                </style>
+                            
+                        </div>
+            <div class="host-list" id="hostList"></div>    
+
+        </div>
+
+        <form id="editarHostForm">
+            <label for="ip">IP</label>
+            <input type="text" id="ip" name="ip" placeholder="IP do equipamento" required><br>
+
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" placeholder="Hostname"><br>
+
+            <label for="local">Local</label>
+            <input type="text" id="local" name="local" placeholder="Latitude, Longitude"><br>
+            <br>
+            <!-- <label for="tipo">Tipo:</label>
+            <select id="tipo" name="tipo">
+                <option value="sw">Switch</option>
+                <option value="router">Router</option>
+                <option value="server">Server</option>
+            </select><br> -->
+            <label for="ativo">Status:</label>
+            <select id="ativo" name="ativo">
+                <option value="green">Green</option>
+                <option value="red">Red</option>
+            </select><br><br>
+
+            <button id="submit" type="submit">Salvar Alterações</button>
+        </form>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <script>
+
+        // Função para alternar entre as seções
+        function showSection(section) {
+            document.getElementById('editarSection').classList.add('hidden');
+            document.getElementById('adicionarSection').classList.add('hidden');
+            
+            document.getElementById(`${section}Section`).classList.remove('hidden');
+        }
+
+        // Envia o formulário de edição
+        document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            const ip = document.getElementById('ip').value;
+            const nome = document.getElementById('nome').value;
+            const local = document.getElementById('local').value;
+            // const tipo = document.getElementById('tipo').value;
+            const tipo = 'sw';
+            const ativo = document.getElementById('ativo').value;
+
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = ''; // Limpa mensagens anteriores
+            messageDiv.classList.remove('success', 'error'); // Remove classes de estilo anteriores
+
+            
+            // Validação no frontend
+            if (!ip) {
+                messageDiv.textContent = 'O campo "IP" é obrigatório.';
+                messageDiv.classList.add('error');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/editar-host', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ip, nome, local, tipo, ativo })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // messageDiv.textContent = 'Host atualizado com sucesso!';
+                    atualizarDadosManualmente()
+                    messageDiv.classList.add('success');
+                } else {
+                    messageDiv.textContent = `Erro: ${data.erro || 'Falha ao atualizar host.'}`;
+                    messageDiv.classList.add('error');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                messageDiv.textContent = 'Erro ao conectar ao servidor.';
+                messageDiv.classList.add('error');
+            }
+        });
+
+    </script>
+</div>
+
+    </div>
+
+    <div id="listaItensSL">
+        
+    </div>
+
+    <div id="listaItensOff">
+            
+    </div>
+
+    </div>
+
+
+    <script>
+        document.getElementById("toggleTitulo").addEventListener("click", function() {
+            document.getElementById("tituloBox").classList.toggle("ativo");
+
+            if (janela == 0) {
+                janela = 1;
+            }else{
+                janela = 0;
+            }
+        });
+    </script>
+
+    <div class="container">
+
+            <!-- Popup para exibir hosts com status "red" -->
+<div id="redHostsPopup" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Offline</h2>
+        <div id="redHostsList"></div>
+    </div>
+
+    <style>
+        /* Estilo do Modal (Popup) */
+.modal {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    z-index: 999999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-glass); /* Fundo escuro */
+}
+
+.modal-content {
+    background-color: var(--color-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid var(--color-secondary);
+    width: 600px;
+    height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+#redHostsList{
+    height: 225px;
+    overflow: auto;
+}
+.close {
+    color: var(--color-text);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+    </style>
+
+    <script>
+
+        function name(params) {
+            
+        }
+
+        // Função para abrir o popup com hosts "red"
+let countSemLocalNosHosts = 0;
+let buttonLocal = ``;
+
+// Fechar o popup quando o usuário clicar no "X"
+document.querySelector('.close').addEventListener('click', function () {
+    const modal = document.getElementById('redHostsPopup');
+    modal.style.display = 'none';
+});
+
+// Fechar o popup quando o usuário clicar fora dele
+window.addEventListener('click', function (event) {
+    const modal = document.getElementById('redHostsPopup');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
+    </script>
+</div>
+
+        <div class="opcoes" id="opcoes">
+        
+    <button id="toggleShowSwitches" onclick="showSw()"><img src="source/sw.png" alt=""></button>
+
+            
+    <button id="toggleLinesButton"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
+        <path clip-rule="evenodd" d="M18 5C17.4477 5 17 5.44772 17 6C17 6.27642 17.1108 6.52505 17.2929 6.70711C17.475 6.88917 17.7236 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5ZM15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6C21 7.65685 19.6569 9 18 9C17.5372 9 17.0984 8.8948 16.7068 8.70744L8.70744 16.7068C8.8948 17.0984 9 17.5372 9 18C9 19.6569 7.65685 21 6 21C4.34315 21 3 19.6569 3 18C3 16.3431 4.34315 15 6 15C6.46278 15 6.90157 15.1052 7.29323 15.2926L15.2926 7.29323C15.1052 6.90157 15 6.46278 15 6ZM6 17C5.44772 17 5 17.4477 5 18C5 18.5523 5.44772 19 6 19C6.55228 19 7 18.5523 7 18C7 17.7236 6.88917 17.475 6.70711 17.2929C6.52505 17.1108 6.27642 17 6 17Z" />
+        </svg></button>
+
+            
+            <div class="menu">
+
+                            <!-- From Uiverse.io by pathikcomp --> 
+            <label class="main">
+                Atalhos
+                <input class="inp" checked="" type="checkbox" />
+                <div class="bar">
+                <span class="top bar-list"></span>
+                <span class="middle bar-list"></span>
+                <span class="bottom bar-list"></span>
+                </div>
+                <section class="menu-container" id="menu-container">
+                </section>
+            </label>
+  
+            </div>
+
+        </div>
+        
+    </div>
+
+    <div class="popup" id="popup">
+        <!-- From Uiverse.io by revanth-004 --> 
+        <div class="popup-container">
+            <div class="popup success-popup">
+                <div class="popup-icon success-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="success-svg">
+                        <path fill-rule="evenodd" d="m12 1c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11-4.925-11-11-11zm4.768 9.14c.0878-.1004.1546-.21726.1966-.34383.0419-.12657.0581-.26026.0477-.39319-.0105-.13293-.0475-.26242-.1087-.38085-.0613-.11844-.1456-.22342-.2481-.30879-.1024-.08536-.2209-.14938-.3484-.18828s-.2616-.0519-.3942-.03823c-.1327.01366-.2612.05372-.3782.1178-.1169.06409-.2198.15091-.3027.25537l-4.3 5.159-2.225-2.226c-.1886-.1822-.4412-.283-.7034-.2807s-.51301.1075-.69842.2929-.29058.4362-.29285.6984c-.00228.2622.09851.5148.28067.7034l3 3c.0983.0982.2159.1748.3454.2251.1295.0502.2681.0729.4069.0665.1387-.0063.2747-.0414.3991-.1032.1244-.0617.2347-.1487.3236-.2554z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="success-message">Dados Carregados</div>
+
+                <div class="popup-icon close-icon" onclick="fecharFeedbackDados()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" class="close-svg">
+                        <path d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z" class="close-path"></path>
+                    </svg>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="popupcopiar" id="popupcopiar">
+        <!-- From Uiverse.io by revanth-004 --> 
+        <div class="popup-container">
+            <div class="popup info-popup">
+                <div class="popup-icon info-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="info-svg">
+                        <path fill-rule="evenodd" d="m12 1c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11-4.925-11-11-11zm4.768 9.14c.0878-.1004.1546-.21726.1966-.34383.0419-.12657.0581-.26026.0477-.39319-.0105-.13293-.0475-.26242-.1087-.38085-.0613-.11844-.1456-.22342-.2481-.30879-.1024-.08536-.2209-.14938-.3484-.18828s-.2616-.0519-.3942-.03823c-.1327.01366-.2612.05372-.3782.1178-.1169.06409-.2198.15091-.3027.25537l-4.3 5.159-2.225-2.226c-.1886-.1822-.4412-.283-.7034-.2807s-.51301.1075-.69842.2929-.29058.4362-.29285.6984c-.00228.2622.09851.5148.28067.7034l3 3c.0983.0982.2159.1748.3454.2251.1295.0502.2681.0729.4069.0665.1387-.0063.2747-.0414.3991-.1032.1244-.0617.2347-.1487.3236-.2554z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="info-message">Local copiado</div>
+
+                <div class="popup-icon close-icon" onclick="fecharFeedbackCopia()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" class="close-svg">
+                        <path d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z" class="close-path"></path>
+                    </svg>
+                </div>
+                
+            </div>
+        </div>
+
+
+    </div>
+    
+    
+
+    <div class="loading" id="loading">
+<!-- From Uiverse.io by Nawsome --> 
+<svg class="pl" viewBox="0 0 160 160" width="160px" height="160px" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#000"></stop>
+            <stop offset="100%" stop-color="#fff"></stop>
+        </linearGradient>
+        <mask id="mask1">
+            <rect x="0" y="0" width="160" height="160" fill="url(#grad)"></rect>
+        </mask>
+        <mask id="mask2">
+            <rect x="28" y="28" width="104" height="104" fill="url(#grad)"></rect>
+        </mask>
+    </defs>
+    
+    <g>
+        <g class="pl__ring-rotate">
+            <circle class="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(223,90%,55%)" stroke-width="16" stroke-dasharray="452.39 452.39" stroke-dashoffset="452" stroke-linecap="round" transform="rotate(-45,80,80)"></circle>
+        </g>
+    </g>
+    <g mask="url(#mask1)">
+        <g class="pl__ring-rotate">
+            <circle class="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(193,90%,55%)" stroke-width="16" stroke-dasharray="452.39 452.39" stroke-dashoffset="452" stroke-linecap="round" transform="rotate(-45,80,80)"></circle>
+        </g>
+    </g>
+    
+    <g>
+        <g stroke-width="4" stroke-dasharray="12 12" stroke-dashoffset="12" stroke-linecap="round" transform="translate(80,80)">
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-135,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-90,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-45,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(0,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(45,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(90,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(135,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(180,0,0) translate(0,40)"></polyline>
+        </g>
+    </g>
+    <g mask="url(#mask1)">
+        <g stroke-width="4" stroke-dasharray="12 12" stroke-dashoffset="12" stroke-linecap="round" transform="translate(80,80)">
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(-135,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(-90,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(-45,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(0,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(45,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(90,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(135,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(180,0,0) translate(0,40)"></polyline>
+        </g>
+    </g>
+    
+    <g>
+        <g transform="translate(64,28)">
+            <g class="pl__arrows" transform="rotate(45,16,52)">
+                <path fill="hsl(3,90%,55%)" d="M17.998,1.506l13.892,43.594c.455,1.426-.56,2.899-1.998,2.899H2.108c-1.437,0-2.452-1.473-1.998-2.899L14.002,1.506c.64-2.008,3.356-2.008,3.996,0Z"></path>
+                <path fill="hsl(223,10%,90%)" d="M14.009,102.499L.109,58.889c-.453-1.421,.559-2.889,1.991-2.889H29.899c1.433,0,2.444,1.468,1.991,2.889l-13.899,43.61c-.638,2.001-3.345,2.001-3.983,0Z"></path>
+            </g>
+        </g>
+    </g>
+    <g mask="url(#mask2)">
+        <g transform="translate(64,28)">
+            <g class="pl__arrows" transform="rotate(45,16,52)">
+                <path fill="hsl(333,90%,55%)" d="M17.998,1.506l13.892,43.594c.455,1.426-.56,2.899-1.998,2.899H2.108c-1.437,0-2.452-1.473-1.998-2.899L14.002,1.506c.64-2.008,3.356-2.008,3.996,0Z"></path>
+                <path fill="hsl(223,90%,80%)" d="M14.009,102.499L.109,58.889c-.453-1.421,.559-2.889,1.991-2.889H29.899c1.433,0,2.444,1.468,1.991,2.889l-13.899,43.61c-.638,2.001-3.345,2.001-3.983,0Z"></path>
+            </g>
+        </g>
+    </g>
+</svg>
+
+    </div>
+
+    <div id="css-sw"></div>
+
+
+
+
+
+        <script src="source/script/info.js"></script>
+        <script src="source/script/open.js"></script>
+        <script src="source/script/scriptDados.js" defer></script>
+        <script src="source/script/manipularMapa.js"></script>
+        <script src="source/script/error.js"></script>
+        <script src="source/script/credits.js"></script>
+        <script src="source/script/mudancasTelas.js"></script>
+
+</html>
