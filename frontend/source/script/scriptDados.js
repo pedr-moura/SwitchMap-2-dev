@@ -36,62 +36,6 @@ toggleMap.style.display = "none";
 opcoesTitulo.style.display = "none";
 ocultarSw();
 
-// Função auxiliar para converter lat/lng em coordenadas de tile
-function latLngToTileCoords(lat, lng, zoom) {
-    const tileSize = 256;
-    const scale = Math.pow(2, zoom);
-    const worldCoordX = (lng + 180) / 360 * scale;
-    const worldCoordY = (1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * scale;
-    return {
-        x: Math.floor(worldCoordX),
-        y: Math.floor(worldCoordY),
-        z: zoom
-    };
-}
-
-// Função ajustada para pré-carregar tiles
-function precarregarTilesRegioes(hosts) {
-    const tileLayer = mapaAtual; // Usa o mapa atual (claro, escuro ou satélite)
-    const tileTypes = ['dark', 'satellite']; // Pré-carrega ambas as fontes
-    const radiusKm = 50; // Alinha com o backend
-    const latDegreePerKm = 1 / 111; // Aproximadamente 111 km por grau de latitude
-
-    hosts.forEach(host => {
-        if (host.local) {
-            const [lat, lng] = host.local.split(', ').map(Number);
-            const lngDegreePerKm = latDegreePerKm * Math.cos(lat * Math.PI / 180); // Ajuste para longitude
-            const radiusLat = radiusKm * latDegreePerKm;
-            const radiusLng = radiusKm * lngDegreePerKm;
-
-            // Define os limites em lat/lng
-            const bounds = L.latLngBounds(
-                [lat - radiusLat, lng - radiusLng], // Canto inferior esquerdo
-                [lat + radiusLat, lng + radiusLng]  // Canto superior direito
-            );
-
-            // Pré-carrega tiles para zooms 14 a 18
-            tileTypes.forEach(type => {
-                for (let zoom = 14; zoom <= 18; zoom++) {
-                    const sw = bounds.getSouthWest();
-                    const ne = bounds.getNorthEast();
-                    const swTile = latLngToTileCoords(sw.lat, sw.lng, zoom);
-                    const neTile = latLngToTileCoords(ne.lat, ne.lng, zoom);
-
-                    // Itera sobre os tiles dentro dos limites
-                    for (let x = Math.min(swTile.x, neTile.x); x <= Math.max(swTile.x, neTile.x); x++) {
-                        for (let y = Math.min(swTile.y, neTile.y); y <= Math.max(swTile.y, neTile.y); y++) {
-                            const tileUrl = `http://172.16.196.36:3000/tiles/${type}/${zoom}/${x}/${y}`;
-                            // Faz uma requisição silenciosa para pré-carregar o tile
-                            fetch(tileUrl, { method: 'GET', mode: 'no-cors' })
-                                .catch(err => console.error(`Erro ao pré-carregar tile ${tileUrl}:`, err));
-                        }
-                    }
-                }
-            });
-        }
-    });
-}
-
 // Funções de UI
 function exibirToggleMap() {
     toggleMap.style.display = "block";
