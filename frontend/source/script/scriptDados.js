@@ -18,10 +18,6 @@ let dadosAtuais = { hosts: [] }; // Dados mais recentes
 let isEditing = false; // Flag para indicar edição em andamento
 let pendingWebSocketUpdate = null; // Armazena atualizações do WebSocket durante edição
 let hosts = [];
-let map; // Mapa global
-let markersLayer; // Camada de marcadores
-let linesLayer; // Camada de linhas
-let linesVisible = false; // Estado das linhas visíveis
 let janela = 0; // Estado inicial do menu
 
 // Declaração global das camadas de mapa
