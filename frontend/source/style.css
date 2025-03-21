@@ -335,13 +335,18 @@
         }
         
      #update {
-    background: none; /* Remove fundo padrão, se houver */
-    border: none; /* Remove borda padrão, se houver */
-    cursor: pointer; /* Indica que é clicável */
-    padding: 0; /* Remove padding padrão */
-    display: flex; /* Para centralizar o SVG */
+z-index: 999999999;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+   fill: var(--color-text);
 }
 
 #update svg {
@@ -349,7 +354,9 @@
     height: 40px;
     transition: transform 0.3s ease; /* Suaviza a transição quando a animação não está ativa */
 }
-
+#update:hover{
+   fill: var(--color-primary);
+}
 #update.clicked svg {
     animation: spin 1.5s linear infinite; /* Animação de rotação */
 }
