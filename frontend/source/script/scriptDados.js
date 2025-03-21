@@ -87,10 +87,12 @@ function showSw() {
                 }
             </style>`;
         showIconesMaps = 1;
+        function toggleDependenciasState()
     } else {
         toggleSwView.style.border = "1px solid var(--color-secondary)";
         toggleDependencias.style.display = "none";
-        if (showDependencias === 1) toggleDependencias.click();
+        function toggleDependenciasState()
+        toggleDependencias.click();
         ocultarSw();
         showIconesMaps = 0;
     }
