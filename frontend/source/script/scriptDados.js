@@ -92,6 +92,7 @@ function showSw() {
         toggleDependencias.style.display = "none";
         if (showDependencias === 1) toggleDependencias.click();
         ocultarSw();
+        linesLayer.clearLayers();
         showIconesMaps = 0;
     }
 }
