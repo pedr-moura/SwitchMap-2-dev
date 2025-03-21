@@ -90,9 +90,13 @@ function showSw() {
     } else {
         toggleSwView.style.border = "1px solid var(--color-secondary)";
         toggleDependencias.style.display = "none";
-        if (showDependencias === 1) toggleDependencias.click();
+        
+        if (showDependencias === 1) {
+            toggleDependencias.click();
+        }
+            
         ocultarSw();
-        linesLayer.clearLayers();
+        
         showIconesMaps = 0;
     }
 }
