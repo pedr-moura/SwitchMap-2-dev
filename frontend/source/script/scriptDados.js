@@ -150,7 +150,7 @@ async function fetchDadosHTTP() {
 
 // Função para pesquisar por IP
 function pesquisarPorIP(hostsArray = dadosAtuais.hosts) {
-    const ipBusca = document.getElementById('ipBusca').value.toLowerCase();
+    const ipBusca = document.getElementById('ipBusca').value.toLowerCase().trim();
     if (!ipBusca) return hostsArray; // Retorna todos os hosts se o campo estiver vazio
     return hostsArray.filter(host => 
         host.ip.toLowerCase().includes(ipBusca) || 
@@ -161,9 +161,8 @@ function pesquisarPorIP(hostsArray = dadosAtuais.hosts) {
 // Função para pré-carregar linhas
 function preloadLines(dados) {
     const pontosMapeados = {};
-    linesLayer.clearLayers(); // Limpa as linhas existentes antes de recriá-las
+    linesLayer.clearLayers();
 
-    // Mapeia todos os pontos com localização
     dados.hosts.forEach(ponto => {
         if (ponto.local) {
             const [lat, lng] = ponto.local.split(', ').map(Number);
@@ -171,7 +170,6 @@ function preloadLines(dados) {
         }
     });
 
-    // Cria todas as linhas com base em ship
     dados.hosts.forEach(ponto => {
         if (ponto.ship) {
             ponto.ship.split(', ').forEach(ship => {
@@ -184,11 +182,6 @@ function preloadLines(dados) {
         }
     });
 
-    // Registra o tempo quando as linhas são carregadas
-    const linesLoadedTime = performance.now();
-    console.log(`Tempo para carregar a pagina: ${(pageLoadTime) / 1000} segundos`);
-
-    // Adiciona ao mapa apenas se linesVisible for true
     if (linesVisible) {
         linesLayer.addTo(map);
     }
@@ -199,11 +192,8 @@ function atualizarInterface(dados) {
     dadosAtuais = dados;
     exibirFeedbackDados?.();
 
-    const ipBusca = document.getElementById('ipBusca').value.toLowerCase();
-    let dadosFiltrados = dados;
-    if (ipBusca) {
-        dadosFiltrados = { hosts: pesquisarPorIP(dados.hosts) };
-    }
+    const ipBusca = document.getElementById('ipBusca').value.toLowerCase().trim();
+    let dadosFiltrados = { hosts: pesquisarPorIP(dados.hosts) }; // Sempre filtra com base no input atual
 
     const countEquipamentos = document.getElementById('countEquipamentos');
     const countUnidades = document.getElementById('countUnidades');
@@ -245,9 +235,7 @@ function atualizarInterface(dados) {
         }
     });
 
-    // Pré-carrega as linhas
     preloadLines(dadosFiltrados);
-
     atualizarListas(dadosFiltrados);
 }
 
@@ -259,7 +247,7 @@ function inicializarMapa() {
         zoomControl: false, 
         doubleClickZoom: false, 
         attributionControl: false 
-    }).setView(visaoDefault || [-15.7883, -47.9292], 4); // Default para Brasília se visaoDefault não estiver definido
+    }).setView(visaoDefault || [-15.7883, -47.9292], 4);
 
     map.on('contextmenu', e => {
         const { lat, lng } = e.latlng;
@@ -273,17 +261,11 @@ function inicializarMapa() {
     mapaAtual = mapaPadraoEscuro;
     mapaAtual.addTo(map);
     markersLayer = L.layerGroup().addTo(map);
-    linesLayer = L.layerGroup(); // Inicializa sem adicionar ao mapa imediatamente
+    linesLayer = L.layerGroup();
 
     document.getElementById('mapToggleImage').addEventListener('click', () => toggleMapView(mapaAtual, mapaSatelite));
     document.getElementById('ipBusca').addEventListener('input', () => {
-        const ipBusca = document.getElementById('ipBusca').value.toLowerCase();
-        if (ipBusca) {
-            const hostsFiltrados = pesquisarPorIP(dadosAtuais.hosts);
-            atualizarInterface({ hosts: hostsFiltrados });
-        } else {
-            atualizarInterface(dadosAtuais);
-        }
+        atualizarInterface(dadosAtuais); // Atualiza a interface com base no valor atual do input
     });
 }
 
