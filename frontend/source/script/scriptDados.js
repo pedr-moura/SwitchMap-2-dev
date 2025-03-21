@@ -324,7 +324,7 @@ function toggleMapView(mapaAtual, mapaSatelite) {
     } else {
         map.removeLayer(mapaAtual);
         mapaSatelite.addTo(map);
-        mapToggleImage.src = mapaAtual === mapa, mapaPadraoEscuro ? 'https://i.ibb.co/S4xWMD61/map.png' : 'https://i.ibb.co/YBD7CMr7/satc.png';
+        mapToggleImage.src = mapaAtual === mapaPadraoEscuro ? 'https://i.ibb.co/S4xWMD61/map.png' : 'https://i.ibb.co/YBD7CMr7/satc.png';
     }
 }
 
