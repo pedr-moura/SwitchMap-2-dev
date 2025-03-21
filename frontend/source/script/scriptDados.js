@@ -20,13 +20,13 @@ let pendingWebSocketUpdate = null; // Armazena atualizações do WebSocket enqua
 let hosts = []; 
 
 // Declaração global das camadas de mapa
-const mapaPadraoClaro = L.tileLayer('http://172.16.196.36:6000/tiles/light/{z}/{x}/{y}', { 
+const mapaPadraoClaro = L.tileLayer('http://172.16.196.36:3000/tiles/light/{z}/{x}/{y}', { 
     attribution: '© OpenStreetMap © CartoDB' 
 });
-const mapaPadraoEscuro = L.tileLayer('http://172.16.196.36:6000/tiles/dark/{z}/{x}/{y}', { 
+const mapaPadraoEscuro = L.tileLayer('http://172.16.196.36:3000/tiles/dark/{z}/{x}/{y}', { 
     attribution: '© OpenStreetMap' 
 });
-const mapaSatelite = L.tileLayer('http://172.16.196.36:6000/tiles/satellite/{z}/{x}/{y}', { 
+const mapaSatelite = L.tileLayer('http://172.16.196.36:3000/tiles/satellite/{z}/{x}/{y}', { 
     attribution: 'Tiles © Esri' 
 });
 
