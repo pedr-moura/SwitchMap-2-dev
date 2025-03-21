@@ -68,6 +68,7 @@ function ocultarSw() {
 function toggleDependenciasState() {
     showDependencias = showDependencias === 0 ? 1 : 0;
 }
+toggleDependencias.addEventListener('click', toggleDependenciasState);
 
 function showSw() {
     if (showIconesMaps === 0) {
@@ -87,12 +88,9 @@ function showSw() {
                 }
             </style>`;
         showIconesMaps = 1;
-        toggleDependenciasState()
     } else {
         toggleSwView.style.border = "1px solid var(--color-secondary)";
         toggleDependencias.style.display = "none";
-        toggleDependenciasState()
-        toggleDependencias.click();
         ocultarSw();
         showIconesMaps = 0;
     }
