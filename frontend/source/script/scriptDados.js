@@ -22,6 +22,7 @@ let map; // Mapa global
 let markersLayer; // Camada de marcadores
 let linesLayer; // Camada de linhas
 let linesVisible = false; // Estado das linhas visíveis
+let janela = 0; // Estado inicial do menu
 
 // Declaração global das camadas de mapa
 const mapaPadraoClaro = L.tileLayer('http://172.16.196.36:3000/tiles/light/{z}/{x}/{y}', { 
