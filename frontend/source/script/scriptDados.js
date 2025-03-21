@@ -186,7 +186,7 @@ function preloadLines(dados) {
 
     // Registra o tempo quando as linhas são carregadas
     const linesLoadedTime = performance.now();
-    console.log(`Tempo para carregar as linhas: ${(linesLoadedTime - pageLoadTime) / 1000} segundos`);
+    console.log(`Tempo para carregar a pagina: ${(pageLoadTime) / 1000} segundos`);
 
     // Adiciona ao mapa apenas se linesVisible for true
     if (linesVisible) {
