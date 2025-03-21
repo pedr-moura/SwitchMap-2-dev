@@ -41,6 +41,14 @@ toggleMap.style.display = "none";
 opcoesTitulo.style.display = "none";
 ocultarSw();
 
+// Telas
+function exibirJanela(id) {
+    if (janela == 0) {
+        document.getElementById(id).click();
+    }
+}
+
+
 // Funções de UI
 function exibirToggleMap() {
     toggleMap.style.display = "block";
