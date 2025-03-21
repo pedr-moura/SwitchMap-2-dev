@@ -344,14 +344,14 @@ z-index: 999999999;
     align-items: center;
     justify-content: center;
     position: absolute;
-    bottom: 5px;
-    left: 5px;
+    bottom: 10px;
+    left: 10px;
    fill: var(--color-text);
 }
 
 #update svg {
-    width: 40px; /* Ajuste o tamanho do SVG conforme necessário */
-    height: 40px;
+    width: 30px; /* Ajuste o tamanho do SVG conforme necessário */
+    height: 30px;
     transition: transform 0.3s ease; /* Suaviza a transição quando a animação não está ativa */
 }
 #update:hover{
