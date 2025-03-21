@@ -24,7 +24,7 @@ let markersLayer;
 let linesLayer;
 let linesVisible = false;
 const objetosVisiveis = {};
-
+let pageLoadTime = performance.now(); // Marca o tempo de início do carregamento da página
 
 // Declaração global das camadas de mapa
 const mapaPadraoClaro = L.tileLayer('http://172.16.196.36:3000/tiles/light/{z}/{x}/{y}', { 
@@ -50,7 +50,6 @@ function exibirJanela(id) {
         document.getElementById(id).click();
     }
 }
-
 
 // Funções de UI
 function exibirToggleMap() {
@@ -159,6 +158,42 @@ function pesquisarPorIP(hostsArray = dadosAtuais.hosts) {
     );
 }
 
+// Função para pré-carregar linhas
+function preloadLines(dados) {
+    const pontosMapeados = {};
+    linesLayer.clearLayers(); // Limpa as linhas existentes antes de recriá-las
+
+    // Mapeia todos os pontos com localização
+    dados.hosts.forEach(ponto => {
+        if (ponto.local) {
+            const [lat, lng] = ponto.local.split(', ').map(Number);
+            pontosMapeados[ponto.ip] = { lat, lng };
+        }
+    });
+
+    // Cria todas as linhas com base em ship
+    dados.hosts.forEach(ponto => {
+        if (ponto.ship) {
+            ponto.ship.split(', ').forEach(ship => {
+                if (pontosMapeados[ponto.ip] && pontosMapeados[ship]) {
+                    const { lat: lat1, lng: lng1 } = pontosMapeados[ponto.ip];
+                    const { lat: lat2, lng: lng2 } = pontosMapeados[ship];
+                    L.polyline([[lat1, lng1], [lat2, lng2]], { color: ponto.ativo }).addTo(linesLayer);
+                }
+            });
+        }
+    });
+
+    // Registra o tempo quando as linhas são carregadas
+    const linesLoadedTime = performance.now();
+    console.log(`Tempo para carregar as linhas: ${(linesLoadedTime - pageLoadTime) / 1000} segundos`);
+
+    // Adiciona ao mapa apenas se linesVisible for true
+    if (linesVisible) {
+        linesLayer.addTo(map);
+    }
+}
+
 // Atualização da interface
 function atualizarInterface(dados) {
     dadosAtuais = dados;
@@ -186,7 +221,6 @@ function atualizarInterface(dados) {
         inicializarMapa();
     } else {
         markersLayer.clearLayers();
-        linesLayer.clearLayers();
     }
 
     const pontosMapeados = {};
@@ -211,19 +245,8 @@ function atualizarInterface(dados) {
         }
     });
 
-    if (showDependencias) {
-        dadosFiltrados.hosts.forEach(ponto => {
-            if (ponto.ship) {
-                ponto.ship.split(', ').forEach(ship => {
-                    if (pontosMapeados[ponto.ip] && pontosMapeados[ship]) {
-                        const { lat: lat1, lng: lng1 } = pontosMapeados[ponto.ip];
-                        const { lat: lat2, lng: lng2 } = pontosMapeados[ship];
-                        L.polyline([[lat1, lng1], [lat2, lng2]], { color: ponto.ativo }).addTo(linesLayer);
-                    }
-                });
-            }
-        });
-    }
+    // Pré-carrega as linhas
+    preloadLines(dadosFiltrados);
 
     atualizarListas(dadosFiltrados);
 }
@@ -250,7 +273,7 @@ function inicializarMapa() {
     mapaAtual = mapaPadraoEscuro;
     mapaAtual.addTo(map);
     markersLayer = L.layerGroup().addTo(map);
-    linesLayer = L.layerGroup();
+    linesLayer = L.layerGroup(); // Inicializa sem adicionar ao mapa imediatamente
 
     document.getElementById('mapToggleImage').addEventListener('click', () => toggleMapView(mapaAtual, mapaSatelite));
     document.getElementById('ipBusca').addEventListener('input', () => {
@@ -301,7 +324,7 @@ function toggleMapView(mapaAtual, mapaSatelite) {
     } else {
         map.removeLayer(mapaAtual);
         mapaSatelite.addTo(map);
-        mapToggleImage.src = mapaAtual === mapaPadraoEscuro ? 'https://i.ibb.co/S4xWMD61/map.png' : 'https://i.ibb.co/YBD7CMr7/satc.png';
+        mapToggleImage.src = mapaAtual === mapa, mapaPadraoEscuro ? 'https://i.ibb.co/S4xWMD61/map.png' : 'https://i.ibb.co/YBD7CMr7/satc.png';
     }
 }
 
