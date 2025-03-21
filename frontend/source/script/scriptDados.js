@@ -19,6 +19,12 @@ let isEditing = false; // Flag para indicar edição em andamento
 let pendingWebSocketUpdate = null; // Armazena atualizações do WebSocket durante edição
 let hosts = [];
 let janela = 0; // Estado inicial do menu
+let map;
+let markersLayer;
+let linesLayer;
+let linesVisible = false;
+const objetosVisiveis = {};
+
 
 // Declaração global das camadas de mapa
 const mapaPadraoClaro = L.tileLayer('http://172.16.196.36:3000/tiles/light/{z}/{x}/{y}', { 
