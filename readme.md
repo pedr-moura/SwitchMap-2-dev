@@ -22,10 +22,10 @@ O sistema opera por meio de três componentes principais:
 ```mermaid
 graph TD
     B[Front-End<br>SwitchMap.html] -->| <b>Solicita dados</b> | C[Valida o Host<br>do cliente]
-    C --> | Validado | D[<b style="color:yellow;">websc.py</b><br>Entrega os dados]
+    C --> | Validado | D[<b style="color:yellow;">websc.py</b><br>WebSocket dados]
     D --> | Paralelo | E[<b style="color:yellow;">scraper.js</b><br>Obtem ºC, CPU, Memoria e Latencia]
     E --> | Paralelo | D
-    D --> | Retorno | B
+    D --> | Retorno<br>Nomes + Locais + Estado | B
     B --> | Solicitação do Mapa | A[<b style="color:yellow;">cacheMapa.js</b><br>Armazena o mapa em cache]
     A --> | Servido pelo cache | B
     
