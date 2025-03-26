@@ -25,7 +25,7 @@ graph TD
     C --> | Validado | D[<b style="color:yellow;">websc.py</b><br>Entrega os dados]
     D --> | Paralelo | E[<b style="color:yellow;">scraper.js</b><br>Obtem ºC, CPU, Memoria e Latencia]
     E --> | Paralelo | D
-    D --> | 3 Retorno | B
+    D --> | Retorno | B
     B --> | Solicitação do Mapa | A[<b style="color:yellow;">cacheMapa.js</b><br>Armazena o mapa em cache]
     A --> | Servido pelo cache | B
     
