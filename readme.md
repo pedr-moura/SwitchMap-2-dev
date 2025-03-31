@@ -30,7 +30,7 @@ graph TD
     A --> | Servido pelo cache | B
     
 ```
-
+![Interface de monitoramento](https://i.ibb.co/5WkgYzj4/Captura-de-tela-2025-03-31-122225.png)
 
 1. **Servidor WebSocket + Autenticação (Python)**
    - Valida quais máquinas podem acessar a aplicação.
