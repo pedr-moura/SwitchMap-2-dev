@@ -49,7 +49,7 @@ Exemplo da interface de monitoramento (cpu.py + testes/index.html):
 ![Interface de monitoramento](https://i.ibb.co/5WkgYzj4/Captura-de-tela-2025-03-31-122225.png)
 
 Exemplo da interface para acompanhar logs de conexão (cpu.py + testes/log/index.html):
-![Interface de monitoramento](https://i.ibb.co/bj8xNd4y/Captura-de-tela-2025-03-31-125956.png)
+[![Interface de monitoramento]([https://i.ibb.co/bj8xNd4y/Captura-de-tela-2025-03-31-125956.png](https://i.ibb.co/bj8xNd4y/Captura-de-tela-2025-03-31-125956.png))](https://i.ibb.co/bj8xNd4y/Captura-de-tela-2025-03-31-125956.png)
 
 ## Por que usar?
 - **Agilidade** – Identificação instantânea de falhas.
