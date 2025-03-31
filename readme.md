@@ -31,13 +31,6 @@ graph TD
     
 ```
 
-Exemplo da interface de monitoramento (cpu.py + testes/index.html):
-![Interface de monitoramento](https://i.ibb.co/5WkgYzj4/Captura-de-tela-2025-03-31-122225.png)
-
-Exemplo da interface para acompanhar logs de conexão (cpu.py + testes/log/index.html):
-![Interface de monitoramento](https://i.ibb.co/bj8xNd4y/Captura-de-tela-2025-03-31-125956.png)
-
-
 1. **Servidor WebSocket + Autenticação (Python)**
    - Valida quais máquinas podem acessar a aplicação.
    - Coleta e distribui os dados dos dispositivos.
@@ -49,6 +42,14 @@ Exemplo da interface para acompanhar logs de conexão (cpu.py + testes/log/index
 3. **API de Cache (Node.js)**
    - Reduz a latência de carregamento armazenando versões temporárias do mapa.
    - Garante que os dados sejam entregues rapidamente aos usuários.
+
+## Monitorar o funcionamento + Logs
+
+Exemplo da interface de monitoramento (cpu.py + testes/index.html):
+![Interface de monitoramento](https://i.ibb.co/5WkgYzj4/Captura-de-tela-2025-03-31-122225.png)
+
+Exemplo da interface para acompanhar logs de conexão (cpu.py + testes/log/index.html):
+![Interface de monitoramento](https://i.ibb.co/bj8xNd4y/Captura-de-tela-2025-03-31-125956.png)
 
 ## Por que usar?
 - **Agilidade** – Identificação instantânea de falhas.
