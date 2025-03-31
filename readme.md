@@ -30,6 +30,8 @@ graph TD
     A --> | Servido pelo cache | B
     
 ```
+
+Exemplo da interface de monitoramento (cpu.py):
 ![Interface de monitoramento](https://i.ibb.co/5WkgYzj4/Captura-de-tela-2025-03-31-122225.png)
 
 1. **Servidor WebSocket + Autenticação (Python)**
