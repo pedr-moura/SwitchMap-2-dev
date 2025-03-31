@@ -31,7 +31,7 @@ graph TD
     
 ```
 
-Exemplo da interface de monitoramento (cpu.py):
+Exemplo da interface de monitoramento (cpu.py + testes/index.html):
 ![Interface de monitoramento](https://i.ibb.co/5WkgYzj4/Captura-de-tela-2025-03-31-122225.png)
 
 1. **Servidor WebSocket + Autenticação (Python)**
