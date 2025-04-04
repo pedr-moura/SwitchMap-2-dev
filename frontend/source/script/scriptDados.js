@@ -459,6 +459,7 @@ menuContainer.innerHTML = `
     <div class="menu-list" onclick="map.flyTo(imperatriz, 17, { duration: 0.5 })">Fabrica Imperatriz</div>
     <div class="menu-list" onclick="map.flyTo(belem, 17, { duration: 0.5 })">Fabrica Belem</div>
     <div class="menu-list" onclick="map.flyTo(aracruz, 17, { duration: 0.5 })">Fabrica Aracruz</div>
+    <div class="menu-list" onclick="map.flyTo(mucuri, 17, { duration: 0.5 })">Fabrica Mucuri</div>
 `;
 
 // Inicialização
