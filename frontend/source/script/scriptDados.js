@@ -10,7 +10,7 @@ const logoCliente = document.getElementById('logoCliente');
 const pontosMapeados = {};
 
 // Estado global
-let server = "http://172.28.132.248:5000";
+let server = "http://172.16.196.36:5000";
 let showIconesMaps = 0;
 let showDependencias = 0;
 let mapaAtual;
