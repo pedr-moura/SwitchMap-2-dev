@@ -213,7 +213,7 @@ function atualizarInterface(dados) {
     if (!map) {
         inicializarMapa();
     } else {
-        markersLayer.clearLayers();
+        // markersLayer.clearLayers();
     }
 
     dadosFiltrados.hosts.forEach(ponto => {
