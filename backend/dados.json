@@ -2,10 +2,11 @@
     "hosts": [
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_AC_DEPOSIT.124.26",
             "local": "-5.419352548055208, -47.57313297158008",
             "ip": "172.16.124.26",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -18,10 +19,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
             "local": "-5.456520358524474, -47.60914944633161",
             "ip": "172.16.124.17",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -34,10 +36,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_CONV_CONTAI_R3.124.135",
             "local": "-5.41945161998617, -47.562890749650215",
             "ip": "172.16.124.135",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -50,10 +53,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_CONV_ESTQ_R2.124.134",
             "local": "-5.419940723843902, -47.56279713873069",
             "ip": "172.16.124.134",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "172.16.124.132",
             "conexoes": [
                 {
@@ -66,14 +70,15 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_CONV_SL_ELET_R1.124.133",
             "local": "-5.420138623374105, -47.562598406284806",
             "ip": "172.16.124.133",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
-                    "ativo": "#00d700",
+                    "ativo": "red",
                     "tipo": "imp",
                     "nome": "IMPRESSORA",
                     "ip": "172.16.235.63"
@@ -82,10 +87,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_MARA_AC_DEPOSI.124.24",
             "local": "-5.418326, -47.564229",
             "ip": "172.16.124.24",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -98,10 +104,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_POR3_R1.124.137",
             "local": "",
             "ip": "172.16.124.137",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -114,10 +121,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_SL_TI_R1.124.122",
             "local": "-5.417325898547334, -47.56436951492089",
             "ip": "172.16.124.122",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "172.16.124.66, 172.16.124.137, 172.16.124.191, 172.16.124.189, 172.16.124.188",
             "conexoes": [
                 {
@@ -130,10 +138,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_SOLENIS.124.140",
             "local": "",
             "ip": "172.16.124.140",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -146,10 +155,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_TISSUE_ESTQ_BOB.124.136",
             "local": "-5.421173417663089, -47.56333264326493",
             "ip": "172.16.124.136",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -162,10 +172,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_TISSUE_MONI_R1.124.141",
             "local": "",
             "ip": "172.16.124.141",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -178,20 +189,21 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_TISSUE_MONI_R1.124.154",
             "local": "-5.419888267239004, -47.56405771638667",
             "ip": "172.16.124.154",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "172.16.124.155, 172.16.124.133, 172.16.124.141, 172.16.124.135, 172.16.124.140, 172.16.124.134",
             "conexoes": [
                 {
-                    "ativo": "#00d700",
+                    "ativo": "red",
                     "tipo": "AP",
                     "nome": "AP_TISSUE_10.103",
                     "ip": "172.16.124.103"
                 },
                 {
-                    "ativo": "#00d700",
+                    "ativo": "red",
                     "tipo": "AP",
                     "nome": "AP_TISSUE_10.104",
                     "ip": "172.16.124.104"
@@ -200,10 +212,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_TISSUE_R1.124.155",
             "local": "-5.420581049931427, -47.563844010983004",
             "ip": "172.16.124.155",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "172.16.124.136",
             "conexoes": [
                 {
@@ -216,10 +229,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_TOR_CON.124.98",
             "local": "-5.4178968894088175, -47.56521099755011",
             "ip": "172.16.124.98",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -232,10 +246,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_AIR_LIQUIDE.124.61",
             "local": "",
             "ip": "172.16.124.61",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -248,10 +263,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_AMZ_EXP_R2.124.60",
             "local": "-5.421459117568618, -47.56427542294532",
             "ip": "172.16.124.60",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -264,10 +280,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_AMZ_EXP_R3.124.59",
             "local": "-5.421343214239834, -47.56443171833894",
             "ip": "172.16.124.59",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -280,10 +297,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_BACKUP01.124.188",
             "local": "",
             "ip": "172.16.124.188",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -296,6 +314,7 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_BACKUP02.124.189",
             "local": "",
             "ip": "172.16.124.189",
@@ -312,6 +331,7 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_BACKUP03.124.190",
             "local": "",
             "ip": "172.16.124.190",
@@ -328,850 +348,10 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAB-IMP-SWA_CAL_SL_INSTR_R1.124.16",
             "local": "",
             "ip": "172.16.124.16",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_CENTR_SOCIAL_R1.124.28",
-            "local": "-5.415955231587297, -47.56515959900984",
-            "ip": "172.16.124.28",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_COZ_BRANQ_R1.124.6",
-            "local": "",
-            "ip": "172.16.124.6",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_COZ_REFEITO_R1.124.22",
-            "local": "-5.416131381570153, -47.56567243849459",
-            "ip": "172.16.124.22",
-            "ativo": "#00d700",
-            "ship": "172.16.124.28",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_DMZ_AUTOMA_RTA.124.41",
-            "local": "",
-            "ip": "172.16.124.41",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_ELETRONORTE_R1.124.55",
-            "local": "-5.414988, -47.563773",
-            "ip": "172.16.124.55",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_ENTRDA_TREM_R1.124.132",
-            "local": "",
-            "ip": "172.16.124.132",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_ESC_ADM_EXP_R1.124.13",
-            "local": "-5.421658, -47.564192",
-            "ip": "172.16.124.13",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_ETA_R1.124.18",
-            "local": "-5.420301116744104, -47.57400450934487",
-            "ip": "172.16.124.18",
-            "ativo": "#00d700",
-            "ship": "172.16.124.17, 172.16.124.61, 172.16.124.26",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_ETE_R1.124.21",
-            "local": "-5.420386440978289, -47.57396842198838",
-            "ip": "172.16.124.21",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_FIELD_BANCADA.124.66",
-            "local": "-5.4175648660679965, -47.5646562624765",
-            "ip": "172.16.124.66",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_OF_LEAN_PRED_R1.124.62",
-            "local": "-5.418408082016922, -47.564519421477804",
-            "ip": "172.16.124.62",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_OFIC_LEAN_TI_R1.124.57",
-            "local": "-5.418442437859766, -47.564486291835614",
-            "ip": "172.16.124.57",
-            "ativo": "#00d700",
-            "ship": "172.16.124.62",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_OFIC_PATMAD_R1.124.38",
-            "local": "-5.414447702283746, -47.57064757725327",
-            "ip": "172.16.124.38",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_PATMAD_ELET_R1.124.40",
-            "local": "-5.4136784150814, -47.56748318957588",
-            "ip": "172.16.124.40",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_PLT_QUIM_R1.124.11",
-            "local": "",
-            "ip": "172.16.124.11",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_POR1_R1.124.56",
-            "local": "-5.416742218384797, -47.5645699097045",
-            "ip": "172.16.124.56",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_POR2_R1.124.32",
-            "local": "-5.412112030025644, -47.57046837913672",
-            "ip": "172.16.124.32",
-            "ativo": "#00d700",
-            "ship": "172.16.124.10, 172.16.124.38",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_POR_A_DESTRA_R1.124.23",
-            "local": "-5.416715416557623, -47.56459459419893",
-            "ip": "172.16.124.23",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_POST_EXCELBR.124.10",
-            "local": "",
-            "ip": "172.16.124.10",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_PRED_ALX_P1_R1.124.33",
-            "local": "-5.41823705263021, -47.56513895753411",
-            "ip": "172.16.124.33",
-            "ativo": "#00d700",
-            "ship": "172.16.124.24, 172.16.124.57",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_REC_UTIL_CAL_R1.124.19",
-            "local": "",
-            "ip": "172.16.124.19",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_SDCD_DC_R2.124.51",
-            "local": "-5.416530209668285, -47.56673109144576",
-            "ip": "172.16.124.51",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_SDCD_SL_TI_R1.124.35",
-            "local": "-5.416620997559285, -47.566660683464306",
-            "ip": "172.16.124.35",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_SE_1724_R1.124.43",
-            "local": "-5.416167778813675, -47.565783888689595",
-            "ip": "172.16.124.43",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_SEC1_SL_ELET_R1.124.8",
-            "local": "-5.419714271008304, -47.56516370089809",
-            "ip": "172.16.124.8",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_SEC2_SL_ELET_R1.124.9",
-            "local": "-5.4201164424380375, -47.5654178463759",
-            "ip": "172.16.124.9",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_SEC_ELETR_R1.124.54",
-            "local": "-5.420242947008308, -47.56501007564698",
-            "ip": "172.16.124.54",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_SEC_SL_ELETR_R1.124.58",
-            "local": "-5.419806789339669, -47.56518077037089",
-            "ip": "172.16.124.58",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_SEG_BRIGADA_R1.124.20",
-            "local": "-5.417570049462489, -47.56532069791227",
-            "ip": "172.16.124.20",
-            "ativo": "#00d700",
-            "ship": "172.16.124.98",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_SUBST_ELETR_230.124.31",
-            "local": "",
-            "ip": "172.16.124.31",
-            "ativo": "#00d700",
-            "ship": "172.16.124.55",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_TOR_TELECOM_R1.124.253",
-            "local": "-5.415699959452839, -47.56464842642043",
-            "ip": "172.16.124.253",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWA_TURB_GERADOR_R1.124.14",
-            "local": "-5.416997662479391, -47.5674338439505",
-            "ip": "172.16.124.14",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWC_SDCD.124.3",
-            "local": "-5.416837684840678, -47.56676745347457",
-            "ip": "172.16.124.3",
-            "ativo": "#00d700",
-            "ship": "172.16.124.180, 172.16.124.35, 172.16.124.4, 172.16.124.5, 172.16.124.27, 172.16.124.51, 172.16.124.41, 172.16.124.30",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWC_SDCD.124.4",
-            "local": "-5.416847030648863, -47.56674398414741",
-            "ip": "172.16.124.4",
-            "ativo": "#00d700",
-            "ship": "172.16.124.7, 172.16.124.35, 172.16.124.27, 172.16.124.51, 172.16.124.41, 172.16.124.30",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWD_BACKUP04.124.191",
-            "local": "",
-            "ip": "172.16.124.191",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWD_CAL_SL_INSTR_R1.124.27",
-            "local": "-5.4173433630505174, -47.56767443047827",
-            "ip": "172.16.124.27",
-            "ativo": "#00d700",
-            "ship": "172.16.124.21, 172.16.124.19, 172.16.124.14, 172.16.124.6, 172.16.124.11, 172.16.124.16, 172.16.124.18",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWD_PATMAD_ELETR_R1.124.5",
-            "local": "-5.413530549800868, -47.567292435765985",
-            "ip": "172.16.124.5",
-            "ativo": "#00d700",
-            "ship": "172.16.124.40, 172.16.124.32",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWD_SEC_SL_ELET_R1.124.7",
-            "local": "-5.420074903617321, -47.565438709064374",
-            "ip": "172.16.124.7",
-            "ativo": "#00d700",
-            "ship": "172.16.124.9, 172.16.124.8, 172.16.124.60, 172.16.124.59, 172.16.124.54, 172.16.124.58, 172.16.124.13, 172.16.124.154",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAB-IMP-SWD_TORR_TELECOM_R1.124.30",
-            "local": "-5.415726477687904, -47.564640426334186",
-            "ip": "172.16.124.30",
-            "ativo": "#00d700",
-            "ship": "172.16.124.33, 172.16.124.122, 172.16.124.43, 172.16.124.23, 172.16.124.56, 172.16.124.31, 172.16.124.22, 172.16.124.253, 172.16.124.20",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_ADM.58.52",
-            "local": "-1.4096768721714554, -48.47294963226382",
-            "ip": "172.16.58.52",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_CFTV.58.43",
-            "local": "-1.4086396302076247, -48.47311738486111",
-            "ip": "172.16.58.43",
-            "ativo": "#00d700",
-            "ship": "172.16.58.39",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_COMPRAS.58.49",
-            "local": "-1.4094178135303794, -48.47280341835118",
-            "ip": "172.16.58.49",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_CONV_ELET.58.39",
-            "local": "-1.407857, -48.472956",
-            "ip": "172.16.58.39",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_CONVERSAO.58.42",
-            "local": "-1.4082325930057518, -48.47270764723878",
-            "ip": "172.16.58.42",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_DC.58.37",
-            "local": "",
-            "ip": "172.16.58.37",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_ENT_FAB.58.35",
-            "local": "-1.4090981016775976, -48.473082679743285",
-            "ip": "172.16.58.35",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_ETA.58.47",
-            "local": "-1.408830487157628, -48.47439206969856",
-            "ip": "172.16.58.47",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_EXPED.58.36",
-            "local": "-1.4073177260639975, -48.47320204872932",
-            "ip": "172.16.58.36",
-            "ativo": "#00d700",
-            "ship": "172.16.58.55",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_EXPED_CONT.58.55",
-            "local": "-1.4076040274966768, -48.47361835422453",
-            "ip": "172.16.58.55",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_INC_LODO.58.46",
-            "local": "-1.408335466578627, -48.47446206757416",
-            "ip": "172.16.58.46",
-            "ativo": "#00d700",
-            "ship": "172.16.58.47",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_JEM.58.48",
-            "local": "-1.4094745814367005, -48.472237693717275",
-            "ip": "172.16.58.48",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_LOG.58.53",
-            "local": "-1.4067788150741165, -48.47317393035835",
-            "ip": "172.16.58.53",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_PROD.58.51",
-            "local": "-1.4086794469418684, -48.47332980497447",
-            "ip": "172.16.58.51",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWA_UMG.58.54",
-            "local": "-1.4085291419526835, -48.47372678921768",
-            "ip": "172.16.58.54",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWC.58.34",
-            "local": "-1.4096768721714554, -48.47294963226382",
-            "ip": "172.16.58.34",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-PA-FAB-BEL-SWD_DC.58.38",
-            "local": "-1.4096768721714554, -48.47294963226382",
-            "ip": "172.16.58.38",
-            "ativo": "#00d700",
-            "ship": "172.16.58.34, 172.16.58.52, 172.16.58.42, 172.16.58.35, 172.16.58.54, 172.16.58.43, 172.16.58.51, 172.16.58.48, 172.16.58.49, 172.16.58.36, 172.16.58.46, 172.16.58.53, 172.16.58.37",
-            "conexoes": []
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAZ-MON-SWA_CPD.78.7",
-            "local": "-5.0400270139369585, -47.556217724331475",
-            "ip": "172.16.78.7",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAZ-MON-SWA_CPD.78.5",
-            "local": "-5.040494698493317, -47.55559888235595",
-            "ip": "172.16.78.5",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-FAZ-MON-SWA_MANUT.78.6",
-            "local": "-5.041146555773147, -47.55581427313879",
-            "ip": "172.16.78.6",
-            "ativo": "#00d700",
-            "ship": "",
-            "conexoes": [
-                {
-                    "ativo": "#00d700",
-                    "tipo": "",
-                    "nome": "",
-                    "ip": ""
-                }
-            ]
-        },
-        {
-            "tipo": "sw",
-            "nome": "BR-MA-POR-FRA-SWC.42.2",
-            "local": "-6.353080666608718, -47.38100892773374",
-            "ip": "172.16.42.2",
             "ativo": "red",
             "ship": "",
             "conexoes": [
@@ -1185,10 +365,912 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_CENTR_SOCIAL_R1.124.28",
+            "local": "-5.415955231587297, -47.56515959900984",
+            "ip": "172.16.124.28",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_COZ_BRANQ_R1.124.6",
+            "local": "",
+            "ip": "172.16.124.6",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_COZ_REFEITO_R1.124.22",
+            "local": "-5.416131381570153, -47.56567243849459",
+            "ip": "172.16.124.22",
+            "ativo": "red",
+            "ship": "172.16.124.28",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_DMZ_AUTOMA_RTA.124.41",
+            "local": "",
+            "ip": "172.16.124.41",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_ELETRONORTE_R1.124.55",
+            "local": "-5.414988, -47.563773",
+            "ip": "172.16.124.55",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_ENTRDA_TREM_R1.124.132",
+            "local": "",
+            "ip": "172.16.124.132",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_ESC_ADM_EXP_R1.124.13",
+            "local": "-5.421658, -47.564192",
+            "ip": "172.16.124.13",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_ETA_R1.124.18",
+            "local": "-5.420301116744104, -47.57400450934487",
+            "ip": "172.16.124.18",
+            "ativo": "red",
+            "ship": "172.16.124.17, 172.16.124.61, 172.16.124.26",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_ETE_R1.124.21",
+            "local": "-5.420386440978289, -47.57396842198838",
+            "ip": "172.16.124.21",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_FIELD_BANCADA.124.66",
+            "local": "-5.4175648660679965, -47.5646562624765",
+            "ip": "172.16.124.66",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_OF_LEAN_PRED_R1.124.62",
+            "local": "-5.418408082016922, -47.564519421477804",
+            "ip": "172.16.124.62",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_OFIC_LEAN_TI_R1.124.57",
+            "local": "-5.418442437859766, -47.564486291835614",
+            "ip": "172.16.124.57",
+            "ativo": "red",
+            "ship": "172.16.124.62",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_OFIC_PATMAD_R1.124.38",
+            "local": "-5.414447702283746, -47.57064757725327",
+            "ip": "172.16.124.38",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_PATMAD_ELET_R1.124.40",
+            "local": "-5.4136784150814, -47.56748318957588",
+            "ip": "172.16.124.40",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_PLT_QUIM_R1.124.11",
+            "local": "",
+            "ip": "172.16.124.11",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_POR1_R1.124.56",
+            "local": "-5.416742218384797, -47.5645699097045",
+            "ip": "172.16.124.56",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_POR2_R1.124.32",
+            "local": "-5.412112030025644, -47.57046837913672",
+            "ip": "172.16.124.32",
+            "ativo": "red",
+            "ship": "172.16.124.10, 172.16.124.38",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_POR_A_DESTRA_R1.124.23",
+            "local": "-5.416715416557623, -47.56459459419893",
+            "ip": "172.16.124.23",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_POST_EXCELBR.124.10",
+            "local": "",
+            "ip": "172.16.124.10",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_PRED_ALX_P1_R1.124.33",
+            "local": "-5.41823705263021, -47.56513895753411",
+            "ip": "172.16.124.33",
+            "ativo": "red",
+            "ship": "172.16.124.24, 172.16.124.57",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_REC_UTIL_CAL_R1.124.19",
+            "local": "",
+            "ip": "172.16.124.19",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_SDCD_DC_R2.124.51",
+            "local": "-5.416530209668285, -47.56673109144576",
+            "ip": "172.16.124.51",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_SDCD_SL_TI_R1.124.35",
+            "local": "-5.416620997559285, -47.566660683464306",
+            "ip": "172.16.124.35",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_SE_1724_R1.124.43",
+            "local": "-5.416167778813675, -47.565783888689595",
+            "ip": "172.16.124.43",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_SEC1_SL_ELET_R1.124.8",
+            "local": "-5.419714271008304, -47.56516370089809",
+            "ip": "172.16.124.8",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_SEC2_SL_ELET_R1.124.9",
+            "local": "-5.4201164424380375, -47.5654178463759",
+            "ip": "172.16.124.9",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_SEC_ELETR_R1.124.54",
+            "local": "-5.420242947008308, -47.56501007564698",
+            "ip": "172.16.124.54",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_SEC_SL_ELETR_R1.124.58",
+            "local": "-5.419806789339669, -47.56518077037089",
+            "ip": "172.16.124.58",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_SEG_BRIGADA_R1.124.20",
+            "local": "-5.417570049462489, -47.56532069791227",
+            "ip": "172.16.124.20",
+            "ativo": "red",
+            "ship": "172.16.124.98",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_SUBST_ELETR_230.124.31",
+            "local": "",
+            "ip": "172.16.124.31",
+            "ativo": "red",
+            "ship": "172.16.124.55",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_TOR_TELECOM_R1.124.253",
+            "local": "-5.415699959452839, -47.56464842642043",
+            "ip": "172.16.124.253",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWA_TURB_GERADOR_R1.124.14",
+            "local": "-5.416997662479391, -47.5674338439505",
+            "ip": "172.16.124.14",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWC_SDCD.124.3",
+            "local": "-5.416837684840678, -47.56676745347457",
+            "ip": "172.16.124.3",
+            "ativo": "red",
+            "ship": "172.16.124.180, 172.16.124.35, 172.16.124.4, 172.16.124.5, 172.16.124.27, 172.16.124.51, 172.16.124.41, 172.16.124.30",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWC_SDCD.124.4",
+            "local": "-5.416847030648863, -47.56674398414741",
+            "ip": "172.16.124.4",
+            "ativo": "red",
+            "ship": "172.16.124.7, 172.16.124.35, 172.16.124.27, 172.16.124.51, 172.16.124.41, 172.16.124.30",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWD_BACKUP04.124.191",
+            "local": "",
+            "ip": "172.16.124.191",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWD_CAL_SL_INSTR_R1.124.27",
+            "local": "-5.4173433630505174, -47.56767443047827",
+            "ip": "172.16.124.27",
+            "ativo": "red",
+            "ship": "172.16.124.21, 172.16.124.19, 172.16.124.14, 172.16.124.6, 172.16.124.11, 172.16.124.16, 172.16.124.18",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWD_PATMAD_ELETR_R1.124.5",
+            "local": "-5.413530549800868, -47.567292435765985",
+            "ip": "172.16.124.5",
+            "ativo": "red",
+            "ship": "172.16.124.40, 172.16.124.32",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWD_SEC_SL_ELET_R1.124.7",
+            "local": "-5.420074903617321, -47.565438709064374",
+            "ip": "172.16.124.7",
+            "ativo": "red",
+            "ship": "172.16.124.9, 172.16.124.8, 172.16.124.60, 172.16.124.59, 172.16.124.54, 172.16.124.58, 172.16.124.13, 172.16.124.154",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAB-IMP-SWD_TORR_TELECOM_R1.124.30",
+            "local": "-5.415726477687904, -47.564640426334186",
+            "ip": "172.16.124.30",
+            "ativo": "red",
+            "ship": "172.16.124.33, 172.16.124.122, 172.16.124.43, 172.16.124.23, 172.16.124.56, 172.16.124.31, 172.16.124.22, 172.16.124.253, 172.16.124.20",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_ADM.58.52",
+            "local": "-1.4096768721714554, -48.47294963226382",
+            "ip": "172.16.58.52",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_CFTV.58.43",
+            "local": "-1.4086396302076247, -48.47311738486111",
+            "ip": "172.16.58.43",
+            "ativo": "red",
+            "ship": "172.16.58.39",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_COMPRAS.58.49",
+            "local": "-1.4094178135303794, -48.47280341835118",
+            "ip": "172.16.58.49",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_CONV_ELET.58.39",
+            "local": "-1.407857, -48.472956",
+            "ip": "172.16.58.39",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_CONVERSAO.58.42",
+            "local": "-1.4082325930057518, -48.47270764723878",
+            "ip": "172.16.58.42",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_DC.58.37",
+            "local": "",
+            "ip": "172.16.58.37",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_ENT_FAB.58.35",
+            "local": "-1.4090981016775976, -48.473082679743285",
+            "ip": "172.16.58.35",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_ETA.58.47",
+            "local": "-1.408830487157628, -48.47439206969856",
+            "ip": "172.16.58.47",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_EXPED.58.36",
+            "local": "-1.4073177260639975, -48.47320204872932",
+            "ip": "172.16.58.36",
+            "ativo": "red",
+            "ship": "172.16.58.55",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_EXPED_CONT.58.55",
+            "local": "-1.4076040274966768, -48.47361835422453",
+            "ip": "172.16.58.55",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_INC_LODO.58.46",
+            "local": "-1.408335466578627, -48.47446206757416",
+            "ip": "172.16.58.46",
+            "ativo": "red",
+            "ship": "172.16.58.47",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_JEM.58.48",
+            "local": "-1.4094745814367005, -48.472237693717275",
+            "ip": "172.16.58.48",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_LOG.58.53",
+            "local": "-1.4067788150741165, -48.47317393035835",
+            "ip": "172.16.58.53",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_PROD.58.51",
+            "local": "-1.4086794469418684, -48.47332980497447",
+            "ip": "172.16.58.51",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWA_UMG.58.54",
+            "local": "-1.4085291419526835, -48.47372678921768",
+            "ip": "172.16.58.54",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWC.58.34",
+            "local": "-1.4096768721714554, -48.47294963226382",
+            "ip": "172.16.58.34",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-PA-FAB-BEL-SWD_DC.58.38",
+            "local": "-1.4096768721714554, -48.47294963226382",
+            "ip": "172.16.58.38",
+            "ativo": "red",
+            "ship": "172.16.58.34, 172.16.58.52, 172.16.58.42, 172.16.58.35, 172.16.58.54, 172.16.58.43, 172.16.58.51, 172.16.58.48, 172.16.58.49, 172.16.58.36, 172.16.58.46, 172.16.58.53, 172.16.58.37",
+            "conexoes": []
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAZ-MON-SWA_CPD.78.7",
+            "local": "-5.0400270139369585, -47.556217724331475",
+            "ip": "172.16.78.7",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAZ-MON-SWA_CPD.78.5",
+            "local": "-5.040494698493317, -47.55559888235595",
+            "ip": "172.16.78.5",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-FAZ-MON-SWA_MANUT.78.6",
+            "local": "-5.041146555773147, -47.55581427313879",
+            "ip": "172.16.78.6",
+            "ativo": "red",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
+            "nome": "BR-MA-POR-FRA-SWC.42.2",
+            "local": "-6.353080666608718, -47.38100892773374",
+            "ip": "172.16.42.2",
+            "ativo": "#00d700",
+            "ship": "",
+            "conexoes": [
+                {
+                    "ativo": "#00d700",
+                    "tipo": "",
+                    "nome": "",
+                    "ip": ""
+                }
+            ]
+        },
+        {
+            "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAZ-ROD-SWC_CPD.72.194",
             "local": "-4.613718250348342, -46.90976301905922",
             "ip": "172.16.72.194",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -1201,10 +1283,11 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAZ-CID-SWC_BOA_FE.90.2",
             "local": "-5.159913995517454, -47.764988909242675",
             "ip": "172.16.90.2",
-            "ativo": "#00d700",
+            "ativo": "red",
             "ship": "",
             "conexoes": [
                 {
@@ -1217,6 +1300,7 @@
         },
         {
             "tipo": "sw",
+            "observacao": "",
             "nome": "BR-MA-FAZ-CID-SWA_BOA_FE.90.3",
             "local": "-5.152101038915662, -47.77083221889337",
             "ip": "172.16.90.3",
@@ -1230,6 +1314,44 @@
                     "ip": ""
                 }
             ]
+        }
+    ],
+    "pending_edits": [
+        {
+            "id": "1",
+            "ip": "172.16.124.32",
+            "ativo": "#d7ab00",
+            "local": "-5.412112030025644, -47.57046837913672",
+            "nome": "BR-MA-FAB-IMP-SWA_POR2_R1.124.32",
+            "tipo": "sw",
+            "observacao": "Escritorio",
+            "solicitante": "NLENPE09TLLH",
+            "data_solicitacao": "2025-04-04T15:54:53.006892",
+            "status": "rejeitado"
+        },
+        {
+            "id": "2",
+            "ip": "172.16.124.133",
+            "ativo": "white",
+            "local": "-5.420138623374105, -47.562598406284806",
+            "nome": "BR-MA-FAB-IMP-SWA_CONV_SL_ELET_R1.124.133",
+            "tipo": "sw",
+            "observacao": "teste",
+            "solicitante": "NLENPE09TLLH",
+            "data_solicitacao": "2025-04-04T20:21:41.620659",
+            "status": "rejeitado"
+        },
+        {
+            "id": "3",
+            "ip": "172.16.58.46",
+            "ativo": "white",
+            "local": "-1.408361, -48.474593",
+            "nome": "BR-PA-FAB-BEL-SWA_INC_LODO.58.46",
+            "tipo": "sw",
+            "observacao": "Teste de aprove",
+            "solicitante": "NLENPE09TLLH",
+            "data_solicitacao": "2025-04-05T16:21:11.941439",
+            "status": "pendente"
         }
     ]
 }
