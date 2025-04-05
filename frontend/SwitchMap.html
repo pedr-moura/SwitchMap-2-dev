@@ -98,7 +98,7 @@
 
     
     <div class="icons">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="exibirJanela('toggleTitulo'), exibirHome()">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="exibirJanela('toggleTitulo'), exibirHome(), limparAprove()">
             <path opacity="0.5" d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"  stroke-width="1.5"/>
             <path d="M15 18H9" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
@@ -106,7 +106,7 @@
 
             <div class="sectionData">
                                    <!-- SVG como botão -->
-                                   <button id="toggleButtonPlus" onclick="showSection('editar'), exibirJanela('toggleTitulo'), exibirEditar()">
+                                   <button id="toggleButtonPlus" onclick="showSection('editar'), exibirJanela('toggleTitulo'), exibirEditar(), limparAprove()">
                                     <svg id="toggleButtonPlusSVG" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M20.5 20.5L22 22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                         <path d="M16 18.5C16 19.8807 17.1193 21 18.5 21C19.1916 21 19.8175 20.7192 20.2701 20.2654C20.7211 19.8132 21 19.1892 21 18.5C21 17.1193 19.8807 16 18.5 16C17.1193 16 16 17.1193 16 18.5Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -118,6 +118,15 @@
                         
                                 
             </div>
+<br>
+
+<button onclick="exibirJanela('toggleTitulo'); exibirAprovacao()" style="background: none; border: none;">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="none"/>
+    </svg>
+</button>
+
+            
  <br>
 
 <!--             <div id="buttonContainer" class="hidden" onclick="showSection('adicionar'), exibirJanela('toggleTitulo'), exibirAdicionar()">
@@ -141,6 +150,8 @@
         //    document.getElementByClassName('leaflet-popup-close-button').click();
         </script> -->
     </div>
+
+
 <!-- 
     <button id="toggleThemeButton">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-text)" xmlns="http://www.w3.org/2000/svg">
@@ -151,7 +162,7 @@
     </div>
 
 
-    <div class="titulo" id="tituloBox">
+    <div class="titulo" id="tituloBox" style="flex-wrap: wrap;">
 
         <button id="toggleTitulo"></button>
 
@@ -209,7 +220,7 @@
          </div>
     </div>
 
-    <div class="databox">
+    <div class="databox" id="databox">
         <div class="adicionarEquipamento" id="adicionarEquipamento">
                 <!-- Seção de Adição de Host -->
 
@@ -242,6 +253,11 @@
             <button id="submit" type="submit">Adicionar Host</button>
         </form>
     </div>
+        </div>
+
+        <div class="approval-section" id="approvalSection" style="display: none;">
+            <h2>Solicitações</h2>
+            <div id="pendingEditsList"></div>
         </div>
 
 <div class="editarEquipamento" id="editarEquipamento">
@@ -301,7 +317,34 @@
                   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
                 }
                 
-            
+                .pendingEditsLists {
+    border: 1px solid var(--color-primary);
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    background: var(--color-glass);
+    color: var(--color-text);
+}
+
+.pendingEditsLists p {
+    text-align: left;
+    margin: 10px 0;
+}
+
+.pendingEditsLists button {
+    margin: 5px;
+    padding: 5px 10px;
+    background: var(--color-primary);
+    border: none;
+    color: var(--color-text);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pendingEditsLists button:hover {
+    border: 1px solid var(--color-text);
+}
                 
                 .custom-checkbox:checked ~ .checkmark {
                   background-color: var(--color-primary);
@@ -340,6 +383,9 @@
             <label for="nome">Nome</label>
             <input type="text" id="nome" name="nome" placeholder="Hostname"><br>
 
+            <label for="observacao">Observacao</label>
+            <input type="text" id="observacao" name="observacao" placeholder="Observacao"><br>
+
             <label for="local">Local</label>
             <input type="text" id="local" name="local" placeholder="Latitude, Longitude"><br>
             <br>
@@ -359,11 +405,216 @@
         </form>
     </div>
 
+    
     <div id="message" class="message"></div>
 
-    <script>
 
-        // Função para alternar entre as seções
+    <script>
+let approvalSection = document.getElementById('approvalSection');
+let databoxsection = document.getElementById('databox')
+
+function exibirAprovacao() {
+    console.log('Exibindo Aprovação');
+    console.log('editarEquipamento:', editarEquipamento);
+    console.log('approvalSection:', approvalSection);
+    editarEquipamento.style.display = 'none';
+    adicionarEquipamento.style.display = 'none';
+    homebox.style.display = 'none';
+    approvalSection.style.display = 'block';
+    databoxsection.style.display = 'block';
+    loadPendingEdits();
+
+
+}
+
+function limparAprove() {
+    approvalSection.style.display = 'none';
+}
+
+function exibirEditar() {
+    editarEquipamento.style.display = 'block';
+    adicionarEquipamento.style.display = 'none';
+    homebox.style.display = 'none';
+    databoxsection.style.display = 'block';
+    limparInput?.();
+    atualizarDadosManualmente();
+}
+
+function exibirAdicionar() {
+    editarEquipamento.style.display = 'none';
+    adicionarEquipamento.style.display = 'block';
+    homebox.style.display = 'none';
+    databoxsection.style.display = 'block';
+}
+
+function exibirHome() {
+    databoxsection.style.display = 'none';
+    editarEquipamento.style.display = 'none';
+    adicionarEquipamento.style.display = 'none';
+    homebox.style.display = 'flex';
+}
+
+async function loadPendingEdits() {
+    try {
+        console.log('Carregando edições pendentes...');
+        const response = await fetch(`${server}/pending-edits`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const pendingEdits = await response.json();
+        console.log('Edições:', pendingEdits);
+        const list = document.getElementById('pendingEditsList');
+        list.innerHTML = pendingEdits.length === 0 ? '<p>Nenhuma edição pendente.</p>' : '';
+
+        pendingEdits.forEach(edit => {
+            const div = document.createElement('div');
+            const formattedDate = formatDate(edit.data_solicitacao);
+
+            const originalHost = dadosAtuais.hosts.find(host => host.ip === edit.ip) || {};
+            const original = {
+                ip: originalHost.ip || '',
+                nome: originalHost.nome || '',
+                local: originalHost.local || '',
+                observacao: originalHost.observacao || ''
+            };
+            const novo = edit;
+
+            const highlightChange = (field, originalValue, newValue) => {
+                if (originalValue !== newValue) {
+                    return `${field}:<br><span style="background-color: #00ff0078; font-weight: bold;"> ${newValue || '(vazia)'}</span> -> <span style="background-color: #ff000066; font-weight: bold;">${originalValue || '(vazia)'}</span>`;
+                }
+                return `<span>${field}:<br> ${newValue || '(vazia)'}</span>`;
+            };
+
+            const changesHtml = `
+                <p>${highlightChange('IP', original.ip, novo.ip)}</p>
+                <p>${highlightChange('Nome', original.nome, novo.nome)}</p>
+                <p>${highlightChange('Local', original.local, novo.local)}</p>
+                <p>${highlightChange('Observação', original.observacao, novo.observacao)}</p>
+            `;
+
+            // Passa o IP junto com o local
+            const mapButton = original.local !== novo.local && novo.local 
+                ? `<br><button class="button is-ghost" onclick="showProposedLocation('${novo.local}', '${novo.ip}')">Ver no Mapa</button>` 
+                : '';
+
+            div.className = 'modal-container';
+            div.innerHTML = `
+                <header class="modal-container-header">
+                    <span class="modal-container-title">
+                        <svg aria-hidden="true" height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M14 9V4H5v16h6.056c.328.417.724.785 1.18 1.085l1.39.915H3.993A.993.993 0 0 1 3 21.008V2.992C3 2.455 3.449 2 4.002 2h10.995L21 8v1h-7zm-2 2h9v5.949c0 .99-.501 1.916-1.336 2.465L16.5 21.498l-3.164-2.084A2.953 2.953 0 0 1 12 16.95V11zm2 5.949c0 .316.162.614.436.795l2.064 1.36 2.064-1.36a.954.954 0 0 0 .436-.795V13h-5v3.949z" fill="var(--color-primary)"></path>
+                        </svg>
+                        Solicitação de ${edit.solicitante}
+                    </span>
+                </header>
+                <section class="modal-container-body rtf">
+                    ${changesHtml}
+                    <p style="color: var(--color-secondary); font-size: 0.9em; margin-top: 1em;">Data: ${formattedDate}</p>
+                </section>
+                <footer class="modal-container-footer">
+                    <button class="button is-ghost" onclick="rejectEdit('${edit.id}')">Rejeitar</button>
+                    <button class="button is-primary" onclick="approveEdit('${edit.id}')">Aprovar</button>
+                    ${mapButton}
+                </footer>
+            `;
+            list.appendChild(div);
+        });
+    } catch (error) {
+        console.error('Erro:', error);
+        document.getElementById('pendingEditsList').innerHTML = '<p>Erro ao carregar edições.</p>';
+    }
+}
+
+// Função para mostrar a localização proposta no mapa
+function showProposedLocation(local, ip) {
+    console.log('Chamando showProposedLocation com local:', local, 'e IP:', ip);
+
+    const [lat, lng] = local.split(', ').map(Number);
+    if (!isNaN(lat) && !isNaN(lng)) {
+        console.log('Coordenadas válidas:', lat, lng);
+
+        // "Voa" para a nova localização no mapa
+        map.flyTo([lat, lng], 18, { duration: 0.5 });
+
+        // Adiciona um marcador temporário para destacar a localização proposta
+        const tempMarker = L.marker([lat, lng], {
+            icon: L.divIcon({
+                className: 'temp-marker',
+                html: `<div style="background-color: yellow; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            })
+        }).addTo(map);
+
+        console.log('Marcador temporário adicionado em:', [lat, lng]);
+
+        // Remove o marcador temporário após 5 segundos
+        setTimeout(() => {
+            map.removeLayer(tempMarker);
+            console.log('Marcador temporário removido');
+        }, 5000);
+
+        // Busca o marcador pelo IP em pontosMapeados
+        if (ip && pontosMapeados[ip] && pontosMapeados[ip].marker) {
+            const marker = pontosMapeados[ip].marker;
+            marker.openPopup();
+            console.log('Popup aberto para marcador do IP:', ip);
+        } else {
+            console.warn('Nenhum marcador encontrado para o IP:', ip);
+            // Caso não encontre pelo IP, tenta pelas coordenadas como fallback
+            markersLayer.eachLayer(marker => {
+                const markerLatLng = marker.getLatLng();
+                const tolerance = 0.0001;
+                if (
+                    Math.abs(markerLatLng.lat - lat) < tolerance &&
+                    Math.abs(markerLatLng.lng - lng) < tolerance
+                ) {
+                    marker.openPopup();
+                    console.log('Popup aberto por coordenadas como fallback em:', [lat, lng]);
+                }
+            });
+        }
+    } else {
+        console.error('Coordenadas inválidas:', local);
+        alert('Coordenadas inválidas!');
+    }
+}
+
+// Função para formatar a data
+function formatDate(isoDate) {
+    const date = new Date(isoDate);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // +1 porque getMonth começa em 0
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+}
+async function approveEdit(id) {
+    try {
+        const response = await fetch(`${server}/approve-edit/${id}`, { method: 'POST' });
+        if (response.ok) {
+            loadPendingEdits();
+        }
+    } catch (error) {
+        console.error('Erro ao aprovar:', error);
+    }
+}
+
+async function rejectEdit(id) {
+    try {
+        const response = await fetch(`${server}/reject-edit/${id}`, { method: 'DELETE' });
+        if (response.ok) {
+            loadPendingEdits();
+        }
+    } catch (error) {
+        console.error('Erro ao rejeitar:', error);
+    }
+}
+// Função para alternar entre as seções
         function showSection(section) {
             document.getElementById('editarSection').classList.add('hidden');
             document.getElementById('adicionarSection').classList.add('hidden');
@@ -371,56 +622,297 @@
             document.getElementById(`${section}Section`).classList.remove('hidden');
         }
 
-        // Envia o formulário de edição
-        document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
-            event.preventDefault(); // Impede o envio padrão do formulário
+// Envia o formulário de edição
+document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
 
-            const ip = document.getElementById('ip').value;
-            const nome = document.getElementById('nome').value;
-            const local = document.getElementById('local').value;
-            // const tipo = document.getElementById('tipo').value;
-            const tipo = 'sw';
-            const ativo = document.getElementById('ativo').value;
+    const ip = document.getElementById('ip').value;
+    const nome = document.getElementById('nome').value;
+    const local = document.getElementById('local').value;
+    const observacao = document.getElementById('observacao').value;
+    const tipo = 'sw';
+    const ativo = "white";
 
-            const messageDiv = document.getElementById('message');
-            messageDiv.textContent = ''; // Limpa mensagens anteriores
-            messageDiv.classList.remove('success', 'error'); // Remove classes de estilo anteriores
+    const messageDiv = document.getElementById('message');
+    messageDiv.textContent = '';
+    messageDiv.classList.remove('success', 'error');
 
-            
-            // Validação no frontend
-            if (!ip) {
-                messageDiv.textContent = 'O campo "IP" é obrigatório.';
-                messageDiv.classList.add('error');
-                return;
-            }
+    if (!ip) {
+        messageDiv.textContent = 'O campo "IP" é obrigatório.';
+        messageDiv.classList.add('error');
+        return;
+    }
 
-            try {
-                const response = await fetch(`${server}/editar-host`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ ip, nome, local, tipo, ativo })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    // messageDiv.textContent = 'Host atualizado com sucesso!';
-                    atualizarDadosManualmente()
-                    messageDiv.classList.add('success');
-                } else {
-                    messageDiv.textContent = `Erro: ${data.erro || 'Falha ao atualizar host.'}`;
-                    messageDiv.classList.add('error');
-                }
-            } catch (error) {
-                console.error('Erro:', error);
-                messageDiv.textContent = 'Erro ao conectar ao servidor.';
-                messageDiv.classList.add('error');
-            }
+    try {
+        const response = await fetch(`${server}/editar-host`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ip, nome, local, observacao, tipo, ativo })
         });
 
-    </script>
+        const data = await response.json();
+
+        if (response.ok) {
+            messageDiv.textContent = 'Solicitação de edição enviada para aprovação!';
+            messageDiv.classList.add('success');
+            document.getElementById('editarHostForm').reset();
+        } else {
+            messageDiv.textContent = `Erro: ${data.erro || 'Falha ao enviar solicitação.'}`;
+            messageDiv.classList.add('error');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        messageDiv.textContent = 'Erro ao conectar ao servidor.';
+        messageDiv.classList.add('error');
+    }
+});
+
+   </script>
+
+
+<style>
+    
+        .databox { position: relative; width: 100%;}
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--color-glass);
+        }
+        .modal-content {
+            background-color: var(--color-glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid var(--color-secondary);
+            width: 600px;
+            height: 300px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        #redHostsList {
+            height: 225px;
+            overflow: auto;
+        }
+        .close {
+            color: var(--color-text);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        #toggleShowSwitches {
+            background-color: var(--color-background);
+            border: 1px solid var(--color-secondary);
+            border-radius: 50px;
+            padding: 10px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+        }
+        #toggleShowSwitches img { border: none; }
+        .checkbox-container {
+            display: inline-block;
+            position: relative;
+            margin-bottom: 12px;
+            font-size: 12px;
+            user-select: none;
+            width: 100%;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            border-bottom: 1px solid var(--color-secondary);
+        }
+        .custom-checkbox {
+            position: absolute;
+            opacity: 0;
+            height: 0;
+            width: 0;
+        }
+        .checkmark {
+            position: relative;
+            top: 0;
+            height: 10px;
+            width: 10px;
+            background-color: var(--color-background);
+            border: 1px solid var(--color-primary);
+            border-radius: 20px;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .custom-checkbox:checked ~ .checkmark {
+            background-color: var(--color-primary);
+            box-shadow: 0 3px 7px var(--color-secondary);
+        }
+        .custom-checkbox:checked ~ .checkmark:after { display: block; }
+        @keyframes checkAnim {
+            0% { height: 0; }
+            100% { height: 10px; }
+        }
+        .custom-checkbox:checked ~ .checkmark:after { animation: checkAnim 0.2s forwards; }
+        .approval-section {
+            display: none;
+            background: var(--color-glass);
+            padding: 20px;
+            border-radius: 8px;
+            color: var(--color-text);
+            height: 100%;
+            overflow-y: auto;
+            width: auto;
+            box-sizing: border-box;
+        }
+        .approval-section button {
+            margin: 5px;
+    padding: 5px 10px;
+    background: #e2e2e2;
+    border: none;
+    color: var(--color-primary);
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid var(--color-primary);
+        }
+        .approval-section button:hover{
+            border: 1px solid var(--color-text);
+        }
+        .modal-container {
+    width: 248px;
+    margin: 10px auto;
+    background-color: var(--color-text);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.25);
+    color: var(--color-text);
+}
+
+@media (max-width: 600px) {
+    .modal-container {
+        width: 90%;
+    }
+}
+
+.modal-container-header {
+    padding: 16px 23px;
+    border-bottom: 1px solid var(--color-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-container-title {
+    display: flex;
+    align-items: center;
+    color: var(--color-background);
+    gap: 15px;
+    line-height: 1;
+    font-weight: 700;
+    font-size: 0.9em;
+}
+
+.modal-container-title svg {
+    width: 32px;
+    height: 32px;
+    color: var(--color-primary);
+}
+
+.modal-container-body {
+    padding: 0px 12px 0px;
+    overflow-y: auto;
+    color: var(--color-background);
+    font-size: 14px;
+    height: 140px;
+}
+
+.rtf > * + * {
+    margin-top: 0em;
+    margin-bottom: 0.5em;
+}
+
+.modal-container-footer {
+    padding: 15px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid var(--color-secondary);
+    gap: 8px;
+    position: relative;
+    flex-wrap: wrap;
+    height: fit-content;
+}
+
+.modal-container-footer:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -51px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.233), transparent);
+    pointer-events: none;
+}
+
+.button {
+    padding: 12px 20px;
+    border-radius: 8px;
+    background-color: transparent;
+    border: 0;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.15s ease;
+    color: var(--color-text);
+}
+
+.button.is-ghost:hover,
+.button.is-ghost:focus {
+    background-color: var(--color-secondary);
+}
+
+.button.is-primary {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+}
+
+.button.is-primary:hover,
+.button.is-primary:focus {
+    background-color: #3a6b9a; /* Um tom mais escuro de --color-primary (#4A87C0) */
+}
+
+.icon-button {
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.15s ease;
+}
+
+.icon-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-button:hover,
+.icon-button:focus {
+    background-color: var(--color-secondary);
+}
+</style>
 </div>
 
     </div>
@@ -437,15 +929,16 @@
 
 
     <script>
-        document.getElementById("toggleTitulo").addEventListener("click", function() {
-            document.getElementById("tituloBox").classList.toggle("ativo");
 
-            if (janela == 0) {
-                janela = 1;
-            }else{
-                janela = 0;
-            }
-        });
+document.getElementById("toggleTitulo").addEventListener("click", function() {
+    document.getElementById("tituloBox").classList.toggle("ativo");
+    if (janela == 0) {
+        janela = 1;
+    } else {
+        janela = 0;
+    }
+});
+
     </script>
 
     <div class="container">
@@ -696,5 +1189,4 @@ window.addEventListener('click', function (event) {
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/error.js"></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/credits.js"></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/mudancasTelas.js"></script>
-
 </html>
