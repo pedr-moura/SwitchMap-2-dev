@@ -7,9 +7,10 @@ const cssSW = document.getElementById('css-sw');
 const theme = document.getElementById('theme');
 const menuContainer = document.getElementById('menu-container');
 const logoCliente = document.getElementById('logoCliente');
+const pontosMapeados = {};
 
 // Estado global
-let server = "http://172.16.196.36:5000";
+let server = "http://172.28.132.248:5000";
 let showIconesMaps = 0;
 let showDependencias = 0;
 let mapaAtual;
@@ -30,7 +31,7 @@ let pageLoadTime = performance.now(); // Marca o tempo de início do carregament
 const mapaPadraoClaro = L.tileLayer('http://172.16.196.36:3000/tiles/light/{z}/{x}/{y}', { 
     attribution: '© OpenStreetMap © CartoDB' 
 });
-const mapaPadraoEscuro = L.tileLayer('http://172.16.196.36:3000/tiles/dark/{z}/{x}/{y}', { 
+const mapaPadraoEscuro = L.tileLayer('https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', { 
     attribution: '© OpenStreetMap' 
 });
 const mapaSatelite = L.tileLayer('http://172.16.196.36:3000/tiles/satellite/{z}/{x}/{y}', { 
@@ -46,6 +47,7 @@ ocultarSw();
 
 // Telas
 function exibirJanela(id) {
+    console.log('Exibir janela:', id, 'janela:', janela);
     if (janela == 0) {
         document.getElementById(id).click();
     }
@@ -99,6 +101,7 @@ function fecharPopups() {
     const buttons = document.getElementsByClassName('leaflet-popup-close-button');
     for (let button of buttons) button.click();
 }
+
 
 // Função para exibir popup de hosts offline
 function showRedHostsPopup(dados = dadosAtuais) {
@@ -213,7 +216,6 @@ function atualizarInterface(dados) {
         markersLayer.clearLayers();
     }
 
-    const pontosMapeados = {};
     dadosFiltrados.hosts.forEach(ponto => {
         if (ponto.local) {
             const [lat, lng] = ponto.local.split(', ').map(Number);
@@ -399,10 +401,18 @@ function displayHosts(hosts) {
         hostItem.className = 'host-item';
         hostItem.innerHTML = `<b style="color: ${host.ativo};">*</b> ${host.ip}`;
         hostItem.onclick = () => {
-            fillForm(host);
+            fillForm(host); // Preenche o formulário com os dados do host
             if (host.local) {
                 const [lat, lng] = host.local.split(', ').map(Number);
                 map.flyTo([lat, lng], 18, { duration: 0.5 });
+
+                // Encontra o marcador correspondente e abre o popup
+                markersLayer.eachLayer(marker => {
+                    const markerLatLng = marker.getLatLng();
+                    if (markerLatLng.lat === lat && markerLatLng.lng === lng) {
+                        marker.openPopup(); // Abre o popup com o nomedosw
+                    }
+                });
             }
         };
         hostList.appendChild(hostItem);
