@@ -622,7 +622,6 @@ async function rejectEdit(id) {
             document.getElementById(`${section}Section`).classList.remove('hidden');
         }
 
-// Envia o formulário de edição
 document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -655,8 +654,8 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
         const data = await response.json();
 
         if (response.ok) {
-            // Montar a mensagem do alert com os detalhes da solicitação
-            const idSolicitacao = data.id || 'N/A'; // Supondo que o servidor retorna um 'id'
+            // Montar a mensagem com os detalhes da solicitação
+            const idSolicitacao = data.id || 'N/A';
             const alteracoes = [
                 `IP: ${ip}`,
                 nome ? `Nome: ${nome}` : 'Nome: (não alterado)',
@@ -664,13 +663,26 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
                 observacao ? `Observação: ${observacao}` : 'Observação: (não alterado)',
             ].join('\n');
 
-            // Exibir o alert com os detalhes e o ID
-            alert(`Solicitação enviada para aprovação!\n\nDetalhes:\n${alteracoes}`);
+            // Criar o customPopup
+            const customPopup = document.createElement('div');
+            customPopup.className = 'custom-alert';
+            customPopup.innerText = `Solicitação enviada para aprovação!\n\nDetalhes:\n${alteracoes}\n`;
+            document.body.appendChild(customPopup);
+
+            // Remover o popup após 3 segundos
+            setTimeout(() => {
+                customPopup.remove();
+            }, 3000);
 
             // Limpar o formulário
-            document.getElementById('editarHostForm').reset();
+            const form = document.getElementById('editarHostForm');
+            form.reset();
 
-            // Opcional: Exibir uma mensagem de sucesso no messageDiv
+            // Restaurar o foco no campo "ip"
+            const ipInput = document.getElementById('ip');
+            ipInput.focus();
+
+            // Exibir mensagem de sucesso no messageDiv
             messageDiv.textContent = 'Solicitação enviada para aprovação!';
             messageDiv.classList.add('success');
         } else {
@@ -688,6 +700,32 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
 
 
 <style>
+    .custom-alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-glass);
+    color: var(--color-text);
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    white-space: pre-line; /* Permite quebras de linha (\n) */
+    font-size: 14px;
+    max-width: 400px;
+    text-align: center;
+    opacity: 0;
+    animation: fadeInOut 3s ease-in-out forwards;
+}
+
+/* Animação de entrada e saída */
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -20px); }
+    10% { opacity: 1; transform: translate(-50%, 0); }
+    90% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, -20px); }
+}
     
         .databox { position: relative; width: 100%;}
         .modal {
