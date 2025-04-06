@@ -655,9 +655,24 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
         const data = await response.json();
 
         if (response.ok) {
-            messageDiv.textContent = 'Solicitação de edição enviada para aprovação!';
-            messageDiv.classList.add('success');
+            // Montar a mensagem do alert com os detalhes da solicitação
+            const idSolicitacao = data.id || 'N/A'; // Supondo que o servidor retorna um 'id'
+            const alteracoes = [
+                `IP: ${ip}`,
+                nome ? `Nome: ${nome}` : 'Nome: (não alterado)',
+                local ? `Local: ${local}` : 'Local: (não alterado)',
+                observacao ? `Observação: ${observacao}` : 'Observação: (não alterado)',
+            ].join('\n');
+
+            // Exibir o alert com os detalhes e o ID
+            alert(`Solicitação enviada com sucesso!\n\nDetalhes da alteração:\n${alteracoes}\n\nID da solicitação: ${idSolicitacao}`);
+
+            // Limpar o formulário
             document.getElementById('editarHostForm').reset();
+
+            // Opcional: Exibir uma mensagem de sucesso no messageDiv
+            messageDiv.textContent = 'Solicitação enviada para aprovação!';
+            messageDiv.classList.add('success');
         } else {
             messageDiv.textContent = `Erro: ${data.erro || 'Falha ao enviar solicitação.'}`;
             messageDiv.classList.add('error');
