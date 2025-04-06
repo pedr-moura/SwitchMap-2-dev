@@ -633,6 +633,7 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
     const ativo = "yellow";
 
     const messageDiv = document.getElementById('message');
+    const submitButton = document.querySelector('#editarHostForm button[type="submit"]'); // Referência ao botão
     messageDiv.textContent = '';
     messageDiv.classList.remove('success', 'error');
 
@@ -641,6 +642,10 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
         messageDiv.classList.add('error');
         return;
     }
+
+    // Mudar o texto do botão para "Enviando..." e desabilitá-lo durante o envio
+    submitButton.textContent = 'Enviando...';
+    submitButton.disabled = true;
 
     try {
         const response = await fetch(`${server}/editar-host`, {
@@ -654,45 +659,40 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
         const data = await response.json();
 
         if (response.ok) {
-            // Montar a mensagem com os detalhes da solicitação
-            const idSolicitacao = data.id || 'N/A';
-            const alteracoes = [
-                `IP: ${ip}`,
-                nome ? `Nome: ${nome}` : 'Nome: (não alterado)',
-                local ? `Local: ${local}` : 'Local: (não alterado)',
-                observacao ? `Observação: ${observacao}` : 'Observação: (não alterado)',
-            ].join('\n');
-
-            // Criar o customPopup
-            const customPopup = document.createElement('div');
-            customPopup.className = 'custom-alert';
-            customPopup.innerText = `Solicitação enviada para aprovação!\n\nDetalhes:\n${alteracoes}\n`;
-            document.body.appendChild(customPopup);
-
-            // Remover o popup após 3 segundos
-            setTimeout(() => {
-                customPopup.remove();
-            }, 3000);
+            // Mudar o texto do botão para "Enviado" e aplicar estilo de sucesso
+            submitButton.textContent = 'Enviado';
+            submitButton.style.backgroundColor = '#28a745'; // Verde para sucesso
+            submitButton.style.color = '#fff';
 
             // Limpar o formulário
             const form = document.getElementById('editarHostForm');
             form.reset();
 
-            // Restaurar o foco no campo "ip"
-            const ipInput = document.getElementById('ip');
-            ipInput.focus();
-
             // Exibir mensagem de sucesso no messageDiv
             messageDiv.textContent = 'Solicitação enviada para aprovação!';
             messageDiv.classList.add('success');
+
+            // Restaurar o botão ao estado original após 3 segundos
+            setTimeout(() => {
+                submitButton.textContent = 'Solicitar Alterações';
+                submitButton.style.backgroundColor = ''; // Volta ao estilo original
+                submitButton.style.color = '';
+                submitButton.disabled = false;
+                messageDiv.textContent = '';
+                messageDiv.classList.remove('success');
+            }, 3000);
         } else {
             messageDiv.textContent = `Erro: ${data.erro || 'Falha ao enviar solicitação.'}`;
             messageDiv.classList.add('error');
+            submitButton.textContent = 'Solicitar Alterações';
+            submitButton.disabled = false;
         }
     } catch (error) {
         console.error('Erro:', error);
         messageDiv.textContent = 'Erro ao conectar ao servidor.';
         messageDiv.classList.add('error');
+        submitButton.textContent = 'Solicitar Alterações';
+        submitButton.disabled = false;
     }
 });
 
@@ -700,6 +700,26 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
 
 
 <style>
+
+    #editarHostForm button[type="submit"] {
+    padding: 10px 20px;
+    background: var(--color-primary);
+    border: none;
+    color: var(--color-text);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#editarHostForm button[type="submit"]:disabled {
+    background: var(--color-secondary);
+    cursor: not-allowed;
+}
+
+#editarHostForm button[type="submit"]:hover:not(:disabled) {
+    background: #3a6b9a; /* Um tom mais escuro de --color-primary */
+}
+    
     .custom-alert {
     position: fixed;
     top: 20px;
