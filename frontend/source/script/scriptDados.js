@@ -6,7 +6,7 @@ const opcoesTitulo = document.getElementById('opcoes');
 const cssSW = document.getElementById('css-sw');
 const theme = document.getElementById('theme');
 const menuContainer = document.getElementById('menu-container');
-const logoCliente = document.getElementById('logoCliente');
+// const logoCliente = document.getElementById('logoCliente');
 const pontosMapeados = {};
 
 // Estado global
@@ -44,7 +44,7 @@ const mapaSatelite = L.tileLayer('http://172.16.196.36:3000/tiles/satellite/{z}/
 });
 
 // Inicialização de elementos
-logoCliente.src = "https://i.ibb.co/3Ysj3mQ3/Captura-de-tela-2025-04-06-130602.png";
+// logoCliente.src = "https://i.ibb.co/3Ysj3mQ3/Captura-de-tela-2025-04-06-130602.png";
 toggleDependencias.style.display = "none";
 toggleMap.style.display = "none";
 opcoesTitulo.style.display = "none";
