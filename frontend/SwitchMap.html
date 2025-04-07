@@ -154,7 +154,7 @@
             </div>
         </div>
        <style>
-        .unidadesPorEstado {
+.unidadesPorEstado {
     margin-top: 20px;
     padding: 10px;
     background: var(--color-glass);
@@ -178,7 +178,9 @@
     border: 1px solid var(--color-secondary);
     border-radius: 5px;
     padding: 5px;
+    padding-bottom: 40px; /* Espaço para pagination-controls */
     background: var(--color-background);
+    position: relative;
 }
 
 .estados-container {
@@ -235,12 +237,12 @@
 }
 
 .unidades-list {
-    display: none; /* Inicialmente oculto */
+    display: none;
     margin-top: 5px;
 }
 
 .unidades-list.expanded {
-    display: block; /* Exibe ao expandir */
+    display: block;
     animation: fadeIn 0.3s ease-in-out;
 }
 
@@ -263,18 +265,18 @@
 }
 
 .hosts-list {
-    display: none; /* Inicialmente oculto */
+    display: none;
     margin-top: 5px;
-    position: relative; /* Para posicionar pagination-controls */
 }
 
 .hosts-list.expanded {
-    display: block; /* Exibe ao expandir */
+    display: block;
     animation: fadeIn 0.3s ease-in-out;
 }
 
 .hosts-content {
-    /* Removido max-height e overflow-y para evitar scroll duplo */
+    max-height: 150px; /* Ajustado para caber dentro do estados-box */
+    overflow-y: auto; /* Scroll interno para hosts */
 }
 
 .host-item {
@@ -292,15 +294,13 @@
 }
 
 .pagination-controls {
-    margin-top: 10px;
+    margin-top: 5px;
     padding: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    position: sticky;
-    bottom: 0;
-    background: var(--color-background); /* Garante visibilidade ao rolar */
+    background: var(--color-background);
     border-top: 1px solid var(--color-secondary);
 }
 
@@ -349,7 +349,8 @@
     }
 
     .estados-box {
-        max-height: 200px; /* Reduzido para dispositivos menores */
+        max-height: 200px;
+        padding-bottom: 30px; /* Menos espaço em mobile */
     }
 
     .estado-item {
@@ -373,6 +374,10 @@
         padding: 3px 10px;
     }
 
+    .hosts-content {
+        max-height: 100px; /* Menor em mobile */
+    }
+
     .pagination-controls {
         gap: 5px;
     }
@@ -388,21 +393,25 @@
 }
 
 /* Estilização da barra de rolagem */
-.estados-box::-webkit-scrollbar {
+.estados-box::-webkit-scrollbar,
+.hosts-content::-webkit-scrollbar {
     width: 8px;
 }
 
-.estados-box::-webkit-scrollbar-track {
+.estados-box::-webkit-scrollbar-track,
+.hosts-content::-webkit-scrollbar-track {
     background: var(--color-background);
     border-radius: 5px;
 }
 
-.estados-box::-webkit-scrollbar-thumb {
+.estados-box::-webkit-scrollbar-thumb,
+.hosts-content::-webkit-scrollbar-thumb {
     background: var(--color-secondary);
     border-radius: 5px;
 }
 
-.estados-box::-webkit-scrollbar-thumb:hover {
+.estados-box::-webkit-scrollbar-thumb:hover,
+.hosts-content::-webkit-scrollbar-thumb:hover {
     background: var(--color-primary);
 }
        </style>
