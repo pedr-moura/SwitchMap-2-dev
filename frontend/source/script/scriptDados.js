@@ -353,7 +353,9 @@ function atualizarInterface(dados) {
                 <div class="unidades-list">
                     ${Object.entries(stats.unidades)
                         .map(([unidade, unidadeStats]) => `
-                            <div class="unidade-item">
+                            <div class="unidade-item" style="
+                            overflow: auto;
+                            max-height: 120px;">
                                 <div class="unidade-header">
                                     <span>${unidade}</span>
                                     <div class="status">
