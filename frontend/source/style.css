@@ -1110,6 +1110,11 @@ span{
 .editarEquipamento{
   display: none;
 }
+.editarEquipamento {
+    input {
+        top: 5px;
+    }
+}
 .adicionarEquipamento{
   display: none;
 }
