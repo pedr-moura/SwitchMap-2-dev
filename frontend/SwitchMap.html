@@ -284,43 +284,8 @@
     font-size: 11px;
     color: var(--color-text);
     display: flex;
-    align-items: center;
     justify-content: space-between;
     border-top: 1px dashed var(--color-secondary);
-}
-
-.edit-host-btn {
-    background: none;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s ease;
-}
-
-.edit-host-btn svg {
-    width: 16px;
-    height: 16px;
-}
-
-.edit-host-btn:hover {
-    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.1);
-    border-radius: 4px;
-}
-
-/* Responsividade */
-@media (max-width: 600px) {
-    .host-item {
-        font-size: 10px;
-        padding: 3px 10px;
-    }
-
-    .edit-host-btn svg {
-        width: 14px;
-        height: 14px;
-    }
 }
 
 .host-item .status {
@@ -751,80 +716,29 @@ async function approveEdit(id) {
             document.getElementById('editarSection').classList.add('hidden');
             document.getElementById('adicionarSection').classList.add('hidden');
                       document.getElementById(`${section}Section`).classList.remove('hidden');
-        }
-    
-        document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-    const ip = document.getElementById('ip').value;
+        }document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
+    event.preventDefault();    const ip = document.getElementById('ip').value;
     const nome = document.getElementById('nome').value;
     const local = document.getElementById('local').value;
     const observacao = document.getElementById('observacao').value;
     const tipo = 'sw';
-    const ativo = "blue"; // Status for pending edits
-
-    const messageDiv = document.getElementById('message');
-    const submitButton = document.querySelector('#editarHostForm button[type="submit"]');
+    const ativo = "blue";    const messageDiv = document.getElementById('message');
+    const submitButton = document.querySelector('#editarHostForm button[type="submit"]'); // Referência ao botão
     messageDiv.textContent = '';
-    messageDiv.classList.remove('success', 'error');
-
-    if (!ip) {
+    messageDiv.classList.remove('success', 'error');    if (!ip) {
         messageDiv.textContent = 'O campo "IP" é obrigatório.';
         messageDiv.classList.add('error');
         return;
-    }
-
+    }    // Mudar o texto do botão para "Enviando..." e desabilitá-lo durante o envio
     submitButton.textContent = 'Enviando...';
-    submitButton.disabled = true;
-
-    try {
+    submitButton.disabled = true;    try {
         const response = await fetch(`${server}/editar-host`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ ip, nome, local, observacao, tipo, ativo })
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-            submitButton.textContent = 'Enviado';
-            submitButton.style.backgroundColor = '#28a745';
-            submitButton.style.color = '#fff';
-
-            // Exibir mensagem de sucesso
-            messageDiv.textContent = 'Solicitação enviada para aprovação!';
-            messageDiv.classList.add('success');
-
-            // Limpar o formulário
-            const form = document.getElementById('editarHostForm');
-            form.reset();
-
-            // Voltar para a tela inicial (homebox) após 3 segundos
-            setTimeout(() => {
-                exibirHome();
-                submitButton.textContent = 'Solicitar Alterações';
-                submitButton.style.backgroundColor = '';
-                submitButton.style.color = '';
-                submitButton.disabled = false;
-                messageDiv.textContent = '';
-                messageDiv.classList.remove('success');
-            }, 3000);
-        } else {
-            messageDiv.textContent = `Erro: ${data.erro || 'Falha ao enviar solicitação.'}`;
-            messageDiv.classList.add('error');
-            submitButton.textContent = 'Solicitar Alterações';
-            submitButton.disabled = false;
-        }
-    } catch (error) {
-        console.error('Erro:', error);
-        messageDiv.textContent = 'Erro ao conectar ao servidor.';
-        messageDiv.classList.add('error');
-        submitButton.textContent = 'Solicitar Alterações';
-        submitButton.disabled = false;
-    }
-});
-        const data = await response.json();       
-        if (response.ok) {
+        });        const data = await response.json();        if (response.ok) {
             // Mudar o texto do botão para "Enviado" e aplicar estilo de sucesso
             submitButton.textContent = 'Enviado';
             submitButton.style.backgroundColor = '#28a745'; // Verde para sucesso
