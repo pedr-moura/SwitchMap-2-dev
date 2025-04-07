@@ -290,7 +290,7 @@ function atualizarInterface(dados) {
     const countEquipamentosSemLocal = document.getElementById('countEquipamentosSemLocal');
     if (dadosFiltrados.hosts && Array.isArray(dadosFiltrados.hosts)) {
         if (countEquipamentos) countEquipamentos.innerHTML = dadosFiltrados.hosts.length;
-        if (countEquipamentosSemLocal) countEquipamentosSemLocal.innerHTML = dadosFiltrados.hosts.filter(host => !host.local).length;
+        if (countEquipamentosSemLocal) countEquipamentsSemLocal.innerHTML = dadosFiltrados.hosts.filter(host => !host.local).length;
     } else {
         console.error('Dados.hosts não é um array:', dadosFiltrados);
         if (countEquipamentos) countEquipamentos.innerHTML = '0';
@@ -486,7 +486,7 @@ function atualizarInterface(dados) {
                         e.stopPropagation();
                         // Collapse other units
                         unidadeItems.forEach(otherItem => {
-                            if (otherItem !== unidadeItem) {
+                           if (otherItem !== unidadeItem) {
                                 otherItem.querySelector('.hosts-list').classList.remove('expanded');
                                 otherItem.querySelector('.unidade-header').classList.remove('expanded');
                             }
@@ -527,19 +527,6 @@ function atualizarInterface(dados) {
     atualizarMarcadores(dadosFiltrados.hosts);
     atualizarLinhas(dadosFiltrados.hosts);
     atualizarListas(dadosFiltrados);
-}
-
-function navigateToEditHost(host) {
-    // Navigate to the editing section
-    exibirJanela('toggleTitulo');
-    exibirEditar();
-
-    // Pre-fill the form with the host's data
-    document.getElementById('ip').value = host.ip || '';
-    document.getElementById('nome').value = host.nome || '';
-    document.getElementById('local').value = host.local || '';
-    document.getElementById('observacao').value = host.observacao || '';
-    document.getElementById('ativo').value = host.ativo === "#00d700" ? "green" : "red";
 }
 
 function atualizarMarcadores(hosts) {
