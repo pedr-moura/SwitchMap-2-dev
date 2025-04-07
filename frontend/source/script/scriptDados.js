@@ -420,11 +420,13 @@ function atualizarInterface(dados) {
                                 .replace(/\.suzano\.com\.br$/, '')
                                 .replace(/^BR-[A-Z]{2}-[A-Z]{3}-[A-Z]{3}-/, '');
                             return `
-                                <div class="host-item">
-                                    <span title="${hostNome}">${displayName}</span>
-                                    <div class="status">
+
+                                <div class="status">
                                         <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
                                     </div>
+                                <div class="host-item">
+                                    <span title="${hostNome}">${displayName}</span>
+
                                 </div>
                             `;
                         }).join('');
