@@ -26,6 +26,11 @@ let linesLayer;
 let linesVisible = false;
 const objetosVisiveis = {};
 let pageLoadTime = performance.now(); // Marca o tempo de início do carregamento da página
+let currentPage = 0;
+const hostsPerPage = 50; // Número de hosts carregados por vez
+let isLoading = false;
+let allDisplayedHosts = []; // Array para armazenar todos os hosts filtrados atualmente
+let hasMoreHosts = true; // Flag para controlar se existem mais hosts para carregar
 
 // Declaração global das camadas de mapa
 const mapaPadraoClaro = L.tileLayer('http://172.16.196.36:3000/tiles/light/{z}/{x}/{y}', { 
@@ -63,12 +68,52 @@ function ocultarSw() {
     cssSW.innerHTML = `<style>#icone-sw { display: none; }</style>`;
 }
 
+// Define uma única função para lidar com a troca de estado
 function toggleDependenciasState() {
     showDependencias = showDependencias === 0 ? 1 : 0;
-    toggleLines(); // Chama a função de alternar linhas
+    linesVisible = showDependencias === 1; // Sincroniza as variáveis
+    
+    // Atualiza a visualização das linhas
+    if (linesVisible) {
+        linesLayer.addTo(map);
+        toggleDependencias.style.border = '3px solid #0303ff';
+    } else {
+        if (map.hasLayer(linesLayer)) {
+            map.removeLayer(linesLayer);
+        }
+        toggleDependencias.style.border = '1px solid var(--color-secondary)';
+    }
+    
+    console.log('Estado alterado: showDependencias =', showDependencias, 'linesVisible =', linesVisible);
 }
 
-toggleDependencias.addEventListener('click', toggleDependenciasState);
+// Garantir que o elemento toggleDependencias existe antes de adicionar o evento
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleDependencias = document.getElementById('toggleLinesButton');
+    if (toggleDependencias) {
+        // Remove qualquer listener anterior para evitar duplicação
+        toggleDependencias.removeEventListener('click', toggleDependenciasState);
+        // Adiciona o novo listener
+        toggleDependencias.addEventListener('click', toggleDependenciasState);
+        console.log('Evento de clique adicionado ao botão toggleDependencias');
+    } else {
+        console.error('Elemento toggleDependencias não encontrado');
+    }
+});
+
+// Remover a função toggleLines separada para evitar confusão
+// Qualquer chamada a toggleLines() deve ser substituída por toggleDependenciasState()
+
+function toggleLines() {
+    linesVisible = !linesVisible;
+    if (linesVisible) {
+        linesLayer.addTo(map);
+        toggleDependencias.style.border = '3px solid #0303ff';
+    } else {
+        map.removeLayer(linesLayer);
+        toggleDependencias.style.border = '1px solid var(--color-secondary)';
+    }
+}
 
 function showSw() {
     if (showIconesMaps === 0) {
@@ -152,13 +197,54 @@ async function fetchDadosHTTP() {
 }
 
 // Função para pesquisar por IP
+// Otimizar a pesquisa
 function pesquisarPorIP(hostsArray = dadosAtuais.hosts) {
     const ipBusca = document.getElementById('ipBusca').value.toLowerCase().trim();
-    if (!ipBusca) return hostsArray; // Retorna todos os hosts se o campo estiver vazio
-    return hostsArray.filter(host => 
-        host.ip.toLowerCase().includes(ipBusca) || 
-        host.nome.toLowerCase().includes(ipBusca)
-    );
+    
+    if (!ipBusca) return hostsArray;
+    
+    // Usar um índice para pesquisa mais rápida (pré-calculado)
+    if (!window.hostsIndex) {
+        // Implementar apenas uma vez ou quando os dados base mudarem
+        window.hostsIndex = {};
+        hostsArray.forEach((host, index) => {
+            const lowerIp = host.ip.toLowerCase();
+            const lowerNome = host.nome.toLowerCase();
+            
+            // Indexar prefixos para pesquisa mais rápida
+            for (let i = 1; i <= lowerIp.length; i++) {
+                const prefix = lowerIp.substring(0, i);
+                if (!window.hostsIndex[prefix]) window.hostsIndex[prefix] = [];
+                window.hostsIndex[prefix].push(index);
+            }
+            
+            for (let i = 1; i <= lowerNome.length; i++) {
+                const prefix = lowerNome.substring(0, i);
+                if (!window.hostsIndex[prefix]) window.hostsIndex[prefix] = [];
+                window.hostsIndex[prefix].push(index);
+            }
+        });
+    }
+    
+    // Usar o índice para pesquisa
+    const indices = window.hostsIndex[ipBusca] || [];
+    const resultSet = new Set();
+    
+    indices.forEach(index => {
+        if (index < hostsArray.length) {
+            resultSet.add(hostsArray[index]);
+        }
+    });
+    
+    // Fallback para pesquisa normal se o índice não tiver resultados
+    if (resultSet.size === 0) {
+        return hostsArray.filter(host => 
+            host.ip.toLowerCase().includes(ipBusca) || 
+            host.nome.toLowerCase().includes(ipBusca)
+        );
+    }
+    
+    return Array.from(resultSet);
 }
 
 // Função para pré-carregar linhas
@@ -194,12 +280,14 @@ function preloadLines(dados) {
 function atualizarInterface(dados) {
     dadosAtuais = dados;
     exibirFeedbackDados?.();
-
+    
     const ipBusca = document.getElementById('ipBusca').value.toLowerCase().trim();
-    let dadosFiltrados = { hosts: pesquisarPorIP(dados.hosts) }; // Sempre filtra com base no input atual
-
+    let dadosFiltrados = { hosts: pesquisarPorIP(dados.hosts) };
+    
+    // Atualizar contadores
     const countEquipamentos = document.getElementById('countEquipamentos');
     const countUnidades = document.getElementById('countUnidades');
+    
     if (dadosFiltrados.hosts && Array.isArray(dadosFiltrados.hosts)) {
         countEquipamentos.innerHTML = dadosFiltrados.hosts.length;
         const nomesUnicos = new Set(dadosFiltrados.hosts.map(host => host.nome.split('SW')[0]));
@@ -209,36 +297,133 @@ function atualizarInterface(dados) {
         countEquipamentos.innerHTML = '0';
         countUnidades.innerHTML = '0';
     }
-
+    
     if (!map) {
         inicializarMapa();
-    } else {
-        // markersLayer.clearLayers();
     }
+    
+    // Usar um sistema de cache de marcadores
+    atualizarMarcadores(dadosFiltrados.hosts);
+    atualizarLinhas(dadosFiltrados.hosts);
+    atualizarListas(dadosFiltrados);
+}
 
-    dadosFiltrados.hosts.forEach(ponto => {
-        if (ponto.local) {
-            const [lat, lng] = ponto.local.split(', ').map(Number);
-            const zindex = ponto.ativo === 'red' ? 'z-index: 99999999999999999999;' : '';
-            const maiorValorC = ponto.valores?.filter(v => v.includes('C')).map(v => parseFloat(v.replace('°C', ''))).reduce((a, b) => Math.max(a, b), null);
-
-            const iconeCustomizado = L.divIcon({
-                className: 'custom-marker',
-                html: `<img src="https://i.ibb.co/21HsN0y1/sw.png" id="icone-sw" style="border: 2px solid ${ponto.ativo}; ${zindex} box-shadow: inset 0 0 0 1.5px blue; cursor: grab;" onclick="map.flyTo([${lat}, ${lng}], 18, { duration: 0.5 }); fillForm({ip: '${ponto.ip}', nome: '${ponto.nome}', local: '${ponto.local}', tipo: '${ponto.tipo}', ativo: '${ponto.ativo}'})"/>`,
-                iconSize: [0, 0],
-                iconAnchor: [15, 30],
-                popupAnchor: [0, -30]
-            });
-            
-            const info = ponto.valores ? `<br><br><span style="font-size: 12px; color: gray;">🌡️ Temp: <b>${maiorValorC ? maiorValorC + '°C' : 'N/A'}</b> | 💻 CPU: <b>${ponto.valores[0]}%</b> | 📶 Lat: <b>${ponto.valores[2]}ms</b></span>` : '';
-            const marker = L.marker([lat, lng], { icon: iconeCustomizado }).addTo(markersLayer)
-                .bindPopup(`<b class="nomedosw" style="color: ${ponto.ativo}; ">${ponto.nome} <br> <span class="latitude" style="text-align: center; width: 100%; opacity: 0.5;">${ponto.local}</span><span style="color: var(--color-background);"> "${ponto.observacao}" </span> ${info}</b>`);
-            pontosMapeados[ponto.ip] = { lat, lng, marker };
+function atualizarMarcadores(hosts) {
+    // Manter um cache de marcadores existentes
+    const marcadoresExistentes = {};
+    
+    // Registrar todos os marcadores atuais
+    markersLayer.eachLayer(marker => {
+        const options = marker.options;
+        if (options.hostId) {
+            marcadoresExistentes[options.hostId] = marker;
         }
     });
+    
+    // Atualizar ou criar marcadores
+    hosts.forEach(ponto => {
+        if (ponto.local) {
+            const [lat, lng] = ponto.local.split(', ').map(Number);
+            const hostId = ponto.ip;
+            
+            // Verificar se já existe um marcador para este host
+            if (marcadoresExistentes[hostId]) {
+                // Atualizar propriedades do marcador existente se necessário
+                const marker = marcadoresExistentes[hostId];
+                const maiorValorC = ponto.valores?.filter(v => v.includes('C')).map(v => parseFloat(v.replace('°C', ''))).reduce((a, b) => Math.max(a, b), null);
+                const info = ponto.valores ? `<br><br><span style="font-size: 12px; color: gray;">🌡️ Temp: <b>${maiorValorC ? maiorValorC + '°C' : 'N/A'}</b> | 💻 CPU: <b>${ponto.valores[0]}%</b> | 📶 Lat: <b>${ponto.valores[2]}ms</b></span>` : '';
+                
+                // Atualizar apenas o conteúdo do popup e o ícone se o status mudou
+                if (marker.options.status !== ponto.ativo) {
+                    marker.setIcon(criarIcone(ponto));
+                    marker.setPopupContent(`<b class="nomedosw" style="color: ${ponto.ativo}; ">${ponto.nome} <br> <span class="latitude" style="text-align: center; width: 100%; opacity: 0.5;">${ponto.local}</span><span style="color: var(--color-background);"> "${ponto.observacao}" </span> ${info}</b>`);
+                    marker.options.status = ponto.ativo;
+                }
+                
+                // Remover do objeto para sabermos quais ainda precisam ser processados
+                delete marcadoresExistentes[hostId];
+            } else {
+                // Criar novo marcador
+                const maiorValorC = ponto.valores?.filter(v => v.includes('C')).map(v => parseFloat(v.replace('°C', ''))).reduce((a, b) => Math.max(a, b), null);
+                const info = ponto.valores ? `<br><br><span style="font-size: 12px; color: gray;">🌡️ Temp: <b>${maiorValorC ? maiorValorC + '°C' : 'N/A'}</b> | 💻 CPU: <b>${ponto.valores[0]}%</b> | 📶 Lat: <b>${ponto.valores[2]}ms</b></span>` : '';
+                
+                const marker = L.marker([lat, lng], { 
+                    icon: criarIcone(ponto),
+                    hostId: hostId,
+                    status: ponto.ativo
+                }).addTo(markersLayer)
+                .bindPopup(`<b class="nomedosw" style="color: ${ponto.ativo}; ">${ponto.nome} <br> <span class="latitude" style="text-align: center; width: 100%; opacity: 0.5;">${ponto.local}</span><span style="color: var(--color-background);"> "${ponto.observacao}" </span> ${info}</b>`);
+                
+                pontosMapeados[ponto.ip] = { lat, lng, marker };
+            }
+        }
+    });
+    
+    // Remover marcadores que não existem mais nos dados
+    for (const hostId in marcadoresExistentes) {
+        markersLayer.removeLayer(marcadoresExistentes[hostId]);
+        delete pontosMapeados[hostId];
+    }
+}
 
-    preloadLines(dadosFiltrados);
-    atualizarListas(dadosFiltrados);
+function atualizarLinhas(hosts) {
+    // Preparar as linhas independentemente do estado de visibilidade
+    const linhasChave = {};
+    const novosHosts = {};
+    
+    // Mapear todos os pontos primeiro
+    hosts.forEach(ponto => {
+        if (ponto.local) {
+            const [lat, lng] = ponto.local.split(', ').map(Number);
+            novosHosts[ponto.ip] = { lat, lng, ativo: ponto.ativo };
+        }
+    });
+    
+    // Limpar as linhas existentes
+    linesLayer.clearLayers();
+    
+    // Criar novas linhas
+    hosts.forEach(ponto => {
+        if (ponto.ship && ponto.local) {
+            ponto.ship.split(', ').forEach(ship => {
+                if (novosHosts[ponto.ip] && novosHosts[ship]) {
+                    const chave = ponto.ip < ship ? `${ponto.ip}-${ship}` : `${ship}-${ponto.ip}`;
+                    
+                    if (!linhasChave[chave]) {
+                        const { lat: lat1, lng: lng1 } = novosHosts[ponto.ip];
+                        const { lat: lat2, lng: lng2 } = novosHosts[ship];
+                        L.polyline([[lat1, lng1], [lat2, lng2]], { color: ponto.ativo }).addTo(linesLayer);
+                        linhasChave[chave] = true;
+                    }
+                }
+            });
+        }
+    });
+    
+    // Adicionar ao mapa apenas se estiver visível
+    if (linesVisible) {
+        if (!map.hasLayer(linesLayer)) {
+            linesLayer.addTo(map);
+        }
+    } else {
+        if (map.hasLayer(linesLayer)) {
+            map.removeLayer(linesLayer);
+        }
+    }
+}
+
+// Função auxiliar para criar ícones
+function criarIcone(ponto) {
+    const [lat, lng] = ponto.local.split(', ').map(Number);
+    const zindex = ponto.ativo === 'red' ? 'z-index: 99999999999999999999;' : '';
+    
+    return L.divIcon({
+        className: 'custom-marker',
+        html: `<img src="https://i.ibb.co/21HsN0y1/sw.png" id="icone-sw" style="border: 2px solid ${ponto.ativo}; ${zindex} box-shadow: inset 0 0 0 1.5px blue; cursor: grab;" onclick="map.flyTo([${lat}, ${lng}], 18, { duration: 0.5 }); fillForm({ip: '${ponto.ip}', nome: '${ponto.nome}', local: '${ponto.local}', tipo: '${ponto.tipo}', ativo: '${ponto.ativo}'})"/>`,
+        iconSize: [0, 0],
+        iconAnchor: [15, 30],
+        popupAnchor: [0, -30]
+    });
 }
 
 // Inicialização do mapa
@@ -312,16 +497,7 @@ function toggleMapView(mapaAtual, mapaSatelite) {
     }
 }
 
-function toggleLines() {
-    linesVisible = !linesVisible;
-    if (linesVisible) {
-        linesLayer.addTo(map);
-        toggleDependencias.style.border = '3px solid #0303ff';
-    } else {
-        map.removeLayer(linesLayer);
-        toggleDependencias.style.border = '1px solid var(--color-secondary)';
-    }
-}
+
 
 // Atualização das listas
 function atualizarListas(dados) {
@@ -377,7 +553,7 @@ function configurarWebSocket() {
 async function loadHosts() {
     if (dadosAtuais.hosts && dadosAtuais.hosts.length > 0) {
         hosts = dadosAtuais.hosts;
-        displayHosts(hosts);
+        initializeInfiniteScroll();
         return;
     }
     try {
@@ -386,51 +562,269 @@ async function loadHosts() {
         if (!data || !data.hosts) throw new Error('Dados inválidos');
         hosts = data.hosts;
         dadosAtuais = data;
-        displayHosts(hosts);
+        initializeInfiniteScroll();
     } catch (error) {
         console.error('Erro ao carregar hosts:', error);
+        document.getElementById('hostList').innerHTML = 
+            '<div class="error-message">Erro ao carregar hosts. Tente novamente mais tarde.</div>';
     }
 }
 
-function displayHosts(hosts) {
+function displayHosts(hosts, isNewSearch = true) {
     const hostList = document.getElementById('hostList');
-    hostList.innerHTML = hosts.length === 0 ? '<div class="no-hosts">Nenhum host encontrado.</div>' : '';
-
-    hosts.forEach(host => {
+    
+    // Se for uma nova pesquisa, resetamos o estado
+    if (isNewSearch) {
+        hostList.innerHTML = '';
+        currentPage = 0;
+        allDisplayedHosts = [...hosts]; // Cópia do array de hosts
+        hasMoreHosts = true;
+    }
+    
+    // Se não houver hosts, mostra mensagem
+    if (hosts.length === 0) {
+        hostList.innerHTML = '<div class="no-hosts">Nenhum host encontrado.</div>';
+        return;
+    }
+    
+    // Calcula o intervalo de hosts para exibir
+    const startIndex = currentPage * hostsPerPage;
+    const endIndex = Math.min(startIndex + hostsPerPage, allDisplayedHosts.length);
+    
+    // Verifica se há mais hosts para carregar
+    hasMoreHosts = endIndex < allDisplayedHosts.length;
+    
+    // Cria um fragmento para melhor performance
+    const fragment = document.createDocumentFragment();
+    
+    // Adiciona os hosts do intervalo atual
+    for (let i = startIndex; i < endIndex; i++) {
+        const host = allDisplayedHosts[i];
         const hostItem = document.createElement('div');
         hostItem.className = 'host-item';
-        hostItem.innerHTML = `<b style="color: ${host.ativo};">*</b> ${host.ip}`;
+        hostItem.innerHTML = `<b style="color: ${host.ativo};">*</b> ${host.ip} - ${host.nome}`;
         hostItem.onclick = () => {
-            fillForm(host); // Preenche o formulário com os dados do host
+            fillForm(host);
             if (host.local) {
                 const [lat, lng] = host.local.split(', ').map(Number);
                 map.flyTo([lat, lng], 18, { duration: 0.5 });
-
-                // Encontra o marcador correspondente e abre o popup
-                markersLayer.eachLayer(marker => {
-                    const markerLatLng = marker.getLatLng();
-                    if (markerLatLng.lat === lat && markerLatLng.lng === lng) {
-                        marker.openPopup(); // Abre o popup com o nomedosw
-                    }
-                });
+                // Encontrar o marcador correspondente de forma mais eficiente
+                if (pontosMapeados[host.ip] && pontosMapeados[host.ip].marker) {
+                    pontosMapeados[host.ip].marker.openPopup();
+                }
             }
         };
-        hostList.appendChild(hostItem);
-    });
+        fragment.appendChild(hostItem);
+    }
+    
+    // Se for primeira página, substitui o conteúdo, senão adiciona ao final
+    if (isNewSearch) {
+        hostList.innerHTML = '';
+    }
+    
+    hostList.appendChild(fragment);
+    currentPage++;
+    isLoading = false;
+    
+    // Adiciona indicador de carregamento se houver mais hosts
+    if (hasMoreHosts) {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        if (!loadingIndicator) {
+            const indicator = document.createElement('div');
+            indicator.id = 'loading-indicator';
+            indicator.className = 'loading-indicator';
+            indicator.textContent = 'Carregando mais...';
+            hostList.appendChild(indicator);
+        }
+    } else {
+        // Remove o indicador se não houver mais hosts
+        const loadingIndicator = document.getElementById('loading-indicator');
+        if (loadingIndicator) {
+            loadingIndicator.remove();
+        }
+        
+        // Adicionar indicador de fim da lista se houver muitos hosts
+        if (allDisplayedHosts.length > hostsPerPage) {
+            const endIndicator = document.createElement('div');
+            endIndicator.className = 'end-indicator';
+            endIndicator.textContent = `Fim da lista - ${allDisplayedHosts.length} hosts encontrados`;
+            hostList.appendChild(endIndicator);
+        }
+    }
 }
+// Função para carregar mais hosts quando o scroll chegar ao fim
+function loadMoreHosts() {
+    if (!isLoading && hasMoreHosts) {
+        isLoading = true;
+        // Simulamos uma pequena latência para mostrar o indicador de carregamento
+        setTimeout(() => {
+            displayHosts(allDisplayedHosts, false);
+        }, 200);
+    }
+}
+
+// Configurar o evento de scroll para o containerHostList (ou o elemento que contém hostList)
+function setupInfiniteScroll() {
+    const containerHostList = document.getElementById('hostList').parentElement;
+    
+    containerHostList.addEventListener('scroll', () => {
+        // Verifica se o scroll chegou perto do fim (últimos 150px)
+        if (containerHostList.scrollHeight - containerHostList.scrollTop - containerHostList.clientHeight < 150) {
+            loadMoreHosts();
+        }
+    });
+    
+    // Adicionar CSS para o indicador de carregamento
+    const style = document.createElement('style');
+    style.textContent = `
+        .loading-indicator {
+            text-align: center;
+            padding: 10px;
+            color: var(--color-primary);
+            font-size: 14px;
+        }
+        .end-indicator {
+            text-align: center;
+            padding: 10px;
+            color: var(--color-secondary);
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        /* Adicionar estilo para dar feedback visual quando o host é clicado */
+        .host-item {
+            transition: background-color 0.3s ease;
+        }
+        .host-item:hover {
+            background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.1);
+        }
+        .host-item:active {
+            background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.2);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
 
 function filterHosts() {
-    const searchText = document.getElementById('search').value.toLowerCase();
+    const searchText = document.getElementById('search').value.toLowerCase().trim();
     const showOnlyWithoutLocation = document.getElementById('showOnlyWithoutLocation').checked;
-
-    const filteredHosts = hosts.filter(host => {
-        const matchesSearch = host.nome.toLowerCase().includes(searchText) || host.ip.toLowerCase().includes(searchText);
-        const hasNoLocation = !host.local || host.local.trim() === '';
-        return showOnlyWithoutLocation ? matchesSearch && hasNoLocation : matchesSearch;
-    });
-
-    displayHosts(filteredHosts);
+    
+    // Definir um limite para busca em tempo real para conjuntos muito grandes
+    const isLargeDataset = hosts.length > 1000;
+    
+    // Se for uma base de dados muito grande e a busca for menor que 3 caracteres, 
+    // exigir pelo menos 3 caracteres para iniciar a busca
+    if (isLargeDataset && searchText.length > 0 && searchText.length < 3) {
+        document.getElementById('hostList').innerHTML = 
+            '<div class="search-instruction">Digite pelo menos 3 caracteres para buscar em uma base grande.</div>';
+        return;
+    }
+    
+    // Se a busca estiver vazia e estiver mostrando apenas sem localização, 
+    // usar um subconjunto para desempenho
+    let filteredHosts;
+    if (!searchText && showOnlyWithoutLocation) {
+        filteredHosts = hosts.filter(host => !host.local || host.local.trim() === '');
+    } else if (!searchText && !showOnlyWithoutLocation) {
+        // Se não houver busca e não estiver filtrando por localização, 
+        // mostrar apenas os primeiros X hosts para performance
+        filteredHosts = hosts.slice(0, 200);
+        if (hosts.length > 200) {
+            // Adicionar um aviso de que é necessário buscar para ver mais
+            setTimeout(() => {
+                const hostList = document.getElementById('hostList');
+                const endNote = document.createElement('div');
+                endNote.className = 'end-indicator';
+                endNote.innerHTML = `Mostrando os primeiros 200 de ${hosts.length} hosts.<br>Use a busca para filtrar.`;
+                hostList.appendChild(endNote);
+            }, 100);
+        }
+    } else {
+        // Busca normal com filtros
+        filteredHosts = hosts.filter(host => {
+            const matchesSearch = host.nome.toLowerCase().includes(searchText) || 
+                                 host.ip.toLowerCase().includes(searchText);
+            const hasNoLocation = !host.local || host.local.trim() === '';
+            return showOnlyWithoutLocation ? matchesSearch && hasNoLocation : matchesSearch;
+        });
+    }
+    
+    // Usar o sistema de scroll infinito para exibir os hosts
+    displayHosts(filteredHosts, true);
 }
+
+function debounce(func, wait) {
+    let timeout;
+    return function(...args) {
+        const context = this;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+}
+
+function setupSearchFilter() {
+    const debouncedFilterHosts = debounce(filterHosts, 300);
+    
+    document.getElementById('search').addEventListener('input', debouncedFilterHosts);
+    document.getElementById('showOnlyWithoutLocation')?.addEventListener('change', filterHosts);
+    
+    // Adicionar evento de limpeza para o campo de busca
+    const searchInput = document.getElementById('search');
+    const clearButton = document.createElement('button');
+    clearButton.type = 'button';
+    clearButton.className = 'clear-search';
+    clearButton.innerHTML = '&times;';
+    clearButton.style.display = 'none';
+    clearButton.onclick = () => {
+        searchInput.value = '';
+        clearButton.style.display = 'none';
+        filterHosts();
+    };
+    
+    searchInput.parentNode.style.position = 'relative';
+    searchInput.parentNode.appendChild(clearButton);
+    
+    // Mostrar/ocultar botão de limpar
+    searchInput.addEventListener('input', () => {
+        clearButton.style.display = searchInput.value ? 'block' : 'none';
+    });
+    
+    // Estilo para o botão de limpar
+    const style = document.createElement('style');
+    style.textContent = `
+        .clear-search {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--color-secondary);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .clear-search:hover {
+            background-color: rgba(var(--color-secondary-rgb, 64, 72, 81), 0.1);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Inicialização para scroll infinito
+function initializeInfiniteScroll() {
+    setupInfiniteScroll();
+    setupSearchFilter();
+    // Fazer a primeira carga de dados
+    filterHosts();
+}
+
 
 function fillForm(host) {
     document.getElementById('ip').value = host.ip;
