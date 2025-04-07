@@ -5,23 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwitchMap</title>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://switch-map-2-dev.vercel.app/frontend/source/style.css">
-
-    <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/locaisDeafult.js"></script>
-
-    <!-- websocket -->
-    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.min.js"></script>
-
-</head>
-<body>
-
-    <div class="theme" id="theme">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://switch-map-2-dev.vercel.app/frontend/source/style.css">    <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/locaisDeafult.js"></script>    <!-- websocket -->
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.min.js"></script></head>
+<body>    <div class="theme" id="theme">
         <style>
             :root{
                 --color-glass: #16191ec2;
@@ -32,35 +20,18 @@
             }
         </style>
     </div>
-    <!-- Desenvolvido por pedromoura.idr@suzano.com.br -->
-
-    
-    <div id="map"></div>
-
-    <div class="mudartipo" id="mudartipo">
+    <!-- Desenvolvido por pedromoura.idr@suzano.com.br -->      <div id="map"></div>    <div class="mudartipo" id="mudartipo">
         <div class="checkbox-wrapper-4">
             <img src="https://i.ibb.co/vv6Zs4vP/sat.png" id="mapToggleImage" alt="Alternar mapa" onclick="alterarCor()"/>
         </div>
     </div>
-    
-    <span id="creditos">Desenvolvido por <b>Pedro Moura</b></span>
-    
-    <div class="barravertical">
-
-        <div class="alert" onclick="showRedHostsPopup()">
-
-            <div id="countAlert">
+      <span id="creditos">Desenvolvido por <b>Pedro Moura</b></span>
+      <div class="barravertical">        <div class="alert" onclick="showRedHostsPopup()">            <div id="countAlert">
                 <div id="alertNum"></div>
-            </div>
-
-            <svg viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </div>            <svg viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M18.2202 21.25H5.78015C5.14217 21.2775 4.50834 21.1347 3.94373 20.8364C3.37911 20.5381 2.90402 20.095 2.56714 19.5526C2.23026 19.0101 2.04372 18.3877 2.02667 17.7494C2.00963 17.111 2.1627 16.4797 2.47015 15.92L8.69013 5.10999C9.03495 4.54078 9.52077 4.07013 10.1006 3.74347C10.6804 3.41681 11.3346 3.24518 12.0001 3.24518C12.6656 3.24518 13.3199 3.41681 13.8997 3.74347C14.4795 4.07013 14.9654 4.54078 15.3102 5.10999L21.5302 15.92C21.8376 16.4797 21.9907 17.111 21.9736 17.7494C21.9566 18.3877 21.7701 19.0101 21.4332 19.5526C21.0963 20.095 20.6211 20.5381 20.0565 20.8364C19.4919 21.1347 18.8581 21.2775 18.2202 21.25V21.25Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M10.8809 17.15C10.8809 17.0021 10.9102 16.8556 10.9671 16.7191C11.024 16.5825 11.1074 16.4586 11.2125 16.3545C11.3175 16.2504 11.4422 16.1681 11.5792 16.1124C11.7163 16.0567 11.8629 16.0287 12.0109 16.03C12.2291 16.034 12.4413 16.1021 12.621 16.226C12.8006 16.3499 12.9398 16.5241 13.0211 16.7266C13.1023 16.9292 13.122 17.1512 13.0778 17.3649C13.0335 17.5786 12.9272 17.7745 12.7722 17.9282C12.6172 18.0818 12.4203 18.1863 12.2062 18.2287C11.9921 18.2711 11.7703 18.2494 11.5685 18.1663C11.3666 18.0833 11.1938 17.9426 11.0715 17.7618C10.9492 17.5811 10.8829 17.3683 10.8809 17.15ZM11.2409 14.42L11.1009 9.20001C11.0876 9.07453 11.1008 8.94766 11.1398 8.82764C11.1787 8.70761 11.2424 8.5971 11.3268 8.5033C11.4112 8.40949 11.5144 8.33449 11.6296 8.28314C11.7449 8.2318 11.8697 8.20526 11.9959 8.20526C12.1221 8.20526 12.2469 8.2318 12.3621 8.28314C12.4774 8.33449 12.5805 8.40949 12.6649 8.5033C12.7493 8.5971 12.8131 8.70761 12.852 8.82764C12.8909 8.94766 12.9042 9.07453 12.8909 9.20001L12.7609 14.42C12.7609 14.6215 12.6808 14.8149 12.5383 14.9574C12.3957 15.0999 12.2024 15.18 12.0009 15.18C11.7993 15.18 11.606 15.0999 11.4635 14.9574C11.321 14.8149 11.2409 14.6215 11.2409 14.42Z" fill="#000000"/>
-                </svg>
-
-        </div>
-
-        <button id="update" onclick="triggerUpdateAnimation()">
+                </svg>        </div>        <button id="update" onclick="triggerUpdateAnimation()">
     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="155.724px" height="155.723px" viewBox="0 0 155.724 155.723" style="enable-background:new 0 0 155.724 155.723;" xml:space="preserve">
         <g>
             <g id="_x33_50._Repeat">
@@ -77,34 +48,24 @@
             </g>
         </g>
     </svg>
-</button>
-
-<script>
+</button><script>
     function triggerUpdateAnimation() {
     const updateButton = document.getElementById('update');
-    
-    // Adiciona a classe para disparar a animação
+      // Adiciona a classe para disparar a animação
     updateButton.classList.add('clicked');
-    
-    // Chama a função de atualização
+      // Chama a função de atualização
     atualizarDadosManualmente();
-    
-    // Remove a classe após 1,5 segundos (duração da animação)
+      // Remove a classe após 1,5 segundos (duração da animação)
     setTimeout(() => {
         updateButton.classList.remove('clicked');
     }, 1500); // 1500ms = 1.5s
 }
-</script>
-
-    
-    <div class="icons">
+</script>      <div class="icons">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="exibirJanela('toggleTitulo'), exibirHome(), limparAprove()">
             <path opacity="0.5" d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"  stroke-width="1.5"/>
             <path d="M15 18H9" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
-            <br>
-
-            <div class="sectionData">
+            <br>            <div class="sectionData">
                                    <!-- SVG como botão -->
                                    <button id="toggleButtonPlus" onclick="showSection('editar'), exibirJanela('toggleTitulo'), exibirEditar(), limparAprove()">
                                     <svg id="toggleButtonPlusSVG" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -115,79 +76,44 @@
                                         <path d="M11 21C4 21 4 18 4 18V12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
                                 </button>
-                        
-                                
-            </div>
-<br>
-
-<button onclick="exibirJanela('toggleTitulo'); exibirAprovacao()" style="background: none; border: none;">
+                                                                </div>
+<br><button onclick="exibirJanela('toggleTitulo'); exibirAprovacao()" style="background: none; border: none;">
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="none"/>
     </svg>
-</button>
-
-            
- <br>
-
-<!--             <div id="buttonContainer" class="hidden" onclick="showSection('adicionar'), exibirJanela('toggleTitulo'), exibirAdicionar()">
+</button>           <br><!--             <div id="buttonContainer" class="hidden" onclick="showSection('adicionar'), exibirJanela('toggleTitulo'), exibirAdicionar()">
                 <svg id="buttonAdd" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill="none"  clip-rule="evenodd" d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM12.5 5.5C13.0523 5.5 13.5 5.94772 13.5 6.5V10.5H17.5C18.0523 10.5 18.5 10.9477 18.5 11.5V12.5C18.5 13.0523 18.0523 13.5 17.5 13.5H13.5V17.5C13.5 18.0523 13.0523 18.5 12.5 18.5H11.5C10.9477 18.5 10.5 18.0523 10.5 17.5V13.5H6.5C5.94772 13.5 5.5 13.0523 5.5 12.5V11.5C5.5 10.9477 5.94772 10.5 6.5 10.5H10.5V6.5C10.5 5.94772 10.9477 5.5 11.5 5.5H12.5Z" fill="#000000"/>
                     </svg>
             </div>
-        
-    
-        <script>
-            buttonContainer.classList.toggle("hidden");
-
-            let janela = 0;
-
-           function exibirJanela(id) {
+                <script>
+            buttonContainer.classList.toggle("hidden");            let janela = 0;           function exibirJanela(id) {
             if (janela == 0) {
                 document.getElementById(id).click();
             }
            }
-           
-        //    document.getElementByClassName('leaflet-popup-close-button').click();
+                 //    document.getElementByClassName('leaflet-popup-close-button').click();
         </script> -->
     </div>
-
-
 <!-- 
     <button id="toggleThemeButton">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-text)" xmlns="http://www.w3.org/2000/svg">
             <path  clip-rule="evenodd" d="M3.39703 11.6315C3.39703 16.602 7.42647 20.6315 12.397 20.6315C15.6858 20.6315 18.5656 18.8664 20.1358 16.23C16.7285 17.3289 12.6922 16.7548 9.98282 14.0455C7.25201 11.3146 6.72603 7.28415 7.86703 3.89293C5.20697 5.47927 3.39703 8.38932 3.39703 11.6315ZM21.187 13.5851C22.0125 13.1021 23.255 13.6488 23 14.5706C21.7144 19.2187 17.4543 22.6315 12.397 22.6315C6.3219 22.6315 1.39703 17.7066 1.39703 11.6315C1.39703 6.58874 4.93533 2.25845 9.61528 0.999986C10.5393 0.751502 11.0645 1.99378 10.5641 2.80935C8.70026 5.84656 8.83194 10.0661 11.397 12.6312C13.9319 15.1662 18.1365 15.3702 21.187 13.5851Z"/>
         </svg>
-    </button> -->
-
-    </div>
-
-
-    <div class="titulo" id="tituloBox" style="flex-wrap: wrap;">
-
-        <button id="toggleTitulo"></button>
-
-    
-    <div class="homebox" id="homebox">
-            
-            <label for="ipBusca" class="pesquisa"> 
+    </button> -->    </div>
+    <div class="titulo" id="tituloBox" style="flex-wrap: wrap;">        <button id="toggleTitulo"></button>      <div class="homebox" id="homebox">
+                      <label for="ipBusca" class="pesquisa"> 
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                 </svg>
                 <input type="text" name="ipBusca" id="ipBusca" placeholder="Pesquisar por IP" onkeyup="pesquisarPorIP()">
-            </label>
-
-        <div class="imgCorp">
+            </label>        <div class="imgCorp">
             <img id="logoCliente" src="">
-        </div>
-
-        <div class="quantidadeEquipamentos">
-            
-           <span style="color: var(--color-text);"><b id="countEquipamentos"></b> Consultados</span>
+        </div>        <div class="quantidadeEquipamentos">
+                     <span style="color: var(--color-text);"><b id="countEquipamentos"></b> Consultados</span>
         <br>
            <span style="color: var(--color-text);"><b id="countEquipamentosSemLocal"></b> Sem Local</span>
-        </div>
-
-        <!-- <div class="quantidadeEquipamentos">
+        </div>        <!-- <div class="quantidadeEquipamentos">
             <span style="color: var(--color-text);"><b id="countOff"></b> Sem Conexão</span>
          </div> -->
 <br> <br><br><br>
@@ -215,9 +141,7 @@
             </svg>
             <div class="quantidadeEquipamentos">
                 <span><b id="countUnidades">0</b> Unidades</span>
-            </div>
-
-         </div>
+            </div>         </div>
          <div class="unidadesPorEstado">
             <h3>Equipamentos por Estado</h3>
             <div class="estados-box">
@@ -235,16 +159,12 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 400px; /* Limite máximo para telas grandes */
-}
-
-.unidadesPorEstado h3 {
+}.unidadesPorEstado h3 {
     color: var(--color-primary);
     font-size: 16px;
     margin-bottom: 10px;
     text-align: center;
-}
-
-.estados-box {
+}.estados-box {
     max-height: 300px; /* Altura fixa para a caixa */
     overflow-y: auto; /* Barra de rolagem vertical */
     overflow-x: hidden; /* Sem rolagem horizontal */
@@ -252,143 +172,91 @@
     border-radius: 5px;
     padding: 5px;
     background: var(--color-background);
-}
-
-.estados-container {
+}.estados-container {
     display: flex;
     flex-direction: column;
     gap: 8px;
-}
-
-.estado-item {
+}.estado-item {
     padding: 8px 10px;
     border-radius: 5px;
     border: 1px solid var(--color-secondary);
     cursor: pointer;
     transition: background-color 0.2s ease;
-}
-
-.estado-item:hover {
+}.estado-item:hover {
     background-color: rgba(var(--color-secondary-rgb, 64, 72, 81), 0.1);
-}
-
-.estado-header {
+}.estado-header {
     display: flex;
     align-items: center;
     gap: 8px;
-}
-
-.estado-nome {
+}.estado-nome {
     color: var(--color-text);
     font-size: 14px;
     font-weight: bold;
-}
-
-.estado-status {
+}.estado-status {
     display: flex;
     align-items: center;
     gap: 5px;
-}
-
-.estado-status span {
+}.estado-status span {
     font-size: 12px;
-}
-
-.total {
+}.total {
     color: var(--color-text);
     font-weight: bold;
-}
-
-.online {
+}.online {
     color: #00d700;
-}
-
-.offline {
+}.offline {
     color: #ff0000;
-}
-
-.unidades-list {
+}.unidades-list {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
     margin-top: 5px;
-}
-
-.unidades-list.expanded {
+}.unidades-list.expanded {
     max-height: 500px; /* Altura máxima suficiente para exibir todas as unidades */
-}
-
-.unidade-item {
+}.unidade-item {
     padding: 5px 10px;
     border-top: 1px solid var(--color-secondary);
     display: flex;
     justify-content: space-between;
     font-size: 12px;
     color: var(--color-text);
-}
-
-.unidade-item .status {
+}.unidade-item .status {
     display: flex;
     gap: 5px;
-}
-
-/* Ajustes para responsividade */
+}/* Ajustes para responsividade */
 @media (max-width: 600px) {
     .unidadesPorEstado {
         max-width: 100%; /* Ocupa toda a largura em telas pequenas */
     }
-    
-    .estados-box {
+      .estados-box {
         max-height: 200px; /* Altura menor em telas pequenas */
     }
-}
-
-/* Estilização da barra de rolagem para melhor UX */
+}/* Estilização da barra de rolagem para melhor UX */
 .estados-box::-webkit-scrollbar {
     width: 8px;
-}
-
-.estados-box::-webkit-scrollbar-track {
+}.estados-box::-webkit-scrollbar-track {
     background: var(--color-background);
     border-radius: 5px;
-}
-
-.estados-box::-webkit-scrollbar-thumb {
+}.estados-box::-webkit-scrollbar-thumb {
     background: var(--color-secondary);
     border-radius: 5px;
-}
-
-.estados-box::-webkit-scrollbar-thumb:hover {
+}.estados-box::-webkit-scrollbar-thumb:hover {
     background: var(--color-primary);
 }
         </style>
-    </div>
-
-    <div class="databox" id="databox">
+    </div>    <div class="databox" id="databox">
         <div class="adicionarEquipamento" id="adicionarEquipamento">
-                <!-- Seção de Adição de Host -->
-
-                
-    <div id="adicionarSection" class="hidden">
+                <!-- Seção de Adição de Host -->                  <div id="adicionarSection" class="hidden">
         <h2>Adicionar Host</h2>
         <form id="adicionarHostForm">
             <label for="novoIp">IP</label>
-            <input type="text" id="novoIp" name="ip" placeholder="IP do equipamento" required>
-
-            <label for="novoNome">Nome</label>
-            <input type="text" id="novoNome" name="nome" placeholder="Hostname" required>
-
-            <label for="novoLocal">Local</label>
-            <input type="text" id="novoLocal" name="local" placeholder="Latitude, Longitude">
-
-            <!-- <label for="novoTipo">Tipo:</label>
+            <input type="text" id="novoIp" name="ip" placeholder="IP do equipamento" required>            <label for="novoNome">Nome</label>
+            <input type="text" id="novoNome" name="nome" placeholder="Hostname" required>            <label for="novoLocal">Local</label>
+            <input type="text" id="novoLocal" name="local" placeholder="Latitude, Longitude">            <!-- <label for="novoTipo">Tipo:</label>
             <select id="novoTipo" name="tipo">
                 <option value="sw">Switch</option>
                 <option value="router">Router</option>
                 <option value="server">Server</option>
-            </select> -->
-
-            <label for="novoAtivo">Status:</label>
+            </select> -->            <label for="novoAtivo">Status:</label>
             <select id="novoAtivo" name="ativo">
                 <option value="green">Green</option>
                 <option value="red">Red</option>
@@ -397,19 +265,13 @@
             <button id="submit" type="submit">Adicionar Host</button>
         </form>
     </div>
-        </div>
-
-        <div class="approval-section" id="approvalSection" style="display: none;">
+        </div>        <div class="approval-section" id="approvalSection" style="display: none;">
             <h2>Solicitações</h2>
             <div id="pendingEditsList" style="overflow: auto; height: 85dvh;"></div>
-        </div>
-
-<div class="editarEquipamento" id="editarEquipamento">
+        </div><div class="editarEquipamento" id="editarEquipamento">
     <h2>Editar Host</h2>
     <div id="editarSection">
-        <div class="editarbox">
-
-            <div class="search-container">
+        <div class="editarbox">            <div class="search-container">
                 <label for="search" class="search"> 
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -418,13 +280,9 @@
                         <input type="text" name="search" id="search" placeholder="Pesquisar por IP" style="top: 4px; border: none;" oninput="filterHosts()"></div>
                 </label>
             </div>
-            <div class="exibirSemLocal">
-
-                <label class="checkbox-container">
+            <div class="exibirSemLocal">                <label class="checkbox-container">
                     <input class="custom-checkbox" type="checkbox" id="showOnlyWithoutLocation" onchange="filterHosts()"><span class="checkmark"></span> Exibir Sem Local 
-                    
-                   
-                </label>
+                                                   </label>
                 <br><br>
                 <style>
                     /* From Uiverse.io by DaniloMGutavo */ 
@@ -448,8 +306,7 @@
                   height: 0;
                   width: 0;
                 }
-                
-                .checkmark {
+                              .checkmark {
                   position: relative;
                   top: 0;
                   height: 10px;
@@ -460,8 +317,7 @@
                   transition: background-color 0.3s;
                   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
                 }
-                
-                .pendingEditsLists {
+                              .pendingEditsLists {
     border: 1px solid var(--color-primary);
     border-radius: 10px;
     margin: 10px;
@@ -469,14 +325,10 @@
     text-align: center;
     background: var(--color-glass);
     color: var(--color-text);
-}
-
-.pendingEditsLists p {
+}.pendingEditsLists p {
     text-align: left;
     margin: 10px 0;
-}
-
-.pendingEditsLists button {
+}.pendingEditsLists button {
     margin: 5px;
     padding: 5px 10px;
     background: var(--color-primary);
@@ -484,53 +336,35 @@
     color: var(--color-text);
     border-radius: 4px;
     cursor: pointer;
-}
-
-.pendingEditsLists button:hover {
+}.pendingEditsLists button:hover {
     border: 1px solid var(--color-text);
 }
-                
-                .custom-checkbox:checked ~ .checkmark {
+                              .custom-checkbox:checked ~ .checkmark {
                   background-color: var(--color-primary);
                   box-shadow: 0 3px 7px var(--color-secondary);
                 }
-                
-                .custom-checkbox:checked ~ .checkmark:after {
+                              .custom-checkbox:checked ~ .checkmark:after {
                   display: block;
                 }
-                
-                @keyframes checkAnim {
+                              @keyframes checkAnim {
                   0% {
                     height: 0;
                   }
-                
-                  100% {
+                                100% {
                     height: 10px;
                   }
                 }
-                
-                .custom-checkbox:checked ~ .checkmark:after {
+                              .custom-checkbox:checked ~ .checkmark:after {
                   animation: checkAnim 0.2s forwards;
                 }
-                
-                </style>
-                            
-                        </div>
-            <div class="host-list" id="hostList"></div>    
-
-        </div>
-
-        <form id="editarHostForm">
+                              </style>
+                                                  </div>
+            <div class="host-list" id="hostList"></div>  
+        </div>        <form id="editarHostForm">
             <label for="ip">IP</label>
-            <input type="text" id="ip" name="ip" placeholder="IP do equipamento" required><br>
-
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" placeholder="Hostname"><br>
-
-            <label for="observacao">Observacao</label>
-            <input type="text" id="observacao" name="observacao" placeholder="Observacao"><br>
-
-            <label for="local">Local</label>
+            <input type="text" id="ip" name="ip" placeholder="IP do equipamento" required><br>            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" placeholder="Hostname"><br>            <label for="observacao">Observacao</label>
+            <input type="text" id="observacao" name="observacao" placeholder="Observacao"><br>            <label for="local">Local</label>
             <input type="text" id="local" name="local" placeholder="Latitude, Longitude"><br>
             <br>
             <!-- <label for="tipo">Tipo:</label>
@@ -543,20 +377,12 @@
             <select id="ativo" name="ativo" style="display: none;">
                 <option value="green">Green</option>
                 <option value="red">Red</option>
-            </select><br><br>
-
-            <button id="submit" type="submit">Solicitar Alterações</button>
+            </select><br><br>            <button id="submit" type="submit">Solicitar Alterações</button>
         </form>
-    </div>
-
-    
-    <div id="message" class="message"></div>
-
-
+    </div>      <div id="message" class="message"></div>
     <script>
 let approvalSection = document.getElementById('approvalSection');
 let databoxsection = document.getElementById('databox')
-
 function exibirAprovacao() {
     console.log('Exibindo Aprovação');
     console.log('editarEquipamento:', editarEquipamento);
@@ -567,37 +393,25 @@ function exibirAprovacao() {
     approvalSection.style.display = 'block';
     databoxsection.style.display = 'block';
     loadPendingEdits();
-
-
-}
-
-function limparAprove() {
+}function limparAprove() {
     approvalSection.style.display = 'none';
-}
-
-function exibirEditar() {
+}function exibirEditar() {
     editarEquipamento.style.display = 'block';
     adicionarEquipamento.style.display = 'none';
     homebox.style.display = 'none';
     databoxsection.style.display = 'block';
     limparInput?.();
-}
-
-function exibirAdicionar() {
+}function exibirAdicionar() {
     editarEquipamento.style.display = 'none';
     adicionarEquipamento.style.display = 'block';
     homebox.style.display = 'none';
     databoxsection.style.display = 'block';
-}
-
-function exibirHome() {
+}function exibirHome() {
     databoxsection.style.display = 'none';
     editarEquipamento.style.display = 'none';
     adicionarEquipamento.style.display = 'none';
     homebox.style.display = 'flex';
-}
-
-async function loadPendingEdits() {
+}async function loadPendingEdits() {
     try {
         console.log('Carregando edições pendentes...');
         const response = await fetch(`${server}/pending-edits`, {
@@ -607,41 +421,29 @@ async function loadPendingEdits() {
         const pendingEdits = await response.json();
         console.log('Edições:', pendingEdits);
         const list = document.getElementById('pendingEditsList');
-        list.innerHTML = pendingEdits.length === 0 ? '<p>Nenhuma edição pendente.</p>' : '';
-
-        pendingEdits.forEach(edit => {
+        list.innerHTML = pendingEdits.length === 0 ? '<p>Nenhuma edição pendente.</p>' : '';        pendingEdits.forEach(edit => {
             const div = document.createElement('div');
-            const formattedDate = formatDate(edit.data_solicitacao);
-
-            const originalHost = dadosAtuais.hosts.find(host => host.ip === edit.ip) || {};
+            const formattedDate = formatDate(edit.data_solicitacao);            const originalHost = dadosAtuais.hosts.find(host => host.ip === edit.ip) || {};
             const original = {
                 ip: originalHost.ip || '',
                 nome: originalHost.nome || '',
                 local: originalHost.local || '',
                 observacao: originalHost.observacao || ''
             };
-            const novo = edit;
-
-            const highlightChange = (field, originalValue, newValue) => {
+            const novo = edit;            const highlightChange = (field, originalValue, newValue) => {
                 if (originalValue !== newValue) {
                     return `${field}:<br><span style="background-color: #00ff0078; font-weight: bold;"> ${newValue || '(vazia)'}</span> -> <span style="background-color: #ff000066; font-weight: bold;">${originalValue || '(vazia)'}</span>`;
                 }
                 return `<span>${field}:<br> ${newValue || '(vazia)'}</span>`;
-            };
-
-            const changesHtml = `
+            };            const changesHtml = `
                 <p>${highlightChange('IP', original.ip, novo.ip)}</p>
                 <p>${highlightChange('Nome', original.nome, novo.nome)}</p>
                 <p>${highlightChange('Local', original.local, novo.local)}</p>
                 <p>${highlightChange('Observação', original.observacao, novo.observacao)}</p>
-            `;
-
-            // Passa o IP junto com o local
+            `;            // Passa o IP junto com o local
             const mapButton = original.local !== novo.local && novo.local 
                 ? `<br><button class="button is-ghost" onclick="showProposedLocation('${novo.local}', '${novo.ip}')">Ver no Mapa</button>` 
-                : '';
-
-            div.className = 'modal-container';
+                : '';            div.className = 'modal-container';
             div.innerHTML = `
                 <header class="modal-container-header">
                     <span class="modal-container-title">
@@ -668,20 +470,12 @@ async function loadPendingEdits() {
         console.error('Erro:', error);
         document.getElementById('pendingEditsList').innerHTML = '<p>Erro ao carregar edições.</p>';
     }
-}
-
-// Função para mostrar a localização proposta no mapa
+}// Função para mostrar a localização proposta no mapa
 function showProposedLocation(local, ip) {
-    console.log('Chamando showProposedLocation com local:', local, 'e IP:', ip);
-
-    const [lat, lng] = local.split(', ').map(Number);
+    console.log('Chamando showProposedLocation com local:', local, 'e IP:', ip);    const [lat, lng] = local.split(', ').map(Number);
     if (!isNaN(lat) && !isNaN(lng)) {
-        console.log('Coordenadas válidas:', lat, lng);
-
-        // "Voa" para a nova localização no mapa
-        map.flyTo([lat, lng], 18, { duration: 0.5 });
-
-        // Adiciona um marcador temporário para destacar a localização proposta
+        console.log('Coordenadas válidas:', lat, lng);        // "Voa" para a nova localização no mapa
+        map.flyTo([lat, lng], 18, { duration: 0.5 });        // Adiciona um marcador temporário para destacar a localização proposta
         const tempMarker = L.marker([lat, lng], {
             icon: L.divIcon({
                 className: 'temp-marker',
@@ -689,17 +483,11 @@ function showProposedLocation(local, ip) {
                 iconSize: [20, 20],
                 iconAnchor: [10, 10]
             })
-        }).addTo(map);
-
-        console.log('Marcador temporário adicionado em:', [lat, lng]);
-
-        // Remove o marcador temporário após 5 segundos
+        }).addTo(map);        console.log('Marcador temporário adicionado em:', [lat, lng]);        // Remove o marcador temporário após 5 segundos
         setTimeout(() => {
             map.removeLayer(tempMarker);
             console.log('Marcador temporário removido');
-        }, 5000);
-
-        // Busca o marcador pelo IP em pontosMapeados
+        }, 5000);        // Busca o marcador pelo IP em pontosMapeados
         if (ip && pontosMapeados[ip] && pontosMapeados[ip].marker) {
             const marker = pontosMapeados[ip].marker;
             marker.openPopup();
@@ -723,9 +511,7 @@ function showProposedLocation(local, ip) {
         console.error('Coordenadas inválidas:', local);
         alert('Coordenadas inválidas!');
     }
-}
-
-// Função para formatar a data
+}// Função para formatar a data
 function formatDate(isoDate) {
     const date = new Date(isoDate);
     const day = String(date.getDate()).padStart(2, '0');
@@ -745,9 +531,7 @@ async function approveEdit(id) {
     } catch (error) {
         console.error('Erro ao aprovar:', error);
     }
-}
-
-async function rejectEdit(id) {
+}async function rejectEdit(id) {
     try {
         const response = await fetch(`${server}/reject-edit/${id}`, { method: 'DELETE' });
         if (response.ok) {
@@ -761,61 +545,38 @@ async function rejectEdit(id) {
         function showSection(section) {
             document.getElementById('editarSection').classList.add('hidden');
             document.getElementById('adicionarSection').classList.add('hidden');
-            
-            document.getElementById(`${section}Section`).classList.remove('hidden');
-        }
-
-document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    const ip = document.getElementById('ip').value;
+                      document.getElementById(`${section}Section`).classList.remove('hidden');
+        }document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
+    event.preventDefault();    const ip = document.getElementById('ip').value;
     const nome = document.getElementById('nome').value;
     const local = document.getElementById('local').value;
     const observacao = document.getElementById('observacao').value;
     const tipo = 'sw';
-    const ativo = "blue";
-
-    const messageDiv = document.getElementById('message');
+    const ativo = "blue";    const messageDiv = document.getElementById('message');
     const submitButton = document.querySelector('#editarHostForm button[type="submit"]'); // Referência ao botão
     messageDiv.textContent = '';
-    messageDiv.classList.remove('success', 'error');
-
-    if (!ip) {
+    messageDiv.classList.remove('success', 'error');    if (!ip) {
         messageDiv.textContent = 'O campo "IP" é obrigatório.';
         messageDiv.classList.add('error');
         return;
-    }
-
-    // Mudar o texto do botão para "Enviando..." e desabilitá-lo durante o envio
+    }    // Mudar o texto do botão para "Enviando..." e desabilitá-lo durante o envio
     submitButton.textContent = 'Enviando...';
-    submitButton.disabled = true;
-
-    try {
+    submitButton.disabled = true;    try {
         const response = await fetch(`${server}/editar-host`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ ip, nome, local, observacao, tipo, ativo })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
+        });        const data = await response.json();        if (response.ok) {
             // Mudar o texto do botão para "Enviado" e aplicar estilo de sucesso
             submitButton.textContent = 'Enviado';
             submitButton.style.backgroundColor = '#28a745'; // Verde para sucesso
-            submitButton.style.color = '#fff';
-
-            // Limpar o formulário
+            submitButton.style.color = '#fff';            // Limpar o formulário
             const form = document.getElementById('editarHostForm');
-            form.reset();
-
-            // Exibir mensagem de sucesso no messageDiv
+            form.reset();            // Exibir mensagem de sucesso no messageDiv
             messageDiv.textContent = 'Solicitação enviada para aprovação!';
-            messageDiv.classList.add('success');
-
-            // Restaurar o botão ao estado original após 3 segundos
+            messageDiv.classList.add('success');            // Restaurar o botão ao estado original após 3 segundos
             setTimeout(() => {
                 submitButton.textContent = 'Solicitar Alterações';
                 submitButton.style.backgroundColor = ''; // Volta ao estilo original
@@ -837,11 +598,7 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
         submitButton.textContent = 'Solicitar Alterações';
         submitButton.disabled = false;
     }
-});
-
-   </script>
-
-
+});   </script>
 <style>
     #editarHostForm button[type="submit"] {
     padding: 10px 20px;
@@ -851,18 +608,13 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-#editarHostForm button[type="submit"]:disabled {
+}#editarHostForm button[type="submit"]:disabled {
     background: var(--color-secondary);
     cursor: not-allowed;
-}
-
-#editarHostForm button[type="submit"]:hover:not(:disabled) {
+}#editarHostForm button[type="submit"]:hover:not(:disabled) {
     background: #3a6b9a; /* Um tom mais escuro de --color-primary */
 }
-    
-    .custom-alert {
+      .custom-alert {
     position: fixed;
     top: 20px;
     left: 50%;
@@ -879,17 +631,14 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
     text-align: center;
     opacity: 0;
     animation: fadeInOut 3s ease-in-out forwards;
-}
-
-/* Animação de entrada e saída */
+}/* Animação de entrada e saída */
 @keyframes fadeInOut {
     0% { opacity: 0; transform: translate(-50%, -20px); }
     10% { opacity: 1; transform: translate(-50%, 0); }
     90% { opacity: 1; transform: translate(-50%, 0); }
     100% { opacity: 0; transform: translate(-50%, -20px); }
 }
-    
-        .databox { position: relative; width: 100%;}
+          .databox { position: relative; width: 100%;}
         .modal {
             display: none;
             position: fixed;
@@ -1009,23 +758,17 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
     flex-direction: column;
     box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.25);
     color: var(--color-text);
-}
-
-@media (max-width: 600px) {
+}@media (max-width: 600px) {
     .modal-container {
         width: 90%;
     }
-}
-
-.modal-container-header {
+}.modal-container-header {
     padding: 16px 23px;
     border-bottom: 1px solid var(--color-secondary);
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.modal-container-title {
+}.modal-container-title {
     display: flex;
     align-items: center;
     color: var(--color-background);
@@ -1033,28 +776,20 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
     line-height: 1;
     font-weight: 700;
     font-size: 0.9em;
-}
-
-.modal-container-title svg {
+}.modal-container-title svg {
     width: 32px;
     height: 32px;
     color: var(--color-primary);
-}
-
-.modal-container-body {
+}.modal-container-body {
     padding: 0px 12px 0px;
     overflow-y: auto;
     color: var(--color-background);
     font-size: 14px;
     height: 140px;
-}
-
-.rtf > * + * {
+}.rtf > * + * {
     margin-top: 0em;
     margin-bottom: 0.5em;
-}
-
-.modal-container-footer {
+}.modal-container-footer {
     padding: 15px 15px;
     display: flex;
     align-items: center;
@@ -1064,9 +799,7 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
     position: relative;
     flex-wrap: wrap;
     height: fit-content;
-}
-
-.modal-container-footer:after {
+}.modal-container-footer:after {
     content: "";
     display: block;
     position: absolute;
@@ -1076,9 +809,7 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
     height: 50px;
     background-image: linear-gradient(to top, rgba(0, 0, 0, 0.233), transparent);
     pointer-events: none;
-}
-
-.button {
+}.button {
     padding: 12px 20px;
     border-radius: 8px;
     background-color: transparent;
@@ -1087,24 +818,16 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
     cursor: pointer;
     transition: 0.15s ease;
     color: var(--color-text);
-}
-
-.button.is-ghost:hover,
+}.button.is-ghost:hover,
 .button.is-ghost:focus {
     background-color: var(--color-secondary);
-}
-
-.button.is-primary {
+}.button.is-primary {
     background-color: var(--color-primary);
     color: var(--color-text);
-}
-
-.button.is-primary:hover,
+}.button.is-primary:hover,
 .button.is-primary:focus {
     background-color: #3a6b9a; /* Um tom mais escuro de --color-primary (#4A87C0) */
-}
-
-.icon-button {
+}.icon-button {
     padding: 0;
     border: 0;
     background-color: transparent;
@@ -1116,57 +839,31 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
     cursor: pointer;
     border-radius: 8px;
     transition: 0.15s ease;
-}
-
-.icon-button svg {
+}.icon-button svg {
     width: 24px;
     height: 24px;
-}
-
-.icon-button:hover,
+}.icon-button:hover,
 .icon-button:focus {
     background-color: var(--color-secondary);
 }
 </style>
-</div>
-
-    </div>
-
-    <div id="listaItensSL">
-        
-    </div>
-
-    <div id="listaItensOff">
-            
-    </div>
-
-    </div>
-
-
-    <script>
-
-document.getElementById("toggleTitulo").addEventListener("click", function() {
+</div>    </div>    <div id="listaItensSL">
+          </div>    <div id="listaItensOff">
+              </div>    </div>
+    <script>document.getElementById("toggleTitulo").addEventListener("click", function() {
     document.getElementById("tituloBox").classList.toggle("ativo");
     if (janela == 0) {
         janela = 1;
     } else {
         janela = 0;
     }
-});
-
-    </script>
-
-    <div class="container">
-
-            <!-- Popup para exibir hosts com status "red" -->
+});    </script>    <div class="container">            <!-- Popup para exibir hosts com status "red" -->
 <div id="redHostsPopup" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Offline</h2>
         <div id="redHostsList"></div>
-    </div>
-
-    <style>
+    </div>    <style>
         /* Estilo do Modal (Popup) */
 .modal {
     display: none; /* Escondido por padrão */
@@ -1177,9 +874,7 @@ document.getElementById("toggleTitulo").addEventListener("click", function() {
     width: 100%;
     height: 100%;
     background-color: var(--color-glass); /* Fundo escuro */
-}
-
-.modal-content {
+}.modal-content {
     background-color: var(--color-glass);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
@@ -1201,25 +896,14 @@ document.getElementById("toggleTitulo").addEventListener("click", function() {
     font-size: 28px;
     font-weight: bold;
 }
-    </style>
-
-    <script>
-
-        function name(params) {
-            
-        }
-
-        // Função para abrir o popup com hosts "red"
+    </style>    <script>        function name(params) {
+                  }        // Função para abrir o popup com hosts "red"
 let countSemLocalNosHosts = 0;
-let buttonLocal = ``;
-
-// Fechar o popup quando o usuário clicar no "X"
+let buttonLocal = ``;// Fechar o popup quando o usuário clicar no "X"
 document.querySelector('.close').addEventListener('click', function () {
     const modal = document.getElementById('redHostsPopup');
     modal.style.display = 'none';
-});
-
-// Fechar o popup quando o usuário clicar fora dele
+});// Fechar o popup quando o usuário clicar fora dele
 window.addEventListener('click', function (event) {
     const modal = document.getElementById('redHostsPopup');
     if (event.target === modal) {
@@ -1227,11 +911,8 @@ window.addEventListener('click', function (event) {
     }
 });
     </script>
-</div>
-
-        <div class="opcoes" id="opcoes">
-        
-    <button id="toggleShowSwitches" onclick="showSw()"><img src="https://switch-map-2-dev.vercel.app/frontend/source/sw.png" alt=""></button>
+</div>        <div class="opcoes" id="opcoes">
+          <button id="toggleShowSwitches" onclick="showSw()"><img src="https://switch-map-2-dev.vercel.app/frontend/source/sw.png" alt=""></button>
         <style>        #toggleShowSwitches{
             background-color: var(--color-background);
             border: 1px solid var(--color-secondary);
@@ -1244,16 +925,8 @@ window.addEventListener('click', function (event) {
           #toggleShowSwitches img{
             border: none;
           }</style>
-            
-    <button id="toggleLinesButton"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-
-        <path clip-rule="evenodd" d="M18 5C17.4477 5 17 5.44772 17 6C17 6.27642 17.1108 6.52505 17.2929 6.70711C17.475 6.88917 17.7236 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5ZM15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6C21 7.65685 19.6569 9 18 9C17.5372 9 17.0984 8.8948 16.7068 8.70744L8.70744 16.7068C8.8948 17.0984 9 17.5372 9 18C9 19.6569 7.65685 21 6 21C4.34315 21 3 19.6569 3 18C3 16.3431 4.34315 15 6 15C6.46278 15 6.90157 15.1052 7.29323 15.2926L15.2926 7.29323C15.1052 6.90157 15 6.46278 15 6ZM6 17C5.44772 17 5 17.4477 5 18C5 18.5523 5.44772 19 6 19C6.55228 19 7 18.5523 7 18C7 17.7236 6.88917 17.475 6.70711 17.2929C6.52505 17.1108 6.27642 17 6 17Z" />
-        </svg></button>
-
-            
-            <div class="menu">
-
-                            <!-- From Uiverse.io by pathikcomp --> 
+              <button id="toggleLinesButton"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">        <path clip-rule="evenodd" d="M18 5C17.4477 5 17 5.44772 17 6C17 6.27642 17.1108 6.52505 17.2929 6.70711C17.475 6.88917 17.7236 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5ZM15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6C21 7.65685 19.6569 9 18 9C17.5372 9 17.0984 8.8948 16.7068 8.70744L8.70744 16.7068C8.8948 17.0984 9 17.5372 9 18C9 19.6569 7.65685 21 6 21C4.34315 21 3 19.6569 3 18C3 16.3431 4.34315 15 6 15C6.46278 15 6.90157 15.1052 7.29323 15.2926L15.2926 7.29323C15.1052 6.90157 15 6.46278 15 6ZM6 17C5.44772 17 5 17.4477 5 18C5 18.5523 5.44772 19 6 19C6.55228 19 7 18.5523 7 18C7 17.7236 6.88917 17.475 6.70711 17.2929C6.52505 17.1108 6.27642 17 6 17Z" />
+        </svg></button>                      <div class="menu">                            <!-- From Uiverse.io by pathikcomp --> 
             <label class="main">
                 Atalhos
                 <input class="inp" checked="" type="checkbox" />
@@ -1265,14 +938,8 @@ window.addEventListener('click', function (event) {
                 <section class="menu-container" id="menu-container">
                 </section>
             </label>
-  
-            </div>
-
-        </div>
-        
-    </div>
-
-    <div class="popup" id="popup">
+            </div>        </div>
+          </div>    <div class="popup" id="popup">
         <!-- From Uiverse.io by revanth-004 --> 
         <div class="popup-container">
             <div class="popup success-popup">
@@ -1281,20 +948,14 @@ window.addEventListener('click', function (event) {
                         <path fill-rule="evenodd" d="m12 1c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11-4.925-11-11-11zm4.768 9.14c.0878-.1004.1546-.21726.1966-.34383.0419-.12657.0581-.26026.0477-.39319-.0105-.13293-.0475-.26242-.1087-.38085-.0613-.11844-.1456-.22342-.2481-.30879-.1024-.08536-.2209-.14938-.3484-.18828s-.2616-.0519-.3942-.03823c-.1327.01366-.2612.05372-.3782.1178-.1169.06409-.2198.15091-.3027.25537l-4.3 5.159-2.225-2.226c-.1886-.1822-.4412-.283-.7034-.2807s-.51301.1075-.69842.2929-.29058.4362-.29285.6984c-.00228.2622.09851.5148.28067.7034l3 3c.0983.0982.2159.1748.3454.2251.1295.0502.2681.0729.4069.0665.1387-.0063.2747-.0414.3991-.1032.1244-.0617.2347-.1487.3236-.2554z" clip-rule="evenodd"></path>
                     </svg>
                 </div>
-                <div class="success-message">Dados Carregados</div>
-
-                <div class="popup-icon close-icon" onclick="fecharFeedbackDados()">
+                <div class="success-message">Dados Carregados</div>                <div class="popup-icon close-icon" onclick="fecharFeedbackDados()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" class="close-svg">
                         <path d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z" class="close-path"></path>
                     </svg>
-                </div>
-
-            </div>
+                </div>            </div>
         </div>
     </div>
-    
-    
-    <div class="popupcopiar" id="popupcopiar">
+        <div class="popupcopiar" id="popupcopiar">
         <!-- From Uiverse.io by revanth-004 --> 
         <div class="popup-container">
             <div class="popup info-popup">
@@ -1303,22 +964,15 @@ window.addEventListener('click', function (event) {
                         <path fill-rule="evenodd" d="m12 1c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11-4.925-11-11-11zm4.768 9.14c.0878-.1004.1546-.21726.1966-.34383.0419-.12657.0581-.26026.0477-.39319-.0105-.13293-.0475-.26242-.1087-.38085-.0613-.11844-.1456-.22342-.2481-.30879-.1024-.08536-.2209-.14938-.3484-.18828s-.2616-.0519-.3942-.03823c-.1327.01366-.2612.05372-.3782.1178-.1169.06409-.2198.15091-.3027.25537l-4.3 5.159-2.225-2.226c-.1886-.1822-.4412-.283-.7034-.2807s-.51301.1075-.69842.2929-.29058.4362-.29285.6984c-.00228.2622.09851.5148.28067.7034l3 3c.0983.0982.2159.1748.3454.2251.1295.0502.2681.0729.4069.0665.1387-.0063.2747-.0414.3991-.1032.1244-.0617.2347-.1487.3236-.2554z" clip-rule="evenodd"></path>
                     </svg>
                 </div>
-                <div class="info-message">Local copiado</div>
-
-                <div class="popup-icon close-icon" onclick="fecharFeedbackCopia()">
+                <div class="info-message">Local copiado</div>                <div class="popup-icon close-icon" onclick="fecharFeedbackCopia()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" class="close-svg">
                         <path d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z" class="close-path"></path>
                     </svg>
                 </div>
-                
-            </div>
+                          </div>
         </div>
-
-
     </div>
     
-    
-
     <div class="loading" id="loading">
 <!-- From Uiverse.io by Nawsome --> 
 <svg class="pl" viewBox="0 0 160 160" width="160px" height="160px" xmlns="http://www.w3.org/2000/svg">
@@ -1334,8 +988,7 @@ window.addEventListener('click', function (event) {
             <rect x="28" y="28" width="104" height="104" fill="url(#grad)"></rect>
         </mask>
     </defs>
-    
-    <g>
+      <g>
         <g class="pl__ring-rotate">
             <circle class="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(223,90%,55%)" stroke-width="16" stroke-dasharray="452.39 452.39" stroke-dashoffset="452" stroke-linecap="round" transform="rotate(-45,80,80)"></circle>
         </g>
@@ -1345,8 +998,7 @@ window.addEventListener('click', function (event) {
             <circle class="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(193,90%,55%)" stroke-width="16" stroke-dasharray="452.39 452.39" stroke-dashoffset="452" stroke-linecap="round" transform="rotate(-45,80,80)"></circle>
         </g>
     </g>
-    
-    <g>
+      <g>
         <g stroke-width="4" stroke-dasharray="12 12" stroke-dashoffset="12" stroke-linecap="round" transform="translate(80,80)">
             <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-135,0,0) translate(0,40)"></polyline>
             <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-90,0,0) translate(0,40)"></polyline>
@@ -1370,8 +1022,7 @@ window.addEventListener('click', function (event) {
             <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(180,0,0) translate(0,40)"></polyline>
         </g>
     </g>
-    
-    <g>
+      <g>
         <g transform="translate(64,28)">
             <g class="pl__arrows" transform="rotate(45,16,52)">
                 <path fill="hsl(3,90%,55%)" d="M17.998,1.506l13.892,43.594c.455,1.426-.56,2.899-1.998,2.899H2.108c-1.437,0-2.452-1.473-1.998-2.899L14.002,1.506c.64-2.008,3.356-2.008,3.996,0Z"></path>
@@ -1387,19 +1038,9 @@ window.addEventListener('click', function (event) {
             </g>
         </g>
     </g>
-</svg>
-
-    </div>
-
-    <div id="css-sw"></div>
-
-
-
-
-
-        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/info.js"></script>
+</svg>    </div>    <div id="css-sw"></div>        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/info.js"></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/open.js"></script>
-        <script src="scriptDados.js" defer></script>
+        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/scriptDados.js" defer></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/manipularMapa.js"></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/error.js"></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/credits.js"></script>
