@@ -371,7 +371,7 @@ function atualizarInterface(dados) {
                             <div class="hosts-content"></div>
                             <div class="pagination-controls">
                                 <button class="prev-page" disabled>Anterior</button>
-                                <span class="page-info">Página 1 de 1</span>
+                                <span class="page-info">Pág. 1 de 1</span>
                                 <button class="next-page" disabled>Próximo</button>
                             </div>
                         </div>
