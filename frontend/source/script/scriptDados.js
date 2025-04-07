@@ -486,7 +486,7 @@ function atualizarInterface(dados) {
                         e.stopPropagation();
                         // Collapse other units
                         unidadeItems.forEach(otherItem => {
-                           —if (otherItem !== unidadeItem) {
+                           if (otherItem !== unidadeItem) {
                                 otherItem.querySelector('.hosts-list').classList.remove('expanded');
                                 otherItem.querySelector('.unidade-header').classList.remove('expanded');
                             }
