@@ -301,7 +301,8 @@ function atualizarInterface(dados) {
     const estadosMap = {};
     if (Array.isArray(dadosFiltrados.hosts)) {
         dadosFiltrados.hosts.forEach(host => {
-            const match = host.nome.match(/^BR-([A-Z]{2})-([A-Z]{3})-([A-Z]{3})(?:-(\w+))?$/);
+            console.log('Processando host:', host);
+            const match = host.nome.match(/^BR-([A-Z]{2})-([A-Z]{3})-([A-Z]{3})(?:-([\w._-]+(?:\.[A-Za-z]{2,})?))?$/);
             if (match) {
                 const estado = match[1];
                 const unidade = `${match[2]}-${match[3]}`;
@@ -328,18 +329,15 @@ function atualizarInterface(dados) {
                 console.warn('Nome do host não corresponde ao padrão:', host.nome);
             }
         });
+    } else {
+        console.error('dadosFiltrados.hosts não é um array');
     }
+    console.log('Estados mapeados:', estadosMap);
 
     // Atualizar a lista de estados, unidades e hosts
     const estadosList = document.getElementById('estadosList');
-    if (!estadosList) {
-        console.error('Elemento estadosList não encontrado no DOM');
-        return;
-    }
-    estadosList.innerHTML = '';
-    if (Object.keys(estadosMap).length === 0) {
-        estadosList.innerHTML = '<div class="no-data">Nenhum estado encontrado ou formato de dados inválido.</div>';
-    } else {
+    if (estadosList) {
+        estadosList.innerHTML = '';
         Object.entries(estadosMap).forEach(([estado, stats]) => {
             const estadoItem = document.createElement('div');
             estadoItem.className = 'estado-item';
@@ -383,7 +381,9 @@ function atualizarInterface(dados) {
             const estadoHeader = estadoItem.querySelector('.estado-header');
             const unidadesList = estadoItem.querySelector('.unidades-list');
             if (estadoHeader && unidadesList) {
-                estadoHeader.addEventListener('click', () => unidadesList.classList.toggle('expanded'));
+                estadoHeader.addEventListener('click', () => {
+                    unidadesList.classList.toggle('expanded');
+                });
             }
 
             const unidadeItems = estadoItem.querySelectorAll('.unidade-item');
@@ -398,12 +398,17 @@ function atualizarInterface(dados) {
                 }
             });
         });
+    } else {
+        console.error('Elemento estadosList não encontrado');
     }
 
     const countUnidades = document.getElementById('countUnidades');
     if (countUnidades) countUnidades.innerHTML = Object.keys(estadosMap).length;
 
-    if (!map) inicializarMapa();
+    if (!map) {
+        inicializarMapa();
+    }
+
     atualizarMarcadores(dadosFiltrados.hosts);
     atualizarLinhas(dadosFiltrados.hosts);
     atualizarListas(dadosFiltrados);
