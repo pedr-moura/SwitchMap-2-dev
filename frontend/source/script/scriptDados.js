@@ -290,7 +290,7 @@ function atualizarInterface(dados) {
     const countEquipamentosSemLocal = document.getElementById('countEquipamentosSemLocal');
     if (dadosFiltrados.hosts && Array.isArray(dadosFiltrados.hosts)) {
         if (countEquipamentos) countEquipamentos.innerHTML = dadosFiltrados.hosts.length;
-        if (countEquipamentosSemLocal) countEquipamentosSemLocal.innerHTML = dadosFiltrados.hosts.filter(host => !host.local).length;
+        if (countEquipamentosSemLocal) countEquipamentsSemLocal.innerHTML = dadosFiltrados.hosts.filter(host => !host.local).length;
     } else {
         console.error('Dados.hosts não é um array:', dadosFiltrados);
         if (countEquipamentos) countEquipamentos.innerHTML = '0';
@@ -444,10 +444,19 @@ function atualizarInterface(dados) {
                             const displayName = hostNome
                                 .replace(/\.suzano\.com\.br$/, '')
                                 .replace(/^BR-[A-Z]{2}-[A-Z]{3}-[A-Z]{3}-/, '');
+
+                            // Encontrar o host correspondente em dadosAtuais.hosts para obter todos os dados
+                            const hostData = dadosAtuais.hosts.find(h => h.nome === hostNome) || {};
+
                             return `
                                 <div class="host-item">
                                     <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
                                     <span title="${hostNome}">${displayName}</span>
+                                    <button class="edit-host-btn" onclick='navigateToEditHost(${JSON.stringify(hostData)})'>
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11 4H7.2C6.0799 4 5.51984 4 5.09202 4.21799C4.71569 4.40973 4.40973 4.71569 4.21799 5.09202C4 5.51984 4 6.0799 4 7.2V16.8C4 17.9201 4 18.4802 4.21799 18.908C4.40973 19.2843 4.71569 19.5903 5.09202 19.782C5.51984 20 6.0799 20 7.2 20H16.8C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V12.5M15 4H14.5C13.3954 4 12.5 4.89543 12.5 6C12.5 7.10457 13.3954 8 14.5 8H15V8.5C15 9.60457 15.8954 10.5 17 10.5C18.1046 10.5 19 9.60457 19 8.5V8C20.1046 8 21 7.10457 21 6C21 4.89543 20.1046 4 19 4H15ZM12 12H15.5C15.7761 12 16 12.2239 16 12.5V16C16 16.2761 15.7761 16.5 15.5 16.5H12C11.7239 16.5 11.5 16.2761 11.5 16V12.5C11.5 12.2239 11.7239 12 12 12Z" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
                                 </div>
                             `;
                         }).join('');
@@ -477,7 +486,7 @@ function atualizarInterface(dados) {
                         e.stopPropagation();
                         // Collapse other units
                         unidadeItems.forEach(otherItem => {
-                            if (otherItem !== unidadeItem) {
+                           —if (otherItem !== unidadeItem) {
                                 otherItem.querySelector('.hosts-list').classList.remove('expanded');
                                 otherItem.querySelector('.unidade-header').classList.remove('expanded');
                             }
