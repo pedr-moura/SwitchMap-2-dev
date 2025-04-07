@@ -280,12 +280,132 @@
 }
 
 .host-item {
-    padding: 4px 15px;
+    padding: 6px 15px;
     font-size: 11px;
     color: var(--color-text);
     display: flex;
+    align-items: center;
     justify-content: space-between;
     border-top: 1px dashed var(--color-secondary);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.host-item:hover {
+    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.05);
+    transform: scale(1.02);
+}
+
+.host-item.focused {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+    border-radius: 4px;
+}
+
+.status-indicator {
+    font-size: 12px;
+    margin-right: 8px;
+    position: relative;
+}
+
+.status-indicator.online {
+    color: #00d700;
+}
+
+.status-indicator.offline {
+    color: #ff0000;
+}
+
+.host-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.edit-host-btn {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    opacity: 0.7;
+}
+
+.host-item:hover .edit-host-btn {
+    opacity: 1;
+}
+
+.edit-host-btn:hover {
+    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.1);
+    border-radius: 4px;
+    transform: scale(1.1);
+}
+
+.edit-host-btn:active {
+    transform: scale(0.95);
+}
+
+.edit-host-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Tooltip para o nome do host */
+.host-name[title] {
+    position: relative;
+}
+
+.host-name[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.host-name[title]:hover::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    border: 5px solid transparent;
+    border-top-color: #333;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .host-item {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+
+    .edit-host-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .host-name {
+        max-width: 120px; /* Ajustar para telas menores */
+    }
+
+    .host-name[title]:hover::after,
+    .host-name[title]:hover::before {
+        display: none; /* Desativar tooltip em dispositivos móveis */
+    }
 }
 
 .host-item .status {
