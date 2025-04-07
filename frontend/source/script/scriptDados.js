@@ -338,7 +338,8 @@ function atualizarInterface(dados) {
     const estadosList = document.getElementById('estadosList');
     if (estadosList) {
         estadosList.innerHTML = '';
-        Object.entries(estadosMap).forEach(([estado, stats]) => {
+        Object.keys(estadosMap).sort().forEach(estado => {
+            const stats = estadosMap[estado];
             const estadoItem = document.createElement('div');
             estadoItem.className = 'estado-item';
             estadoItem.innerHTML = `
@@ -350,54 +351,118 @@ function atualizarInterface(dados) {
                         <span class="offline">⬤ ${stats.offline}</span>
                     </div>
                 </div>
-                <div class="unidades-list">
-                    ${Object.entries(stats.unidades)
-                        .map(([unidade, unidadeStats]) => `
-                            <div class="unidade-item" style="
-                            overflow: auto;
-                            max-height: 120px;">
-                                <div class="unidade-header">
-                                    <span>${unidade}</span>
-                                    <div class="status">
-                                        <span class="online">⬤ ${unidadeStats.online}</span>
-                                        <span class="offline">⬤ ${unidadeStats.offline}</span>
-                                    </div>
-                                </div>
-                                <div class="hosts-list">
-                                    ${Object.entries(unidadeStats.hosts)
-                                        .map(([hostNome, hostStats]) => `
-                                            <div class="host-item">
-                                                
-                                                <div class="status">
-                                                    <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
-                                                </div>
-                                                <span>${hostNome}</span>
-
-                                            </div>
-                                        `).join('')}
-                                </div>
-                            </div>
-                        `).join('')}
-                </div>
+                <div class="unidades-list"></div>
             `;
             estadosList.appendChild(estadoItem);
 
+            const sortedUnidades = Object.keys(stats.unidades).sort();
+            const unidadesHTML = sortedUnidades.map(unidade => {
+                const unidadeStats = stats.unidades[unidade];
+                return `
+                    <div class="unidade-item">
+                        <div class="unidade-header">
+                            <span>${unidade}</span>
+                            <div class="status">
+                                <span class="online">⬤ ${unidadeStats.online}</span>
+                                <span class="offline">⬤ ${unidadeStats.offline}</span>
+                            </div>
+                        </div>
+                        <div class="hosts-list">
+                            <div class="hosts-content"></div>
+                            <div class="pagination-controls">
+                                <button class="prev-page" disabled>Anterior</button>
+                                <span class="page-info">Página 1 de 1</span>
+                                <button class="next-page" disabled>Próximo</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            estadoItem.querySelector('.unidades-list').innerHTML = unidadesHTML;
+
+            // Adicionar listeners para estado
             const estadoHeader = estadoItem.querySelector('.estado-header');
             const unidadesList = estadoItem.querySelector('.unidades-list');
             if (estadoHeader && unidadesList) {
                 estadoHeader.addEventListener('click', () => {
                     unidadesList.classList.toggle('expanded');
+                    estadoHeader.classList.toggle('expanded');
                 });
             }
 
+            // Adicionar listeners para unidades e paginação
             const unidadeItems = estadoItem.querySelectorAll('.unidade-item');
             unidadeItems.forEach(unidadeItem => {
                 const unidadeHeader = unidadeItem.querySelector('.unidade-header');
                 const hostsList = unidadeItem.querySelector('.hosts-list');
-                if (unidadeHeader && hostsList) {
+                const hostsContent = unidadeItem.querySelector('.hosts-content');
+                const prevButton = unidadeItem.querySelector('.prev-page');
+                const nextButton = unidadeItem.querySelector('.next-page');
+                const pageInfo = unidadeItem.querySelector('.page-info');
+
+                if (unidadeHeader && hostsList && hostsContent && prevButton && nextButton && pageInfo) {
+                    const unidade = unidadeHeader.querySelector('span').textContent;
+                    const sortedHosts = Object.keys(stats.unidades[unidade].hosts).sort();
+                    const hostsPerPage = 10; // Número de hosts por página
+                    let currentPage = 1;
+                    const totalHosts = sortedHosts.length;
+                    const totalPages = Math.ceil(totalHosts / hostsPerPage);
+
+                    // Função para renderizar hosts da página atual
+                    const renderHostsPage = (page) => {
+                        const start = (page - 1) * hostsPerPage;
+                        const end = start + hostsPerPage;
+                        const hostsToShow = sortedHosts.slice(start, end);
+
+                        hostsContent.innerHTML = hostsToShow.map(hostNome => {
+                            const hostStats = stats.unidades[unidade].hosts[hostNome];
+                            const displayName = hostNome
+                                .replace(/\.suzano\.com\.br$/, '')
+                                .replace(/^BR-[A-Z]{2}-[A-Z]{3}-[A-Z]{3}-/, '');
+                            return `
+                                <div class="host-item">
+                                    <span title="${hostNome}">${displayName}</span>
+                                    <div class="status">
+                                        <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+
+                        // Atualizar informações da página
+                        pageInfo.textContent = `Página ${page} de ${totalPages}`;
+                        prevButton.disabled = page === 1;
+                        nextButton.disabled = page === totalPages;
+                    };
+
+                    // Inicializar a primeira página
+                    if (totalHosts > 0) {
+                        renderHostsPage(currentPage);
+                    } else {
+                        hostsContent.innerHTML = '<div class="no-hosts">Nenhum equipamento encontrado.</div>';
+                    }
+
+                    // Evento de clique para expandir/colapsar a unidade
                     unidadeHeader.addEventListener('click', (e) => {
                         e.stopPropagation();
                         hostsList.classList.toggle('expanded');
+                        unidadeHeader.classList.toggle('expanded');
+                    });
+
+                    // Evento de clique para o botão "Anterior"
+                    prevButton.addEventListener('click', () => {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            renderHostsPage(currentPage);
+                        }
+                    });
+
+                    // Evento de clique para o botão "Próximo"
+                    nextButton.addEventListener('click', () => {
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            renderHostsPage(currentPage);
+                        }
                     });
                 }
             });
