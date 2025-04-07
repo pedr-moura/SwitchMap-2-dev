@@ -365,10 +365,12 @@ function atualizarInterface(dados) {
                                     ${Object.entries(unidadeStats.hosts)
                                         .map(([hostNome, hostStats]) => `
                                             <div class="host-item">
-                                                <span>${hostNome}</span>
+                                                
                                                 <div class="status">
                                                     <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
                                                 </div>
+                                                <span>${hostNome}</span>
+
                                             </div>
                                         `).join('')}
                                 </div>
