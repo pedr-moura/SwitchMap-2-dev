@@ -153,8 +153,8 @@
                 </div>
             </div>
         </div>
-        <style>
-.unidadesPorEstado {
+       <style>
+        .unidadesPorEstado {
     margin-top: 20px;
     padding: 10px;
     background: var(--color-glass);
@@ -235,14 +235,13 @@
 }
 
 .unidades-list {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+    display: none; /* Inicialmente oculto */
     margin-top: 5px;
 }
 
 .unidades-list.expanded {
-    max-height: 500px; /* Ajuste conforme o conteúdo */
+    display: block; /* Exibe ao expandir */
+    animation: fadeIn 0.3s ease-in-out;
 }
 
 .unidade-item {
@@ -264,14 +263,18 @@
 }
 
 .hosts-list {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+    display: none; /* Inicialmente oculto */
     margin-top: 5px;
+    position: relative; /* Para posicionar pagination-controls */
 }
 
 .hosts-list.expanded {
-    max-height: 400px; /* Ajuste conforme o conteúdo */
+    display: block; /* Exibe ao expandir */
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.hosts-content {
+    /* Removido max-height e overflow-y para evitar scroll duplo */
 }
 
 .host-item {
@@ -288,14 +291,99 @@
     gap: 5px;
 }
 
+.pagination-controls {
+    margin-top: 10px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    position: sticky;
+    bottom: 0;
+    background: var(--color-background); /* Garante visibilidade ao rolar */
+    border-top: 1px solid var(--color-secondary);
+}
+
+.pagination-controls button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination-controls button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    border: 1px solid var(--color-primary);
+}
+
+.page-info {
+    font-size: 14px;
+    color: #333;
+}
+
+.no-hosts {
+    padding: 10px;
+    color: #666;
+    font-style: italic;
+}
+
+/* Animação de fade-in para expandir */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Responsividade */
 @media (max-width: 600px) {
     .unidadesPorEstado {
         max-width: 100%;
     }
-    
+
     .estados-box {
-        max-height: 200px;
+        max-height: 200px; /* Reduzido para dispositivos menores */
+    }
+
+    .estado-item {
+        padding: 6px 8px;
+    }
+
+    .estado-nome {
+        font-size: 13px;
+    }
+
+    .estado-status span {
+        font-size: 11px;
+    }
+
+    .unidade-header {
+        font-size: 11px;
+    }
+
+    .host-item {
+        font-size: 10px;
+        padding: 3px 10px;
+    }
+
+    .pagination-controls {
+        gap: 5px;
+    }
+
+    .pagination-controls button {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .page-info {
+        font-size: 12px;
     }
 }
 
@@ -317,61 +405,7 @@
 .estados-box::-webkit-scrollbar-thumb:hover {
     background: var(--color-primary);
 }
-
-.hosts-list {
-    display: none;
-}
-
-.hosts-list.expanded {
-    display: block;
-}
-
-.hosts-content {
-    max-height: 300px; /* Limite de altura para rolagem, se necessário */
-    overflow-y: auto;
-}
-
-.host-item {
-    padding: 5px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.pagination-controls {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-}
-
-.pagination-controls button {
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.pagination-controls button:disabled {
-    background-color: #cccccc00;
-    cursor: not-allowed;
-    border: 1px solid var(--color-primary);
-}
-
-.page-info {
-    font-size: 14px;
-    color: #333;
-}
-
-.no-hosts {
-    padding: 10px;
-    color: #666;
-    font-style: italic;
-}
-        </style>
+       </style>
     </div>    <div class="databox" id="databox">
         <div class="adicionarEquipamento" id="adicionarEquipamento">
                 <!-- Seção de Adição de Host -->                  <div id="adicionarSection" class="hidden">
