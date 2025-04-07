@@ -297,18 +297,22 @@ function atualizarInterface(dados) {
         countEquipamentosSemLocal.innerHTML = '0';
     }
     
-    // Agrupar por estado e unidade
+    // Agrupar por estado, unidade e host
     const estadosMap = {};
     dadosFiltrados.hosts.forEach(host => {
-        const match = host.nome.match(/^BR-([A-Z]{2})-([A-Z]{3})-([A-Z]{3})/);
+        const match = host.nome.match(/^BR-([A-Z]{2})-([A-Z]{3})-([A-Z]{3})(?:-(\w+))?$/);
         if (match) {
             const estado = match[1];
             const unidade = `${match[2]}-${match[3]}`; // Ex.: "FAB-IMP"
+            const hostNome = host.nome; // Nome completo do host
             if (!estadosMap[estado]) {
                 estadosMap[estado] = { total: 0, online: 0, offline: 0, unidades: {} };
             }
             if (!estadosMap[estado].unidades[unidade]) {
-                estadosMap[estado].unidades[unidade] = { total: 0, online: 0, offline: 0 };
+                estadosMap[estado].unidades[unidade] = { total: 0, online: 0, offline: 0, hosts: {} };
+            }
+            if (!estadosMap[estado].unidades[unidade].hosts[hostNome]) {
+                estadosMap[estado].unidades[unidade].hosts[hostNome] = { ativo: host.ativo };
             }
             estadosMap[estado].total += 1;
             estadosMap[estado].unidades[unidade].total += 1;
@@ -322,7 +326,7 @@ function atualizarInterface(dados) {
         }
     });
 
-    // Atualizar a lista de estados e unidades
+    // Atualizar a lista de estados, unidades e hosts
     const estadosList = document.getElementById('estadosList');
     estadosList.innerHTML = ''; // Limpar conteúdo anterior
     Object.entries(estadosMap).forEach(([estado, stats]) => {
@@ -341,10 +345,23 @@ function atualizarInterface(dados) {
                 ${Object.entries(stats.unidades)
                     .map(([unidade, unidadeStats]) => `
                         <div class="unidade-item">
-                            <span>${unidade}</span>
-                            <div class="status">
-                                <span class="online">⬤ ${unidadeStats.online}</span>
-                                <span class="offline">⬤ ${unidadeStats.offline}</span>
+                            <div class="unidade-header">
+                                <span>${unidade}</span>
+                                <div class="status">
+                                    <span class="online">⬤ ${unidadeStats.online}</span>
+                                    <span class="offline">⬤ ${unidadeStats.offline}</span>
+                                </div>
+                            </div>
+                            <div class="hosts-list">
+                                ${Object.entries(unidadeStats.hosts)
+                                    .map(([hostNome, hostStats]) => `
+                                        <div class="host-item">
+                                            <span>${hostNome}</span>
+                                            <div class="status">
+                                                <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
+                                            </div>
+                                        </div>
+                                    `).join('')}
                             </div>
                         </div>
                     `).join('')}
@@ -352,11 +369,22 @@ function atualizarInterface(dados) {
         `;
         estadosList.appendChild(estadoItem);
 
-        // Adicionar evento de clique para expandir/colapsar
-        const header = estadoItem.querySelector('.estado-header');
+        // Evento para expandir/colapsar unidades
+        const estadoHeader = estadoItem.querySelector('.estado-header');
         const unidadesList = estadoItem.querySelector('.unidades-list');
-        header.addEventListener('click', () => {
+        estadoHeader.addEventListener('click', () => {
             unidadesList.classList.toggle('expanded');
+        });
+
+        // Evento para expandir/colapsar hosts em cada unidade
+        const unidadeItems = estadoItem.querySelectorAll('.unidade-item');
+        unidadeItems.forEach(unidadeItem => {
+            const unidadeHeader = unidadeItem.querySelector('.unidade-header');
+            const hostsList = unidadeItem.querySelector('.hosts-list');
+            unidadeHeader.addEventListener('click', (e) => {
+                e.stopPropagation(); // Evita que o clique no estado também seja disparado
+                hostsList.classList.toggle('expanded');
+            });
         });
     });
 
