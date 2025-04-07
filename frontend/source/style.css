@@ -1045,8 +1045,9 @@ z-index: 999999999;
 
 #hostList{
   overflow: auto;
-  height: 80px;
+  height: 130px;
   width: 280px;
+   
 }
 #submit{
   width: 100%;
