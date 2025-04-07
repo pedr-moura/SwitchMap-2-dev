@@ -257,7 +257,7 @@
 
         <div class="approval-section" id="approvalSection" style="display: none;">
             <h2>Solicitações</h2>
-            <div id="pendingEditsList"></div>
+            <div id="pendingEditsList" style="overflow: auto; height: 85dvh;"></div>
         </div>
 
 <div class="editarEquipamento" id="editarEquipamento">
@@ -271,7 +271,7 @@
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                     </svg>
                     <div class="boxinputsearch">
-                        <input type="text" name="search" id="search" style="top: 5px; border: none;" placeholder="Pesquisar por IP" oninput="filterHosts()"></div>
+                        <input type="text" name="search" id="search" placeholder="Pesquisar por IP" style="top: 4px; border: none;" oninput="filterHosts()"></div>
                 </label>
             </div>
             <div class="exibirSemLocal">
@@ -437,7 +437,6 @@ function exibirEditar() {
     homebox.style.display = 'none';
     databoxsection.style.display = 'block';
     limparInput?.();
-    atualizarDadosManualmente();
 }
 
 function exibirAdicionar() {
@@ -700,7 +699,6 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
 
 
 <style>
-
     #editarHostForm button[type="submit"] {
     padding: 10px 20px;
     background: var(--color-primary);
@@ -856,7 +854,7 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
             border: 1px solid var(--color-text);
         }
         .modal-container {
-    width: 248px;
+    width: 215px;
     margin: 10px auto;
     background-color: var(--color-text);
     backdrop-filter: blur(10px);
