@@ -377,7 +377,7 @@ function configurarWebSocket() {
 async function loadHosts() {
     if (dadosAtuais.hosts && dadosAtuais.hosts.length > 0) {
         hosts = dadosAtuais.hosts;
-        renderHostList(hosts, 1); // Renderiza a primeira página
+        displayHosts(hosts);
         return;
     }
     try {
@@ -386,7 +386,7 @@ async function loadHosts() {
         if (!data || !data.hosts) throw new Error('Dados inválidos');
         hosts = data.hosts;
         dadosAtuais = data;
-        renderHostList(hosts, 1); // Renderiza a primeira página
+        displayHosts(hosts);
     } catch (error) {
         console.error('Erro ao carregar hosts:', error);
     }
@@ -420,18 +420,16 @@ function displayHosts(hosts) {
 }
 
 function filterHosts() {
-    const searchValue = document.getElementById('search').value.toLowerCase();
+    const searchText = document.getElementById('search').value.toLowerCase();
     const showOnlyWithoutLocation = document.getElementById('showOnlyWithoutLocation').checked;
 
-    let filteredHosts = dadosAtuais.hosts.filter(host => {
-        const matchesSearch = host.ip.toLowerCase().includes(searchValue) || 
-                              (host.nome && host.nome.toLowerCase().includes(searchValue));
-        const matchesLocation = !showOnlyWithoutLocation || !host.local;
-        return matchesSearch && matchesLocation;
+    const filteredHosts = hosts.filter(host => {
+        const matchesSearch = host.nome.toLowerCase().includes(searchText) || host.ip.toLowerCase().includes(searchText);
+        const hasNoLocation = !host.local || host.local.trim() === '';
+        return showOnlyWithoutLocation ? matchesSearch && hasNoLocation : matchesSearch;
     });
 
-    hosts = filteredHosts; // Atualiza a lista global `hosts`
-    renderHostList(filteredHosts, 1); // Sempre começa na página 1 ao filtrar
+    displayHosts(filteredHosts);
 }
 
 function fillForm(host) {
@@ -453,8 +451,6 @@ async function atualizarDadosManualmente() {
     const novosDados = await fetchDadosHTTP();
     if (novosDados) {
         console.log('Dados atualizados manualmente');
-        hosts = novosDados.hosts; // Atualiza a lista global
-        renderHostList(hosts, 1); // Renderiza a primeira página
     }
 }
 
