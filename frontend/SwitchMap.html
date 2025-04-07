@@ -154,78 +154,129 @@
             </div>
         </div>
        <style>
+/* Container principal */
 .unidadesPorEstado {
     margin-top: 20px;
-    padding: 10px;
-    background: none;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    background: var(--color-background);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
+    transition: box-shadow 0.3s ease;
+}
+
+.unidadesPorEstado:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .unidadesPorEstado h3 {
     color: var(--color-primary);
-    font-size: 16px;
-    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
     text-align: center;
+    letter-spacing: 0.5px;
 }
 
+/* Container da lista de estados */
 .estados-box {
-    max-height: 300px;
+    max-height: 320px;
     overflow-y: auto;
     overflow-x: hidden;
     border: 1px solid var(--color-secondary);
-    border-radius: 5px;
-    padding: 5px;
-    padding-bottom: 40px; /* Espaço para pagination-controls */
+    border-radius: 8px;
+    padding: 8px;
+    padding-bottom: 50px; /* Espaço para pagination-controls */
     background: var(--color-background);
     position: relative;
 }
 
+/* Estilização da barra de rolagem */
+.estados-box::-webkit-scrollbar,
+.hosts-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.estados-box::-webkit-scrollbar-track,
+.hosts-content::-webkit-scrollbar-track {
+    background: var(--color-background);
+    border-radius: 8px;
+}
+
+.estados-box::-webkit-scrollbar-thumb,
+.hosts-content::-webkit-scrollbar-thumb {
+    background: var(--color-secondary);
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.estados-box::-webkit-scrollbar-thumb:hover,
+.hosts-content::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+}
+
+/* Container de estados */
 .estados-container {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 }
 
+/* Item de estado */
 .estado-item {
-    padding: 8px 10px;
-    border-radius: 5px;
+    padding: 10px 12px;
+    border-radius: 6px;
     border: 1px solid var(--color-secondary);
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    background: var(--color-background);
 }
 
 .estado-item:hover {
-    background-color: rgba(var(--color-secondary-rgb, 64, 72, 81), 0.1);
+    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.05);
+    transform: translateY(-1px);
 }
 
+.estado-item:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+}
+
+/* Cabeçalho do estado */
 .estado-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .estado-nome {
     color: var(--color-text);
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 15px;
+    font-weight: 600;
+    flex: 1;
 }
 
 .estado-status {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
 }
 
 .estado-status span {
-    font-size: 12px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
 }
 
 .total {
     color: var(--color-text);
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 14px;
+    background: rgba(var(--color-secondary-rgb, 64, 72, 81), 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
 }
 
 .online {
@@ -236,9 +287,10 @@
     color: #ff0000;
 }
 
+/* Lista de unidades */
 .unidades-list {
     display: none;
-    margin-top: 5px;
+    margin-top: 8px;
 }
 
 .unidades-list.expanded {
@@ -246,27 +298,37 @@
     animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Item de unidade */
 .unidade-item {
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-top: 1px solid var(--color-secondary);
     cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.unidade-item:hover {
+    background-color: rgba(var(--color-secondary-rgb, 64, 72, 81), 0.05);
 }
 
 .unidade-header {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    align-items: center;
+    font-size: 13px;
     color: var(--color-text);
+    font-weight: 500;
 }
 
 .unidade-header .status {
     display: flex;
-    gap: 5px;
+    gap: 6px;
+    font-size: 12px;
 }
 
+/* Lista de hosts */
 .hosts-list {
     display: none;
-    margin-top: 5px;
+    margin-top: 6px;
 }
 
 .hosts-list.expanded {
@@ -275,13 +337,14 @@
 }
 
 .hosts-content {
-    max-height: 150px; /* Ajustado para caber dentro do estados-box */
-    overflow-y: auto; /* Scroll interno para hosts */
+    max-height: 160px; /* Ajustado para melhor uso do espaço */
+    overflow-y: auto;
 }
 
+/* Item de host */
 .host-item {
-    padding: 6px 15px;
-    font-size: 11px;
+    padding: 8px 15px;
+    font-size: 12px;
     color: var(--color-text);
     display: flex;
     align-items: center;
@@ -294,7 +357,7 @@
 
 .host-item:hover {
     background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.05);
-    transform: scale(1.02);
+    transform: scale(1.01);
 }
 
 .host-item.focused {
@@ -304,8 +367,8 @@
 }
 
 .status-indicator {
-    font-size: 12px;
-    margin-right: 8px;
+    font-size: 13px;
+    margin-right: 10px;
     position: relative;
 }
 
@@ -322,8 +385,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-size: 12px;
 }
 
+/* Botão de edição */
 .edit-host-btn {
     background: none;
     border: none;
@@ -332,8 +397,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    opacity: 0.7;
+    transition: background-color 0.2s ease, transform 0.1s ease, opacity 0.3s ease;
+    opacity: 0.6;
 }
 
 .host-item:hover .edit-host-btn {
@@ -341,13 +406,19 @@
 }
 
 .edit-host-btn:hover {
-    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.1);
+    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.15);
     border-radius: 4px;
     transform: scale(1.1);
 }
 
 .edit-host-btn:active {
     transform: scale(0.95);
+}
+
+.edit-host-btn:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
 }
 
 .edit-host-btn svg {
@@ -363,98 +434,93 @@
 .host-name[title]:hover::after {
     content: attr(title);
     position: absolute;
-    top: -40px;
+    top: -45px;
     left: 0;
-    background: #333;
+    background: #2a2a2a;
     color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 10px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
     white-space: nowrap;
-    z-index: 10;
+    z-index: 100;
     pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .host-name[title]:hover::before {
     content: '';
     position: absolute;
-    top: -10px;
-    left: 10px;
-    border: 5px solid transparent;
-    border-top-color: #333;
-    z-index: 10;
+    top: -12px;
+    left: 12px;
+    border: 6px solid transparent;
+    border-top-color: #2a2a2a;
+    z-index: 100;
     pointer-events: none;
 }
 
-/* Responsividade */
-@media (max-width: 600px) {
-    .host-item {
-        font-size: 10px;
-        padding: 4px 10px;
-    }
-
-    .edit-host-btn svg {
-        width: 14px;
-        height: 14px;
-    }
-
-    .host-name {
-        max-width: 120px; /* Ajustar para telas menores */
-    }
-
-    .host-name[title]:hover::after,
-    .host-name[title]:hover::before {
-        display: none; /* Desativar tooltip em dispositivos móveis */
-    }
-}
-
-.host-item .status {
-    display: flex;
-    gap: 5px;
-}
-
+/* Controles de paginação */
 .pagination-controls {
-    margin-top: 5px;
-    padding: 5px;
+    margin-top: 8px;
+    padding: 6px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     background: var(--color-background);
     border-top: 1px solid var(--color-secondary);
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .pagination-controls button {
-    padding: 5px 10px;
-    background-color: #007bff;
+    padding: 6px 12px;
+    background-color: var(--color-primary);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.pagination-controls button:hover {
+    background-color: var(--color-primary-hover, #3a7bc8);
+    transform: translateY(-1px);
+}
+
+.pagination-controls button:active {
+    transform: translateY(0);
 }
 
 .pagination-controls button:disabled {
-    background-color: #cccccc00;
+    background-color: transparent;
+    color: var(--color-secondary);
+    border: 1px solid var(--color-secondary);
     cursor: not-allowed;
-    border: 1px solid var(--color-primary);
 }
 
 .page-info {
-    font-size: 14px;
-    color: #333;
+    font-size: 13px;
+    color: var(--color-text);
+    font-weight: 500;
 }
 
+/* Mensagem de "sem hosts" */
 .no-hosts {
-    padding: 10px;
-    color: #666;
+    padding: 12px;
+    color: #888;
     font-style: italic;
+    font-size: 12px;
+    text-align: center;
 }
 
-/* Animação de fade-in para expandir */
+/* Animação de fade-in */
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-5px);
+        transform: translateY(-8px);
     }
     to {
         opacity: 1;
@@ -466,44 +532,78 @@
 @media (max-width: 600px) {
     .unidadesPorEstado {
         max-width: 100%;
+        padding: 10px;
     }
 
     .estados-box {
-        max-height: 200px;
-        padding-bottom: 30px; /* Menos espaço em mobile */
+        max-height: 220px;
+        padding-bottom: 40px;
     }
 
     .estado-item {
-        padding: 6px 8px;
+        padding: 8px 10px;
     }
 
     .estado-nome {
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .estado-status span {
-        font-size: 11px;
+        font-size: 12px;
+    }
+
+    .total {
+        font-size: 13px;
+        padding: 1px 6px;
+    }
+
+    .unidade-item {
+        padding: 5px 10px;
     }
 
     .unidade-header {
-        font-size: 11px;
+        font-size: 12px;
     }
 
-    .host-item {
-        font-size: 10px;
-        padding: 3px 10px;
+    .unidade-header .status {
+        font-size: 11px;
+        gap: 4px;
     }
 
     .hosts-content {
-        max-height: 100px; /* Menor em mobile */
+        max-height: 120px;
+    }
+
+    .host-item {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+
+    .status-indicator {
+        font-size: 12px;
+        margin-right: 8px;
+    }
+
+    .host-name {
+        max-width: 110px;
+    }
+
+    .edit-host-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .host-name[title]:hover::after,
+    .host-name[title]:hover::before {
+        display: none; /* Desativar tooltip em dispositivos móveis */
     }
 
     .pagination-controls {
-        gap: 5px;
+        gap: 8px;
     }
 
     .pagination-controls button {
-        padding: 4px 8px;
+        padding: 5px 10px;
         font-size: 12px;
     }
 
@@ -512,27 +612,14 @@
     }
 }
 
-/* Estilização da barra de rolagem */
-.estados-box::-webkit-scrollbar,
-.hosts-content::-webkit-scrollbar {
-    width: 8px;
-}
-
-.estados-box::-webkit-scrollbar-track,
-.hosts-content::-webkit-scrollbar-track {
-    background: var(--color-background);
-    border-radius: 5px;
-}
-
-.estados-box::-webkit-scrollbar-thumb,
-.hosts-content::-webkit-scrollbar-thumb {
-    background: var(--color-secondary);
-    border-radius: 5px;
-}
-
-.estados-box::-webkit-scrollbar-thumb:hover,
-.hosts-content::-webkit-scrollbar-thumb:hover {
-    background: var(--color-primary);
+/* Acessibilidade: foco visível para todos os elementos interativos */
+.estado-item:focus,
+.unidade-item:focus,
+.host-item:focus,
+.pagination-controls button:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+    border-radius: 4px;
 }
        </style>
     </div>    <div class="databox" id="databox">
