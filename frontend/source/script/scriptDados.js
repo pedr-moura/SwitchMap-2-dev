@@ -402,7 +402,32 @@ function atualizarInterface(dados) {
 
                 if (unidadeHeader && hostsList && hostsContent && prevButton && nextButton && pageInfo) {
                     const unidade = unidadeHeader.querySelector('span').textContent;
-                    const sortedHosts = Object.keys(stats.unidades[unidade].hosts).sort();
+                    const hostsMap = stats.unidades[unidade].hosts;
+
+                    // Separar hosts em offline e online
+                    const offlineHosts = [];
+                    const onlineHosts = [];
+                    Object.keys(hostsMap).forEach(hostNome => {
+                        const hostStats = hostsMap[hostNome];
+                        if (hostStats.ativo === 'red') {
+                            offlineHosts.push(hostNome);
+                        } else {
+                            onlineHosts.push(hostNome);
+                        }
+                    });
+
+                    // Ordenar cada grupo alfabeticamente pelo displayName
+                    const getDisplayName = hostNome => hostNome
+                        .replace(/\.suzano\.com\.br$/, '')
+                        .replace(/^BR-[A-Z]{2}-[A-Z]{3}-[A-Z]{3}-/, '')
+                        .toLowerCase();
+
+                    offlineHosts.sort((a, b) => getDisplayName(a).localeCompare(getDisplayName(b)));
+                    onlineHosts.sort((a, b) => getDisplayName(a).localeCompare(getDisplayName(b)));
+
+                    // Combinar os grupos: offline primeiro, depois online
+                    const sortedHosts = [...offlineHosts, ...onlineHosts];
+
                     const hostsPerPage = 10; // Número de hosts por página
                     let currentPage = 1;
                     const totalHosts = sortedHosts.length;
@@ -420,20 +445,24 @@ function atualizarInterface(dados) {
                                 .replace(/\.suzano\.com\.br$/, '')
                                 .replace(/^BR-[A-Z]{2}-[A-Z]{3}-[A-Z]{3}-/, '');
                             return `
-
                                 <div class="host-item">
-                            
-                                        <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
-                                    
+                                    <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
                                     <span title="${hostNome}">${displayName}</span>
                                 </div>
                             `;
                         }).join('');
 
                         // Atualizar informações da página
-                        pageInfo.textContent = `Página ${page} de ${totalPages}`;
+                        pageInfo.textContent = `Pág. ${page} de ${totalPages}`;
                         prevButton.disabled = page === 1;
                         nextButton.disabled = page === totalPages;
+
+                        // Adicionar classe 'scrollable' se houver conteúdo rolável
+                        if (hostsContent.scrollHeight > hostsContent.clientHeight) {
+                            hostsContent.classList.add('scrollable');
+                        } else {
+                            hostsContent.classList.remove('scrollable');
+                        }
                     };
 
                     // Inicializar a primeira página
@@ -446,6 +475,13 @@ function atualizarInterface(dados) {
                     // Evento de clique para expandir/colapsar a unidade
                     unidadeHeader.addEventListener('click', (e) => {
                         e.stopPropagation();
+                        // Collapse other units
+                        unidadeItems.forEach(otherItem => {
+                            if (otherItem !== unidadeItem) {
+                                otherItem.querySelector('.hosts-list').classList.remove('expanded');
+                                otherItem.querySelector('.unidade-header').classList.remove('expanded');
+                            }
+                        });
                         hostsList.classList.toggle('expanded');
                         unidadeHeader.classList.toggle('expanded');
                     });
