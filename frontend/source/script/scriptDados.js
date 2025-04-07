@@ -277,125 +277,143 @@ function preloadLines(dados) {
 }
 
 // Atualização da interface
+// Atualização da interface
 function atualizarInterface(dados) {
+    console.log('Dados recebidos em atualizarInterface:', dados); // Log para verificar os dados
     dadosAtuais = dados;
-    exibirFeedbackDados?.();
-    
-    const ipBusca = document.getElementById('ipBusca').value.toLowerCase().trim();
+
+    const ipBusca = document.getElementById('ipBusca')?.value.toLowerCase().trim() || '';
     let dadosFiltrados = { hosts: pesquisarPorIP(dados.hosts) };
-    
+    console.log('Dados filtrados:', dadosFiltrados); // Verificar filtragem
+
     // Atualizar contadores gerais
     const countEquipamentos = document.getElementById('countEquipamentos');
     const countEquipamentosSemLocal = document.getElementById('countEquipamentosSemLocal');
-    
+
     if (dadosFiltrados.hosts && Array.isArray(dadosFiltrados.hosts)) {
-        countEquipamentos.innerHTML = dadosFiltrados.hosts.length;
-        countEquipamentosSemLocal.innerHTML = dadosFiltrados.hosts.filter(host => !host.local).length;
+        if (countEquipamentos) countEquipamentos.innerHTML = dadosFiltrados.hosts.length;
+        if (countEquipamentosSemLocal) countEquipamentosSemLocal.innerHTML = dadosFiltrados.hosts.filter(host => !host.local).length;
     } else {
         console.error('Dados.hosts não é um array:', dadosFiltrados);
-        countEquipamentos.innerHTML = '0';
-        countEquipamentosSemLocal.innerHTML = '0';
+        if (countEquipamentos) countEquipamentos.innerHTML = '0';
+        if (countEquipamentosSemLocal) countEquipamentosSemLocal.innerHTML = '0';
     }
-    
+
     // Agrupar por estado, unidade e host
     const estadosMap = {};
-    dadosFiltrados.hosts.forEach(host => {
-        const match = host.nome.match(/^BR-([A-Z]{2})-([A-Z]{3})-([A-Z]{3})(?:-(\w+))?$/);
-        if (match) {
-            const estado = match[1];
-            const unidade = `${match[2]}-${match[3]}`; // Ex.: "FAB-IMP"
-            const hostNome = host.nome; // Nome completo do host
-            if (!estadosMap[estado]) {
-                estadosMap[estado] = { total: 0, online: 0, offline: 0, unidades: {} };
+    if (Array.isArray(dadosFiltrados.hosts)) {
+        dadosFiltrados.hosts.forEach(host => {
+            console.log('Processando host:', host); // Log cada host
+            const match = host.nome.match(/^BR-([A-Z]{2})-([A-Z]{3})-([A-Z]{3})(?:-(\w+))?$/);
+            if (match) {
+                const estado = match[1];
+                const unidade = `${match[2]}-${match[3]}`;
+                const hostNome = host.nome;
+                if (!estadosMap[estado]) {
+                    estadosMap[estado] = { total: 0, online: 0, offline: 0, unidades: {} };
+                }
+                if (!estadosMap[estado].unidades[unidade]) {
+                    estadosMap[estado].unidades[unidade] = { total: 0, online: 0, offline: 0, hosts: {} };
+                }
+                if (!estadosMap[estado].unidades[unidade].hosts[hostNome]) {
+                    estadosMap[estado].unidades[unidade].hosts[hostNome] = { ativo: host.ativo };
+                }
+                estadosMap[estado].total += 1;
+                estadosMap[estado].unidades[unidade].total += 1;
+                if (host.ativo === "#00d700" || host.ativo === "green") {
+                    estadosMap[estado].online += 1;
+                    estadosMap[estado].unidades[unidade].online += 1;
+                } else if (host.ativo === "red") {
+                    estadosMap[estado].offline += 1;
+                    estadosMap[estado].unidades[unidade].offline += 1;
+                }
+            } else {
+                console.warn('Nome do host não corresponde ao padrão:', host.nome);
             }
-            if (!estadosMap[estado].unidades[unidade]) {
-                estadosMap[estado].unidades[unidade] = { total: 0, online: 0, offline: 0, hosts: {} };
-            }
-            if (!estadosMap[estado].unidades[unidade].hosts[hostNome]) {
-                estadosMap[estado].unidades[unidade].hosts[hostNome] = { ativo: host.ativo };
-            }
-            estadosMap[estado].total += 1;
-            estadosMap[estado].unidades[unidade].total += 1;
-            if (host.ativo === "#00d700" || host.ativo === "green") {
-                estadosMap[estado].online += 1;
-                estadosMap[estado].unidades[unidade].online += 1;
-            } else if (host.ativo === "red") {
-                estadosMap[estado].offline += 1;
-                estadosMap[estado].unidades[unidade].offline += 1;
-            }
-        }
-    });
+        });
+    } else {
+        console.error('dadosFiltrados.hosts não é um array');
+    }
+    console.log('Estados mapeados:', estadosMap); // Verificar o resultado do agrupamento
 
     // Atualizar a lista de estados, unidades e hosts
     const estadosList = document.getElementById('estadosList');
-    estadosList.innerHTML = ''; // Limpar conteúdo anterior
-    Object.entries(estadosMap).forEach(([estado, stats]) => {
-        const estadoItem = document.createElement('div');
-        estadoItem.className = 'estado-item';
-        estadoItem.innerHTML = `
-            <div class="estado-header">
-                <span class="estado-nome">${estado}</span>
-                <span class="total">${stats.total}</span>
-                <div class="estado-status">
-                    <span class="online">⬤ ${stats.online}</span>
-                    <span class="offline">⬤ ${stats.offline}</span>
+    if (estadosList) {
+        estadosList.innerHTML = '';
+        Object.entries(estadosMap).forEach(([estado, stats]) => {
+            const estadoItem = document.createElement('div');
+            estadoItem.className = 'estado-item';
+            estadoItem.innerHTML = `
+                <div class="estado-header">
+                    <span class="estado-nome">${estado}</span>
+                    <span class="total">${stats.total}</span>
+                    <div class="estado-status">
+                        <span class="online">⬤ ${stats.online}</span>
+                        <span class="offline">⬤ ${stats.offline}</span>
+                    </div>
                 </div>
-            </div>
-            <div class="unidades-list">
-                ${Object.entries(stats.unidades)
-                    .map(([unidade, unidadeStats]) => `
-                        <div class="unidade-item">
-                            <div class="unidade-header">
-                                <span>${unidade}</span>
-                                <div class="status">
-                                    <span class="online">⬤ ${unidadeStats.online}</span>
-                                    <span class="offline">⬤ ${unidadeStats.offline}</span>
+                <div class="unidades-list">
+                    ${Object.entries(stats.unidades)
+                        .map(([unidade, unidadeStats]) => `
+                            <div class="unidade-item">
+                                <div class="unidade-header">
+                                    <span>${unidade}</span>
+                                    <div class="status">
+                                        <span class="online">⬤ ${unidadeStats.online}</span>
+                                        <span class="offline">⬤ ${unidadeStats.offline}</span>
+                                    </div>
+                                </div>
+                                <div class="hosts-list">
+                                    ${Object.entries(unidadeStats.hosts)
+                                        .map(([hostNome, hostStats]) => `
+                                            <div class="host-item">
+                                                <span>${hostNome}</span>
+                                                <div class="status">
+                                                    <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
+                                                </div>
+                                            </div>
+                                        `).join('')}
                                 </div>
                             </div>
-                            <div class="hosts-list">
-                                ${Object.entries(unidadeStats.hosts)
-                                    .map(([hostNome, hostStats]) => `
-                                        <div class="host-item">
-                                            <span>${hostNome}</span>
-                                            <div class="status">
-                                                <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
-                                            </div>
-                                        </div>
-                                    `).join('')}
-                            </div>
-                        </div>
-                    `).join('')}
-            </div>
-        `;
-        estadosList.appendChild(estadoItem);
+                        `).join('')}
+                </div>
+            `;
+            estadosList.appendChild(estadoItem);
 
-        // Evento para expandir/colapsar unidades
-        const estadoHeader = estadoItem.querySelector('.estado-header');
-        const unidadesList = estadoItem.querySelector('.unidades-list');
-        estadoHeader.addEventListener('click', () => {
-            unidadesList.classList.toggle('expanded');
-        });
+            // Evento para expandir/colapsar unidades
+            const estadoHeader = estadoItem.querySelector('.estado-header');
+            const unidadesList = estadoItem.querySelector('.unidades-list');
+            if (estadoHeader && unidadesList) {
+                estadoHeader.addEventListener('click', () => {
+                    unidadesList.classList.toggle('expanded');
+                });
+            }
 
-        // Evento para expandir/colapsar hosts em cada unidade
-        const unidadeItems = estadoItem.querySelectorAll('.unidade-item');
-        unidadeItems.forEach(unidadeItem => {
-            const unidadeHeader = unidadeItem.querySelector('.unidade-header');
-            const hostsList = unidadeItem.querySelector('.hosts-list');
-            unidadeHeader.addEventListener('click', (e) => {
-                e.stopPropagation(); // Evita que o clique no estado também seja disparado
-                hostsList.classList.toggle('expanded');
+            // Evento para expandir/colapsar hosts
+            const unidadeItems = estadoItem.querySelectorAll('.unidade-item');
+            unidadeItems.forEach(unidadeItem => {
+                const unidadeHeader = unidadeItem.querySelector('.unidade-header');
+                const hostsList = unidadeItem.querySelector('.hosts-list');
+                if (unidadeHeader && hostsList) {
+                    unidadeHeader.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        hostsList.classList.toggle('expanded');
+                    });
+                }
             });
         });
-    });
+    } else {
+        console.error('Elemento estadosList não encontrado');
+    }
 
-    // Atualizar número total de unidades (estados únicos)
+    // Atualizar número total de unidades
     const countUnidades = document.getElementById('countUnidades');
-    countUnidades.innerHTML = Object.keys(estadosMap).length;
+    if (countUnidades) countUnidades.innerHTML = Object.keys(estadosMap).length;
 
     if (!map) {
         inicializarMapa();
     }
-    
+
     atualizarMarcadores(dadosFiltrados.hosts);
     atualizarLinhas(dadosFiltrados.hosts);
     atualizarListas(dadosFiltrados);
