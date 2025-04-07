@@ -421,12 +421,11 @@ function atualizarInterface(dados) {
                                 .replace(/^BR-[A-Z]{2}-[A-Z]{3}-[A-Z]{3}-/, '');
                             return `
 
-                                <div class="status">
-                                        <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
-                                    </div>
                                 <div class="host-item">
+                            
+                                        <span class="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}">⬤</span>
+                                    
                                     <span title="${hostNome}">${displayName}</span>
-
                                 </div>
                             `;
                         }).join('');
