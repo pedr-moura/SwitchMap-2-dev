@@ -218,6 +218,150 @@
             </div>
 
          </div>
+         <div class="unidadesPorEstado">
+            <h3>Equipamentos por Estado</h3>
+            <div class="estados-box">
+                <div id="estadosList" class="estados-container">
+                    <!-- Aqui serão inseridos os estados e unidades dinamicamente -->
+                </div>
+            </div>
+        </div>
+        <style>
+.unidadesPorEstado {
+    margin-top: 20px;
+    padding: 10px;
+    background: var(--color-glass);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px; /* Limite máximo para telas grandes */
+}
+
+.unidadesPorEstado h3 {
+    color: var(--color-primary);
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.estados-box {
+    max-height: 300px; /* Altura fixa para a caixa */
+    overflow-y: auto; /* Barra de rolagem vertical */
+    overflow-x: hidden; /* Sem rolagem horizontal */
+    border: 1px solid var(--color-secondary);
+    border-radius: 5px;
+    padding: 5px;
+    background: var(--color-background);
+}
+
+.estados-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.estado-item {
+    padding: 8px 10px;
+    border-radius: 5px;
+    border: 1px solid var(--color-secondary);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.estado-item:hover {
+    background-color: rgba(var(--color-secondary-rgb, 64, 72, 81), 0.1);
+}
+
+.estado-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.estado-nome {
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.estado-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.estado-status span {
+    font-size: 12px;
+}
+
+.total {
+    color: var(--color-text);
+    font-weight: bold;
+}
+
+.online {
+    color: #00d700;
+}
+
+.offline {
+    color: #ff0000;
+}
+
+.unidades-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    margin-top: 5px;
+}
+
+.unidades-list.expanded {
+    max-height: 500px; /* Altura máxima suficiente para exibir todas as unidades */
+}
+
+.unidade-item {
+    padding: 5px 10px;
+    border-top: 1px solid var(--color-secondary);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--color-text);
+}
+
+.unidade-item .status {
+    display: flex;
+    gap: 5px;
+}
+
+/* Ajustes para responsividade */
+@media (max-width: 600px) {
+    .unidadesPorEstado {
+        max-width: 100%; /* Ocupa toda a largura em telas pequenas */
+    }
+    
+    .estados-box {
+        max-height: 200px; /* Altura menor em telas pequenas */
+    }
+}
+
+/* Estilização da barra de rolagem para melhor UX */
+.estados-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.estados-box::-webkit-scrollbar-track {
+    background: var(--color-background);
+    border-radius: 5px;
+}
+
+.estados-box::-webkit-scrollbar-thumb {
+    background: var(--color-secondary);
+    border-radius: 5px;
+}
+
+.estados-box::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary);
+}
+        </style>
     </div>
 
     <div class="databox" id="databox">
@@ -1101,7 +1245,7 @@ window.addEventListener('click', function (event) {
             border: none;
           }</style>
             
-    <button id="toggleLinesButton" onclick="toggleDependenciasState()"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <button id="toggleLinesButton"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 
         <path clip-rule="evenodd" d="M18 5C17.4477 5 17 5.44772 17 6C17 6.27642 17.1108 6.52505 17.2929 6.70711C17.475 6.88917 17.7236 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5ZM15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6C21 7.65685 19.6569 9 18 9C17.5372 9 17.0984 8.8948 16.7068 8.70744L8.70744 16.7068C8.8948 17.0984 9 17.5372 9 18C9 19.6569 7.65685 21 6 21C4.34315 21 3 19.6569 3 18C3 16.3431 4.34315 15 6 15C6.46278 15 6.90157 15.1052 7.29323 15.2926L15.2926 7.29323C15.1052 6.90157 15 6.46278 15 6ZM6 17C5.44772 17 5 17.4477 5 18C5 18.5523 5.44772 19 6 19C6.55228 19 7 18.5523 7 18C7 17.7236 6.88917 17.475 6.70711 17.2929C6.52505 17.1108 6.27642 17 6 17Z" />
         </svg></button>
@@ -1255,7 +1399,7 @@ window.addEventListener('click', function (event) {
 
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/info.js"></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/open.js"></script>
-        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/scriptDados.js" defer></script>
+        <script src="scriptDados.js" defer></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/manipularMapa.js"></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/error.js"></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/credits.js"></script>
