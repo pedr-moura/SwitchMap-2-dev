@@ -112,7 +112,7 @@
                 <input type="text" name="ipBusca" id="ipBusca" placeholder="Pesquisar por IP" onkeyup="pesquisarPorIP()">
             </label> 
 
-            <div class="quantidadeEquipamentos">
+            <div class="quantidadeEquipamentos" style="display: none;">
                      <span style="color: var(--color-text);"><b id="countEquipamentos"></b> Consultados</span>
         <br>
            <span style="color: var(--color-text);"><b id="countEquipamentosSemLocal"></b> Sem Local</span>
@@ -162,13 +162,14 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 400px; /* Limite máximo para telas grandes */
+    height: 80%;
 }.unidadesPorEstado h3 {
     color: var(--color-primary);
     font-size: 16px;
     margin-bottom: 10px;
     text-align: center;
 }.estados-box {
-    max-height: 300px; /* Altura fixa para a caixa */
+    height: 80%;
     overflow-y: auto; /* Barra de rolagem vertical */
     overflow-x: hidden; /* Sem rolagem horizontal */
     border: 1px solid var(--color-secondary);
