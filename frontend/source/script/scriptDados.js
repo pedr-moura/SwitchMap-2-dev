@@ -816,15 +816,25 @@ async function loadHosts() {
     }
 }
 
-function getDisplayedIPs() {
-    // Pega os IPs dos hosts atualmente exibidos (allDisplayedHosts)
-    const displayedIPs = allDisplayedHosts.map(host => host.ip);
-    return displayedIPs;
+function getVisibleMapIPs() {
+    const visibleIPs = [];
+    
+    // Itera sobre os marcadores no markersLayer
+    markersLayer.eachLayer(marker => {
+        const hostId = marker.options.hostId; // O IP do host
+        if (hostId && map.getBounds().contains(marker.getLatLng())) {
+            visibleIPs.push(hostId);
+        }
+    });
+    
+    console.log('IPs visíveis no mapa com zoom atual:', visibleIPs);
+    return visibleIPs;
 }
 
-function exportDisplayedIPs() {
-    const ips = getDisplayedIPs();
-    console.log('IPs exibidos na tela:', ips);
+// Exemplo de uso
+function exportVisibleMapIPs() {
+    const ips = getVisibleMapIPs();
+    console.log('Exportando IPs visíveis:', ips);
     // Aqui você pode enviar esses IPs para o backend ou salvá-los localmente
     return ips;
 }
