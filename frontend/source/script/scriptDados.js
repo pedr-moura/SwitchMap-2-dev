@@ -831,12 +831,20 @@ function getVisibleMapIPs() {
     return visibleIPs;
 }
 
-// Exemplo de uso
-function exportVisibleMapIPs() {
+async function sendVisibleIPsToBackend() {
     const ips = getVisibleMapIPs();
-    console.log('Exportando IPs visíveis:', ips);
-    // Aqui você pode enviar esses IPs para o backend ou salvá-los localmente
-    return ips;
+    try {
+        const response = await fetch(`${server}/prioritize-pings`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ips })
+        });
+        if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
+        const result = await response.json();
+        console.log('Resposta do backend:', result);
+    } catch (error) {
+        console.error('Erro ao enviar IPs visíveis ao backend:', error);
+    }
 }
 
 function displayHosts(hosts, isNewSearch = true) {
@@ -1110,6 +1118,7 @@ async function carregarDados() {
 }
 
 async function atualizarDadosManualmente() {
+    sendVisibleIPsToBackend()
     console.log('Atualização manual solicitada');
     const novosDados = await fetchDadosHTTP();
     if (novosDados) {
