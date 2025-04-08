@@ -816,6 +816,19 @@ async function loadHosts() {
     }
 }
 
+function getDisplayedIPs() {
+    // Pega os IPs dos hosts atualmente exibidos (allDisplayedHosts)
+    const displayedIPs = allDisplayedHosts.map(host => host.ip);
+    return displayedIPs;
+}
+
+function exportDisplayedIPs() {
+    const ips = getDisplayedIPs();
+    console.log('IPs exibidos na tela:', ips);
+    // Aqui você pode enviar esses IPs para o backend ou salvá-los localmente
+    return ips;
+}
+
 function displayHosts(hosts, isNewSearch = true) {
     const hostList = document.getElementById('hostList');
     
