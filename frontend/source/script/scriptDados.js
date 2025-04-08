@@ -1,1153 +1,2196 @@
-// Elementos do DOM
-const toggleMap = document.getElementById('mudartipo');
-const toggleSwView = document.getElementById('toggleShowSwitches');
-const toggleDependencias = document.getElementById('toggleLinesButton');
-const opcoesTitulo = document.getElementById('opcoes');
-const cssSW = document.getElementById('css-sw');
-const theme = document.getElementById('theme');
-const menuContainer = document.getElementById('menu-container');
-// const logoCliente = document.getElementById('logoCliente');
-const pontosMapeados = {};
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwitchMap</title>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://switch-map-2-dev.vercel.app/frontend/source/style.css">    <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/locaisDeafult.js"></script>    <!-- websocket -->
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.min.js"></script></head>
+<body>    <div class="theme" id="theme">
+        <style>
+            :root{
+                --color-glass: #16191ec2;
+                --color-background: #16191E;
+                --color-secondary: #404851;
+                --color-primary: #4A87C0;
+                --color-text: #e2e2e2;
+            }
+        </style>
+    </div>
+    <!-- Desenvolvido por pedromoura.idr@suzano.com.br -->      <div id="map"></div>    <div class="mudartipo" id="mudartipo">
+        <div class="checkbox-wrapper-4">
+            <img src="https://i.ibb.co/vv6Zs4vP/sat.png" id="mapToggleImage" alt="Alternar mapa" onclick="alterarCor()"/>
+        </div>
+    </div>
+      <span id="creditos">Desenvolvido por <b>Pedro Moura</b></span>
+      <div class="barravertical">        <div class="alert" onclick="showRedHostsPopup()">            <div id="countAlert">
+                <div id="alertNum"></div>
+            </div>            <svg viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.2202 21.25H5.78015C5.14217 21.2775 4.50834 21.1347 3.94373 20.8364C3.37911 20.5381 2.90402 20.095 2.56714 19.5526C2.23026 19.0101 2.04372 18.3877 2.02667 17.7494C2.00963 17.111 2.1627 16.4797 2.47015 15.92L8.69013 5.10999C9.03495 4.54078 9.52077 4.07013 10.1006 3.74347C10.6804 3.41681 11.3346 3.24518 12.0001 3.24518C12.6656 3.24518 13.3199 3.41681 13.8997 3.74347C14.4795 4.07013 14.9654 4.54078 15.3102 5.10999L21.5302 15.92C21.8376 16.4797 21.9907 17.111 21.9736 17.7494C21.9566 18.3877 21.7701 19.0101 21.4332 19.5526C21.0963 20.095 20.6211 20.5381 20.0565 20.8364C19.4919 21.1347 18.8581 21.2775 18.2202 21.25V21.25Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10.8809 17.15C10.8809 17.0021 10.9102 16.8556 10.9671 16.7191C11.024 16.5825 11.1074 16.4586 11.2125 16.3545C11.3175 16.2504 11.4422 16.1681 11.5792 16.1124C11.7163 16.0567 11.8629 16.0287 12.0109 16.03C12.2291 16.034 12.4413 16.1021 12.621 16.226C12.8006 16.3499 12.9398 16.5241 13.0211 16.7266C13.1023 16.9292 13.122 17.1512 13.0778 17.3649C13.0335 17.5786 12.9272 17.7745 12.7722 17.9282C12.6172 18.0818 12.4203 18.1863 12.2062 18.2287C11.9921 18.2711 11.7703 18.2494 11.5685 18.1663C11.3666 18.0833 11.1938 17.9426 11.0715 17.7618C10.9492 17.5811 10.8829 17.3683 10.8809 17.15ZM11.2409 14.42L11.1009 9.20001C11.0876 9.07453 11.1008 8.94766 11.1398 8.82764C11.1787 8.70761 11.2424 8.5971 11.3268 8.5033C11.4112 8.40949 11.5144 8.33449 11.6296 8.28314C11.7449 8.2318 11.8697 8.20526 11.9959 8.20526C12.1221 8.20526 12.2469 8.2318 12.3621 8.28314C12.4774 8.33449 12.5805 8.40949 12.6649 8.5033C12.7493 8.5971 12.8131 8.70761 12.852 8.82764C12.8909 8.94766 12.9042 9.07453 12.8909 9.20001L12.7609 14.42C12.7609 14.6215 12.6808 14.8149 12.5383 14.9574C12.3957 15.0999 12.2024 15.18 12.0009 15.18C11.7993 15.18 11.606 15.0999 11.4635 14.9574C11.321 14.8149 11.2409 14.6215 11.2409 14.42Z" fill="#000000"/>
+                </svg>        </div>        <button id="update" onclick="triggerUpdateAnimation()">
+    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="155.724px" height="155.723px" viewBox="0 0 155.724 155.723" style="enable-background:new 0 0 155.724 155.723;" xml:space="preserve">
+        <g>
+            <g id="_x33_50._Repeat">
+                <g>
+                    <path d="M42.735,121.521c-12.77-10.273-20.942-26.025-20.942-43.691c0-26.114,17.882-47.992,42.051-54.23V9.154
+                        C31.854,15.646,7.776,43.927,7.776,77.83c0,20.951,9.199,39.738,23.767,52.578C42.819,140.911,49.827,126.894,42.735,121.521z
+                        M123.589,24.746c-7.18-6.485-17.693,4.028-10.801,9.236c12.888,10.27,21.143,26.097,21.143,43.848
+                        c0,26.118-17.885,48-42.052,54.234v14.449c31.99-6.499,56.068-34.776,56.068-68.684
+                        C147.947,56.602,138.502,37.596,123.589,24.746z M70.037,35.707l22.813-13.661c3.319-1.988,3.326-5.226,0.018-7.228L69.844,0.883
+                        c-3.312-1.999-5.985-0.49-5.969,3.381l0.124,28.035C64.009,36.168,66.714,37.695,70.037,35.707z M85.883,120.029l-23.027,13.935
+                        c-3.311,2.002-3.304,5.239,0.019,7.228l22.811,13.662c3.319,1.984,6.03,0.462,6.047-3.412l0.12-28.034
+                        C91.865,119.54,89.188,118.03,85.883,120.029z"></path>
+                </g>
+            </g>
+        </g>
+    </svg>
+</button><script>
+    function triggerUpdateAnimation() {
+    const updateButton = document.getElementById('update');
+      // Adiciona a classe para disparar a animação
+    updateButton.classList.add('clicked');
+      // Chama a função de atualização
+    atualizarDadosManualmente();
+      // Remove a classe após 1,5 segundos (duração da animação)
+    setTimeout(() => {
+        updateButton.classList.remove('clicked');
+    }, 1500); // 1500ms = 1.5s
+}
+</script>      <div class="icons">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="exibirJanela('toggleTitulo'), exibirHome(), limparAprove()">
+            <path opacity="0.5" d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"  stroke-width="1.5"/>
+            <path d="M15 18H9" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <br>            <div class="sectionData">
+                                   <!-- SVG como botão -->
+                                   <button id="toggleButtonPlus" onclick="showSection('editar'), exibirJanela('toggleTitulo'), exibirEditar(), limparAprove()">
+                                    <svg id="toggleButtonPlusSVG" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20.5 20.5L22 22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M16 18.5C16 19.8807 17.1193 21 18.5 21C19.1916 21 19.8175 20.7192 20.2701 20.2654C20.7211 19.8132 21 19.1892 21 18.5C21 17.1193 19.8807 16 18.5 16C17.1193 16 16 17.1193 16 18.5Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M4 6V12C4 12 4 15 11 15C18 15 18 12 18 12V6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M11 3C18 3 18 6 18 6C18 6 18 9 11 9C4 9 4 6 4 6C4 6 4 3 11 3Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M11 21C4 21 4 18 4 18V12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                                                                </div>
+<br><button onclick="exibirJanela('toggleTitulo'); exibirAprovacao()" style="background: none; border: none;">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="none"/>
+    </svg>
+</button>           <br><!--             <div id="buttonContainer" class="hidden" onclick="showSection('adicionar'), exibirJanela('toggleTitulo'), exibirAdicionar()">
+                <svg id="buttonAdd" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="none"  clip-rule="evenodd" d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM12.5 5.5C13.0523 5.5 13.5 5.94772 13.5 6.5V10.5H17.5C18.0523 10.5 18.5 10.9477 18.5 11.5V12.5C18.5 13.0523 18.0523 13.5 17.5 13.5H13.5V17.5C13.5 18.0523 13.0523 18.5 12.5 18.5H11.5C10.9477 18.5 10.5 18.0523 10.5 17.5V13.5H6.5C5.94772 13.5 5.5 13.0523 5.5 12.5V11.5C5.5 10.9477 5.94772 10.5 6.5 10.5H10.5V6.5C10.5 5.94772 10.9477 5.5 11.5 5.5H12.5Z" fill="#000000"/>
+                    </svg>
+            </div>
+                <script>
+            buttonContainer.classList.toggle("hidden");            let janela = 0;           function exibirJanela(id) {
+            if (janela == 0) {
+                document.getElementById(id).click();
+            }
+           }
+                 //    document.getElementByClassName('leaflet-popup-close-button').click();
+        </script> -->
+    </div>
+<!-- 
+    <button id="toggleThemeButton">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--color-text)" xmlns="http://www.w3.org/2000/svg">
+            <path  clip-rule="evenodd" d="M3.39703 11.6315C3.39703 16.602 7.42647 20.6315 12.397 20.6315C15.6858 20.6315 18.5656 18.8664 20.1358 16.23C16.7285 17.3289 12.6922 16.7548 9.98282 14.0455C7.25201 11.3146 6.72603 7.28415 7.86703 3.89293C5.20697 5.47927 3.39703 8.38932 3.39703 11.6315ZM21.187 13.5851C22.0125 13.1021 23.255 13.6488 23 14.5706C21.7144 19.2187 17.4543 22.6315 12.397 22.6315C6.3219 22.6315 1.39703 17.7066 1.39703 11.6315C1.39703 6.58874 4.93533 2.25845 9.61528 0.999986C10.5393 0.751502 11.0645 1.99378 10.5641 2.80935C8.70026 5.84656 8.83194 10.0661 11.397 12.6312C13.9319 15.1662 18.1365 15.3702 21.187 13.5851Z"/>
+        </svg>
+    </button> -->    </div>
+    <div class="titulo" id="tituloBox" style="
+    flex-wrap: wrap;
+    align-content: center;
+        ">        <button id="toggleTitulo"></button>      <div class="homebox" id="homebox">
+                      <label for="ipBusca" class="pesquisa" style="display: none;"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+                <input type="text" name="ipBusca" id="ipBusca" placeholder="Pesquisar por IP" onkeyup="pesquisarPorIP()" >
+            </label> 
 
-// Estado global
-let server = "http://172.16.196.36:5000";
-let showIconesMaps = 0;
-let showDependencias = 0;
-let mapaAtual;
-let countChangeTheme = 0; // Começa no tema escuro
-let dadosAtuais = { hosts: [] }; // Dados mais recentes
-let isEditing = false; // Flag para indicar edição em andamento
-let pendingWebSocketUpdate = null; // Armazena atualizações do WebSocket durante edição
-let hosts = [];
-let janela = 0; // Estado inicial do menu
-let map;
-let markersLayer;
-let linesLayer;
-let linesVisible = false;
-const objetosVisiveis = {};
-let pageLoadTime = performance.now(); // Marca o tempo de início do carregamento da página
-let currentPage = 0;
-const hostsPerPage = 50; // Número de hosts carregados por vez
-let isLoading = false;
-let allDisplayedHosts = []; // Array para armazenar todos os hosts filtrados atualmente
-let hasMoreHosts = true; // Flag para controlar se existem mais hosts para carregar
+            <div class="quantidadeEquipamentos" style="display: none;">
+                     <span style="color: var(--color-text);"><b id="countEquipamentos"></b> Consultados</span>
+        <br>
+           <span style="color: var(--color-text);"><b id="countEquipamentosSemLocal"></b> Sem Local</span>
+        </div>        <!-- <div class="quantidadeEquipamentos">
+            <span style="color: var(--color-text);"><b id="countOff"></b> Sem Conexão</span>
+         </div> -->
+<br> <br><br><br>
+         <div class="unidadesAgregadas">
+            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                viewBox="0 0 511.999 511.999" xml:space="preserve">
+            <g>
+                <g>
+                    <path d="M255.999,105.745c-27.617,0-50.085,22.468-50.085,50.085s22.468,50.085,50.085,50.085
+                        c27.617,0,50.085-22.468,50.085-50.085S283.616,105.745,255.999,105.745z M255.999,172.525c-9.206,0-16.695-7.489-16.695-16.695
+                        s7.489-16.695,16.695-16.695s16.695,7.489,16.695,16.695C272.694,165.035,265.205,172.525,255.999,172.525z"/>
+                </g>
+            </g>
+            <g>
+                <g>
+                    <path d="M511.131,451.06l-66.78-200.339c-2.273-6.817-8.652-11.416-15.838-11.416h-87.036
+                        c14.699-23.209,31.386-44.77,31.386-83.475c0-64.439-52.425-116.865-116.865-116.865S139.135,91.391,139.135,155.83
+                        c0,38.935,16.89,60.626,31.638,83.475H83.485c-7.187,0-13.565,4.599-15.838,11.416L0.867,451.06
+                        c-3.597,10.795,4.446,21.974,15.838,21.974h478.588C506.672,473.033,514.733,461.867,511.131,451.06z M255.999,72.355
+                        c46.028,0,83.475,37.447,83.475,83.475c0,15.854-4.459,31.274-12.893,44.591l-69.912,110.383l-70.862-109.779
+                        c-8.689-13.457-13.281-29.086-13.281-45.195C172.524,109.801,209.971,72.355,255.999,72.355z M39.868,439.645v-0.001
+                        l55.65-166.949h96.808l50.45,78.156c6.607,10.235,21.61,10.176,28.131-0.121l49.423-78.033h96.151l55.65,166.949H39.868z"/>
+                </g>
+            </g>
+            </svg>
+            <div class="quantidadeEquipamentos">
+                <span><b id="countUnidades">0</b> Estados</span>
+            </div>         </div>
+         <div class="unidadesPorEstado" style="">
+            <h3>Equipamentos por Estado</h3>
+            <div class="estados-box">
+                <div id="estadosList" class="estados-container">
+                    <!-- Aqui serão inseridos os estados e unidades dinamicamente -->
+                </div>
+            </div>
+        </div>
+       <style>
+/* Container principal da seção de unidades por estado */
+.unidadesPorEstado {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 420px;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    /* Evitar overflow em telas pequenas */
+    box-sizing: border-box;
+}
 
-// Declaração global das camadas de mapa
-const mapaPadraoClaro = L.tileLayer('http://172.16.196.36:3000/tiles/light/{z}/{x}/{y}', { 
-    attribution: '© OpenStreetMap © CartoDB' 
-});
-const mapaPadraoEscuro = L.tileLayer('https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', { 
-    attribution: '© OpenStreetMap' 
-});
-const mapaSatelite = L.tileLayer('http://172.16.196.36:3000/tiles/satellite/{z}/{x}/{y}', { 
-    attribution: 'Tiles © Esri' 
-});
+.unidadesPorEstado:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
 
-// Inicialização de elementos
-// logoCliente.src = "https://i.ibb.co/3Ysj3mQ3/Captura-de-tela-2025-04-06-130602.png";
-toggleDependencias.style.display = "none";
-toggleMap.style.display = "none";
-opcoesTitulo.style.display = "none";
-ocultarSw();
+.unidadesPorEstado:focus-within {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    outline: 2px solid var(--color-primary, #4a87c0);
+    outline-offset: 2px;
+}
 
-// Telas
-function exibirJanela(id) {
-    console.log('Exibir janela:', id, 'janela:', janela);
-    if (janela == 0) {
-        document.getElementById(id).click();
+.unidadesPorEstado h3 {
+    color: var(--color-primary, #4a87c0);
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 12px;
+    text-align: center;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+}
+
+/* Container da lista de estados */
+.estados-box {
+    max-height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid var(--color-secondary, #404851);
+    border-radius: 8px;
+    padding: 8px;
+    padding-bottom: 50px; /* Espaço para pagination-controls */
+    background: var(--color-background, #ffffff);
+    position: relative;
+    /* Garantir que a barra de rolagem não quebre o layout */
+    box-sizing: border-box;
+    /* Evitar que o conteúdo transborde */
+    contain: content;
+}
+
+/* Estilização da barra de rolagem para consistência entre navegadores */
+.estados-box::-webkit-scrollbar,
+.hosts-content::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.estados-box::-webkit-scrollbar-track,
+.hosts-content::-webkit-scrollbar-track {
+    background: var(--color-background, #ffffff);
+    border-radius: 8px;
+}
+
+.estados-box::-webkit-scrollbar-thumb,
+.hosts-content::-webkit-scrollbar-thumb {
+    background: var(--color-secondary, #404851);
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.estados-box::-webkit-scrollbar-thumb:hover,
+.hosts-content::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary, #4a87c0);
+}
+
+/* Firefox scrollbar */
+.estados-box,
+.hosts-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-secondary, #404851) var(--color-background, #ffffff);
+}
+
+/* Container de estados */
+.estados-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Item de estado */
+.estado-item {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--color-secondary, #404851);
+    background: var(--color-background, #ffffff);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    /* Garantir que o elemento seja focável */
+    position: relative;
+    user-select: none; /* Evitar seleção de texto acidental */
+}
+
+.estado-item:hover {
+    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.05);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.estado-item:focus {
+    outline: 2px solid var(--color-primary, #4a87c0);
+    outline-offset: -2px;
+    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.05);
+}
+
+.estado-item.expanded {
+    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.02);
+}
+
+/* Cabeçalho do estado */
+.estado-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 24px; /* Evitar que o layout quebre com texto pequeno */
+}
+
+.estado-nome {
+    color: var(--color-text, #333333);
+    font-size: 15px;
+    font-weight: 600;
+    flex: 1;
+    line-height: 1.4;
+}
+
+.estado-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.estado-status span {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    line-height: 1;
+}
+
+.total {
+    color: var(--color-text, #333333);
+    font-weight: 600;
+    font-size: 14px;
+    background: rgba(var(--color-secondary-rgb, 64, 72, 81), 0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+    line-height: 1.4;
+}
+
+.online {
+    color: #00d700;
+}
+
+.offline {
+    color: #ff0000;
+}
+
+/* Lista de unidades */
+.unidades-list {
+    display: none;
+    margin-top: 8px;
+}
+
+.unidades-list.expanded {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Item de unidade */
+.unidade-item {
+    padding: 6px 12px;
+    border-top: 1px solid var(--color-secondary, #404851);
+    background: var(--color-background, #ffffff);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    position: relative;
+    user-select: none;
+}
+
+.unidade-item:hover {
+    background-color: rgba(var(--color-secondary-rgb, 64, 72, 81), 0.05);
+    transform: translateY(-1px);
+}
+
+.unidade-item:focus {
+    outline: 2px solid var(--color-primary, #4a87c0);
+    outline-offset: -2px;
+    background-color: rgba(var(--color-secondary-rgb, 64, 72, 81), 0.05);
+}
+
+.unidade-item.expanded {
+    background-color: rgba(var(--color-secondary-rgb, 64, 72, 81), 0.02);
+}
+
+/* Cabeçalho da unidade */
+.unidade-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--color-text, #333333);
+    font-weight: 500;
+    min-height: 20px;
+}
+
+.unidade-header .status {
+    display: flex;
+    gap: 6px;
+    font-size: 12px;
+}
+
+/* Lista de hosts */
+.hosts-list {
+    display: none;
+    margin-top: 6px;
+}
+
+.hosts-list.expanded {
+    display: block;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.hosts-content {
+    max-height: 160px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Item de host */
+.host-item {
+    padding: 8px 15px;
+    font-size: 12px;
+    color: var(--color-text, #333333);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px dashed var(--color-secondary, #404851);
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+
+.host-item:hover {
+    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.05);
+    transform: scale(1.01);
+}
+
+.host-item:focus {
+    outline: 2px solid var(--color-primary, #4a87c0);
+    outline-offset: -2px;
+    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.05);
+}
+
+.status-indicator {
+    font-size: 13px;
+    margin-right: 10px;
+    position: relative;
+    line-height: 1;
+}
+
+.status-indicator.online {
+    color: #00d700;
+}
+
+.status-indicator.offline {
+    color: #ff0000;
+}
+
+.host-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* Botão de edição */
+.edit-host-btn {
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.1s ease, opacity 0.3s ease;
+    opacity: 0.6;
+}
+
+.host-item:hover .edit-host-btn {
+    opacity: 1;
+}
+
+.edit-host-btn:hover {
+    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.15);
+    border-radius: 4px;
+    transform: scale(1.1);
+}
+
+.edit-host-btn:active {
+    transform: scale(0.95);
+}
+
+.edit-host-btn:focus {
+    outline: 2px solid var(--color-primary, #4a87c0);
+    outline-offset: 2px;
+    border-radius: 4px;
+    opacity: 1;
+}
+
+.edit-host-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Tooltip para o nome do host */
+.host-name[title] {
+    position: relative;
+}
+
+.host-name[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: -45px;
+    left: 0;
+    background: #2a2a2a;
+    color: #ffffff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    white-space: nowrap;
+    z-index: 100;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    animation: fadeInTooltip 0.2s ease forwards;
+    animation-delay: 0.3s;
+}
+
+.host-name[title]:hover::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 12px;
+    border: 6px solid transparent;
+    border-top-color: #2a2a2a;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeInTooltip 0.2s ease forwards;
+    animation-delay: 0.3s;
+}
+
+/* Animação para o tooltip */
+@keyframes fadeInTooltip {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-// Funções de UI
-function exibirToggleMap() {
-    toggleMap.style.display = "block";
-    opcoesTitulo.style.display = "flex";
+/* Controles de paginação */
+.pagination-controls {
+    margin-top: 8px;
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    background: var(--color-background, #ffffff);
+    border-top: 1px solid var(--color-secondary, #404851);
+/*     position: sticky; */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    box-sizing: border-box;
 }
 
-function ocultarSw() {
-    cssSW.innerHTML = `<style>#icone-sw { display: none; }</style>`;
+.pagination-controls button {
+    padding: 6px 12px;
+    background-color: var(--color-primary, #4a87c0);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
 }
 
-// Define uma única função para lidar com a troca de estado
-function toggleDependenciasState() {
-    showDependencias = showDependencias === 0 ? 1 : 0;
-    linesVisible = showDependencias === 1; // Sincroniza as variáveis
-    
-    // Atualiza a visualização das linhas
-    if (linesVisible) {
-        linesLayer.addTo(map);
-        toggleDependencias.style.border = '3px solid #0303ff';
-    } else {
-        if (map.hasLayer(linesLayer)) {
-            map.removeLayer(linesLayer);
-        }
-        toggleDependencias.style.border = '1px solid var(--color-secondary)';
+.pagination-controls button:hover {
+    background-color: var(--color-primary-hover, #3a7bc8);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-controls button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.pagination-controls button:disabled {
+    background-color: transparent;
+    color: var(--color-secondary, #404851);
+    border: 1px solid var(--color-secondary, #404851);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.pagination-controls button:focus {
+    outline: 2px solid var(--color-primary, #4a87c0);
+    outline-offset: 2px;
+}
+
+.page-info {
+    font-size: 13px;
+    color: var(--color-text, #333333);
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* Mensagem de "sem hosts" */
+.no-hosts {
+    padding: 12px;
+    color: #888888;
+    font-style: italic;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* Animação de fade-in para listas expandidas */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
     }
-    
-    console.log('Estado alterado: showDependencias =', showDependencias, 'linesVisible =', linesVisible);
-}
-
-// Garantir que o elemento toggleDependencias existe antes de adicionar o evento
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleDependencias = document.getElementById('toggleLinesButton');
-    if (toggleDependencias) {
-        // Remove qualquer listener anterior para evitar duplicação
-        toggleDependencias.removeEventListener('click', toggleDependenciasState);
-        // Adiciona o novo listener
-        toggleDependencias.addEventListener('click', toggleDependenciasState);
-        console.log('Evento de clique adicionado ao botão toggleDependencias');
-    } else {
-        console.error('Elemento toggleDependencias não encontrado');
-    }
-});
-
-// Remover a função toggleLines separada para evitar confusão
-// Qualquer chamada a toggleLines() deve ser substituída por toggleDependenciasState()
-
-function toggleLines() {
-    linesVisible = !linesVisible;
-    if (linesVisible) {
-        linesLayer.addTo(map);
-        toggleDependencias.style.border = '3px solid #0303ff';
-    } else {
-        map.removeLayer(linesLayer);
-        toggleDependencias.style.border = '1px solid var(--color-secondary)';
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-function showSw() {
-    if (showIconesMaps === 0) {
-        toggleSwView.style.border = "3px solid rgb(3, 3, 255)";
-        toggleDependencias.style.display = "block";
-        cssSW.innerHTML = `
+/* Suporte a tema escuro */
+@media (prefers-color-scheme: dark) {
+    .unidadesPorEstado {
+        background: #2a2a2a;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .estados-box {
+        background: #333333;
+        border-color: #444444;
+    }
+
+    .estado-item,
+    .unidade-item,
+    .host-item {
+        border-color: #444444;
+        background: #333333;
+        color: #dddddd;
+    }
+
+    .estado-nome,
+    .total,
+    .unidade-header,
+    .host-name,
+    .page-info {
+        color: #dddddd;
+    }
+
+    .host-item:hover {
+        background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.1);
+    }
+
+    .host-name[title]:hover::after {
+        background: #444444;
+        color: #dddddd;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .host-name[title]:hover::before {
+        border-top-color: #444444;
+    }
+
+    .pagination-controls {
+        background: #333333;
+        border-color: #444444;
+    }
+
+    .no-hosts {
+        color: #aaaaaa;
+    }
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .unidadesPorEstado {
+        max-width: 100%;
+        padding: 10px;
+        margin-top: 15px;
+    }
+
+    .unidadesPorEstado h3 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .estados-box {
+        max-height: 220px;
+        padding-bottom: 40px;
+    }
+
+    .estados-container {
+        gap: 8px;
+    }
+
+    .estado-item {
+        padding: 8px 10px;
+    }
+
+    .estado-nome {
+        font-size: 14px;
+    }
+
+    .estado-status span {
+        font-size: 12px;
+        gap: 2px;
+    }
+
+    .total {
+        font-size: 13px;
+        padding: 1px 6px;
+    }
+
+    .unidade-item {
+        padding: 5px 10px;
+    }
+
+    .unidade-header {
+        font-size: 12px;
+    }
+
+    .unidade-header .status {
+        font-size: 11px;
+        gap: 4px;
+    }
+
+    .hosts-content {
+        max-height: 120px;
+    }
+
+    .host-item {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+
+    .status-indicator {
+        font-size: 12px;
+        margin-right: 8px;
+    }
+
+    .host-name {
+        max-width: 110px;
+    }
+
+    .edit-host-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .host-name[title]:hover::after,
+    .host-name[title]:hover::before {
+        display: none; /* Desativar tooltip em dispositivos móveis */
+    }
+
+    .pagination-controls {
+        gap: 8px;
+        padding: 4px;
+    }
+
+    .pagination-controls button {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .page-info {
+        font-size: 12px;
+    }
+
+    .no-hosts {
+        font-size: 11px;
+        padding: 10px;
+    }
+}
+
+/* Ajustes para telas muito pequenas (ex.: 320px) */
+@media (max-width: 360px) {
+    .unidadesPorEstado {
+        padding: 8px;
+    }
+
+    .estados-box {
+        max-height: 200px;
+        padding-bottom: 35px;
+    }
+
+    .estado-nome {
+        font-size: 13px;
+    }
+
+    .estado-status span {
+        font-size: 11px;
+    }
+
+    .total {
+        font-size: 12px;
+        padding: 1px 5px;
+    }
+
+    .unidade-header {
+        font-size: 11px;
+    }
+
+    .unidade-header .status {
+        font-size: 10px;
+    }
+
+    .host-item {
+        font-size: 10px;
+        padding: 5px 8px;
+    }
+
+    .host-name {
+        max-width: 90px;
+    }
+
+    .edit-host-btn svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .pagination-controls button {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+
+    .page-info {
+        font-size: 11px;
+    }
+}
+
+/* Acessibilidade: foco visível para todos os elementos interativos */
+.estado-item:focus,
+.unidade-item:focus,
+.host-item:focus,
+.edit-host-btn:focus,
+.pagination-controls button:focus {
+    outline: 2px solid var(--color-primary, #4a87c0);
+    outline-offset: 1px;
+    border-radius: 4px;
+}
+
+/* Evitar que barras de rolagem afetem o layout */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-secondary, #404851) var(--color-background, #ffffff);
+}
+
+/* Garantir que elementos interativos sejam distinguíveis em modo de alto contraste */
+@media (forced-colors: active) {
+    .estado-item:focus,
+    .unidade-item:focus,
+    .host-item:focus,
+    .edit-host-btn:focus,
+    .pagination-controls button:focus {
+        outline: 2px solid Highlight;
+    }
+
+    .edit-host-btn,
+    .pagination-controls button {
+        forced-color-adjust: none;
+        border: 1px solid transparent;
+    }
+
+    .edit-host-btn:hover,
+    .pagination-controls button:hover {
+        background: Highlight;
+        color: HighlightText;
+    }
+
+    .pagination-controls button:disabled {
+        opacity: 0.5;
+    }
+}
+       </style>
+    </div>    <div class="databox" id="databox">
+        <div class="adicionarEquipamento" id="adicionarEquipamento">
+                <!-- Seção de Adição de Host -->                  <div id="adicionarSection" class="hidden">
+        <h2>Adicionar Host</h2>
+        <form id="adicionarHostForm">
+            <label for="novoIp">IP</label>
+            <input type="text" id="novoIp" name="ip" placeholder="IP do equipamento" required>            <label for="novoNome">Nome</label>
+            <input type="text" id="novoNome" name="nome" placeholder="Hostname" required>            <label for="novoLocal">Local</label>
+            <input type="text" id="novoLocal" name="local" placeholder="Latitude, Longitude">            <!-- <label for="novoTipo">Tipo:</label>
+            <select id="novoTipo" name="tipo">
+                <option value="sw">Switch</option>
+                <option value="router">Router</option>
+                <option value="server">Server</option>
+            </select> -->            <label for="novoAtivo">Status:</label>
+            <select id="novoAtivo" name="ativo">
+                <option value="green">Green</option>
+                <option value="red">Red</option>
+            </select>
+            <br><br>
+            <button id="submit" type="submit">Adicionar Host</button>
+        </form>
+    </div>
+        </div>        <div class="approval-section" id="approvalSection" style="display: none;">
+            <h2>Solicitações</h2>
+            <div id="pendingEditsList" style="
+    overflow: auto;
+    height: 75dvh;
+    width: 100%;
+    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+            "></div>
+        </div>
+        
+        <div class="editarEquipamento" id="editarEquipamento">
+            <div id="editarSection">
+                <!-- Seção de Busca e Filtro -->
+                <div class="editarbox">
+                    <div class="search-container">
+                        <label for="search" class="search">
+                            <div class="boxinputsearch">
+                                <svg class="search-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                </svg>
+                                <input type="text" name="search" id="search" placeholder="Pesquisar por IP" oninput="filterHosts()" aria-label="Pesquisar por IP">
+                            </div>
+                        </label>
+                    </div>
+                    <div class="exibirSemLocal">
+                        <label class="checkbox-container">
+                            <input class="custom-checkbox" type="checkbox" id="showOnlyWithoutLocation" onchange="filterHosts()" aria-label="Exibir apenas equipamentos sem local">
+                            <span class="checkmark"></span>
+                            Exibir Sem Local
+                        </label>
+                    </div>
+                    <div class="host-list" id="hostList"></div>
+                </div>
+        
+                <!-- Formulário de Edição -->
+                <form id="editarHostForm" class="edit-form">
+                    <h2 class="form-title">Editar Equipamento</h2>
+                    <div class="form-group">
+                        <label for="ip">IP <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2a10 10 0 00-7.35 16.65l.35.35H12v2H6a1 1 0 01-1-1v-1a1 1 0 011-1h1.59A8 8 0 114 12a1 1 0 011-1h14a1 1 0 011 1 8 8 0 01-3.59 6.65H18a1 1 0 011 1v1a1 1 0 01-1 1h-6v-2h7.35l.35-.35A10 10 0 0012 2z"/>
+                            </svg>
+                            <input type="text" id="ip" name="ip" placeholder="Digite o IP (ex.: 192.168.1.1)" required aria-describedby="ip-error">
+                        </div>
+                        <span class="error-message" id="ip-error"></span>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2a10 10 0 00-10 10c0 4.41 2.86 8.14 6.81 9.47A6 6 0 0112 16a6 6 0 013.19 5.47C19.14 20.14 22 16.41 22 12A10 10 0 0012 2zm0 12a4 4 0 100-8 4 4 0 000 8z"/>
+                            </svg>
+                            <input type="text" id="nome" name="nome" placeholder="Digite o nome do host" aria-describedby="nome-error">
+                        </div>
+                        <span class="error-message" id="nome-error"></span>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="observacao">Observação</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 2H4a2 2 0 00-2 2v16a2 2 0 002 2h12l4-4V4a2 2 0 00-2-2zm-2 16h-2v2l-2.59-2.59L12 16H4V4h16v14zM9 9h6v2H9V9zm0 4h6v2H9v-4z"/>
+                            </svg>
+                            <input type="text" id="observacao" name="observacao" placeholder="Adicione uma observação" aria-describedby="observacao-error">
+                        </div>
+                        <span class="error-message" id="observacao-error"></span>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="local">Local</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 10a3 3 0 110-6 3 3 0 010 6z"/>
+                            </svg>
+                            <input type="text" id="local" name="local" placeholder="Latitude, Longitude (ex.: -23.5505, -46.6333)" aria-describedby="local-error">
+                            <button type="button" class="view-map-btn" onclick="previewLocation()">Ver no Mapa</button>
+                        </div>
+                        <span class="error-message" id="local-error"></span>
+                    </div>
+        
+                    <div class="form-group hidden">
+                        <label for="ativo">Status:</label>
+                        <select id="ativo" name="ativo">
+                            <option value="green">Green</option>
+                            <option value="red">Red</option>
+                        </select>
+                    </div>
+        
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" onclick="resetForm()">Cancelar</button>
+                        <button type="submit" class="submit-btn">Solicitar Alterações</button>
+                    </div>
+                </form>
+        
+                <div id="message" class="message"></div>
+            </div>
+        
+            <!-- Seção de Aprovação -->
+            <div id="approvalSection" class="approval-section">
+                <h2 class="section-title">Aprovações Pendentes</h2>
+                <div id="pendingEditsList" class="pending-edits-list"></div>
+            </div>
+
             <style>
-                #icone-sw {
-                    padding: 5px;
-                    width: 20px;
-                    background-color: rgb(240, 248, 255);
-                    border-radius: 50px;
-                }
-                #icone-sw:hover {
-                    opacity: 1;
-                    background-color: rgb(222, 219, 219);
-                }
-            </style>`;
-        showIconesMaps = 1;
+                /* Estilo do container principal */
+.editarEquipamento {
+    padding: 20px;
+    border-radius: 8px;
+    color: var(--color-text, #e2e2e2);
+    max-height: 90vh;
+    overflow-y: auto;
+    width: 285px;
+    box-sizing: border-box;
+}
+
+#editarSection {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Estilo da seção de busca */
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+.boxinputsearch {
+    position: relative;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--color-background, #16191E);
+    border: 1px solid var(--color-primary, #4a87c0);
+    padding: 5px 0;
+    box-sizing: border-box;
+}
+
+#search {
+    padding: 5px 5px 5px 36px;
+    text-align: left;
+    border-radius: 7px;
+    color: var(--color-text, #e2e2e2);
+    outline: none;
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    border: none;
+    box-sizing: border-box;
+}
+
+#search:focus,
+#search:not(:placeholder-shown) {
+    color: var(--color-primary, #4a87c0);
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    fill: var(--color-primary, #4a87c0);
+    z-index: 2;
+}
+
+/* Estilo do checkbox */
+.exibirSemLocal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    font-size: 12px;
+    user-select: none;
+    width: 100%;
+    height: 30px;
+    border-bottom: 1px solid var(--color-secondary, #404851);
+}
+
+.custom-checkbox {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: relative;
+    height: 14px;
+    width: 14px;
+    background-color: var(--color-background, #16191E);
+    border: 1px solid var(--color-primary, #4a87c0);
+    border-radius: 20px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.custom-checkbox:checked ~ .checkmark {
+    background-color: var(--color-primary, #4a87c0);
+    box-shadow: 0 3px 7px rgba(var(--color-secondary-rgb, 64, 72, 81), 0.5);
+}
+
+.checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--color-text, #e2e2e2);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.custom-checkbox:checked ~ .checkmark:after {
+    display: block;
+    animation: checkAnim 0.2s forwards;
+}
+
+@keyframes checkAnim {
+    0% { height: 0; }
+    100% { height: 8px; }
+}
+
+/* Estilo da lista de hosts */
+#hostList {
+    overflow-x: hidden;
+    height: 130px;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+/* Estilo do formulário de edição */
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    max-width: 500px;
+    margin: 20px auto 0;
+}
+
+.edit-form .form-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-primary, #4a87c0) !important;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text, #e2e2e2);
+}
+
+.form-group .required {
+    color: #ff4d4d;
+    font-size: 14px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 12px;
+    fill: var(--color-secondary, #404851);
+    transition: fill 0.3s ease;
+}
+
+.edit-form .form-group input {
+    width: 100% !important;
+    padding: 12px 12px 12px 40px;
+    border: 1px solid var(--color-secondary, #404851);
+    border-radius: 6px;
+    background: var(--color-background, #16191E);
+    color: var(--color-text, #e2e2e2);
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.edit-form .form-group input:focus {
+    border-color: var(--color-primary, #4a87c0);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb, 74, 135, 192), 0.1);
+    outline: none;
+}
+
+.edit-form .form-group input:focus + .input-icon,
+.edit-form .form-group input:not(:placeholder-shown) + .input-icon {
+    fill: var(--color-primary, #4a87c0);
+}
+
+.view-map-btn {
+    position: absolute;
+    right: -3px;
+    top: 45px;
+    background: none;
+    border: none;
+    color: var(--color-primary, #4a87c0);
+    font-size: 12px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.view-map-btn:hover {
+    color: #3a7bc8;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--color-secondary, #404851);
+    border-radius: 6px;
+    background: var(--color-background, #16191E);
+    color: var(--color-text, #e2e2e2);
+    font-size: 14px;
+}
+
+.error-message {
+    font-size: 12px;
+    color: #ff4d4d;
+    min-height: 16px;
+    display: block;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.cancel-btn,
+.submit-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+}
+
+.cancel-btn {
+    background: var(--color-secondary, #404851);
+    border: none;
+    color: var(--color-text, #e2e2e2);
+}
+
+.cancel-btn:hover {
+    background: #505860;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.submit-btn {
+    background: var(--color-primary, #4a87c0);
+    border: none;
+    color: #ffffff;
+}
+
+.submit-btn:hover {
+    background: #3a7bc8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.submit-btn:disabled {
+    background: var(--color-secondary, #404851);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.submit-btn.success {
+    background: #28a745;
+}
+
+.submit-btn.error {
+    background: #ff4d4d;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.message.success {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.message.error {
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+}
+
+/* Estilo da seção de aprovação */
+.approval-section {
+    display: none;
+    padding: 0px;
+    border-radius: 8px;
+    color: var(--color-text, #e2e2e2);
+    max-height: 90vh;
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.approval-section .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-primary, #4a87c0);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.pending-edits-list {
+    overflow-x: hidden;
+    height: 85dvh;
+}
+
+.modal-container {
+    width: 260px;
+    height: fit-content;
+    margin: 0 auto;
+    background: var(--color-glass, #16191ec2);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--color-primary);
+}
+
+.modal-container-header {
+    padding: 16px 23px;
+    border-bottom: 1px solid var(--color-secondary, #404851);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-container-title {
+    display: flex;
+    align-items: center;
+    color: var(--color-text, #e2e2e2);
+    gap: 15px;
+    line-height: 1;
+    font-weight: 700;
+    font-size: 0.9em;
+}
+
+.modal-container-title svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--color-primary, #4a87c0);
+}
+
+.modal-container-body {
+    padding: 12px;
+    overflow-y: auto;
+    color: var(--color-text, #e2e2e2);
+    font-size: 14px;
+    max-height: 140px;
+}
+
+.rtf > * + * {
+    margin-top: 0.5em;
+}
+
+.modal-container-body p {
+    margin: 8px 0;
+}
+
+.modal-container-body p span {
+    display: inline-block;
+    margin: 2px 0;
+}
+
+.modal-container-footer {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid var(--color-secondary, #404851);
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.modal-container-footer button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--color-primary, #4a87c0);
+    font-weight: 600;
+    color: var(--color-text, #e2e2e2);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.modal-container-footer .button.is-ghost:hover,
+.modal-container-footer .button.is-ghost:focus {
+    background: var(--color-secondary, #404851);
+    transform: translateY(-1px);
+}
+
+.modal-container-footer .button.is-primary {
+    background: var(--color-primary, #4a87c0);
+    border: none;
+}
+
+.modal-container-footer .button.is-primary:hover,
+.modal-container-footer .button.is-primary:focus {
+    background: #3a7bc8;
+    transform: translateY(-1px);
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .editarEquipamento {
+        padding: 15px;
+    }
+
+    .edit-form {
+        gap: 0px;
+    }
+
+    .edit-form .form-title,
+    .approval-section .section-title {
+        font-size: 18px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .edit-form .form-group input,
+    .edit-form .form-group select {
+        padding: 10px 10px 10px 36px;
+        font-size: 13px;
+    }
+
+    .input-icon {
+        width: 18px;
+        height: 18px;
+        left: 10px;
+    }
+
+    .view-map-btn {
+        font-size: 11px;
+        right: 8px;
+    }
+
+    .error-message {
+        font-size: 11px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .cancel-btn,
+    .submit-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+        width: 100%;
+    }
+
+    #hostList {
+        height: 100px;
+        width: 100%;
+    }
+
+    .modal-container {
+        width: 90%;
+    }
+
+    .modal-container-footer button {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 360px) {
+    .editarEquipamento {
+        padding: 10px;
+    }
+
+    .edit-form .form-title,
+    .approval-section .section-title {
+        font-size: 16px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .edit-form .form-group input,
+    .edit-form .form-group select {
+        padding: 8px 8px 8px 32px;
+        font-size: 12px;
+    }
+
+    .input-icon {
+        width: 16px;
+        height: 16px;
+        left: 8px;
+    }
+
+    .view-map-btn {
+        font-size: 10px;
+        right: 6px;
+    }
+
+    .error-message {
+        font-size: 10px;
+    }
+
+    .cancel-btn,
+    .submit-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    #hostList {
+        height: 80px;
+        width: 100%;
+    }
+
+    .modal-container-footer button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Acessibilidade */
+@media (forced-colors: active) {
+    .edit-form .form-group input:focus,
+    .edit-form .form-group select:focus {
+        outline: 2px solid Highlight;
+    }
+
+    .cancel-btn,
+    .submit-btn,
+    .modal-container-footer button {
+        forced-color-adjust: none;
+        border: 1px solid transparent;
+    }
+
+    .cancel-btn:hover,
+    .submit-btn:hover,
+    .modal-container-footer button:hover {
+        background: Highlight;
+        color: HighlightText;
+    }
+
+    .submit-btn:disabled {
+        opacity: 0.5;
+    }
+}
+
+/* Correção para cursor e seleção de texto */
+.edit-form input,
+.edit-form select,
+.edit-form button,
+.cancel-btn,
+.submit-btn,
+.modal-container-footer button {
+    cursor: text;
+    user-select: text;
+}
+
+.edit-form button,
+.cancel-btn,
+.submit-btn,
+.modal-container-footer button {
+    cursor: pointer;
+}
+            </style>
+
+            <script>
+                // Função para validar IP
+function validateIP(ip) {
+    const ipRegex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    return ipRegex.test(ip);
+}
+
+// Função para validar coordenadas (Latitude, Longitude)
+function validateCoordinates(local) {
+    if (!local) return true; // Campo opcional
+    const coordsRegex = /^-?\d{1,2}\.\d{4,},\s*-?\d{1,3}\.\d{4,}$/;
+    return coordsRegex.test(local);
+}
+
+// Função para limpar o formulário
+function resetForm() {
+    const form = document.getElementById('editarHostForm');
+    form.reset();
+    document.querySelectorAll('.error-message').forEach(span => span.textContent = '');
+    document.querySelectorAll('.form-group input').forEach(input => input.classList.remove('error'));
+    const messageDiv = document.getElementById('message');
+    messageDiv.textContent = '';
+    messageDiv.classList.remove('success', 'error');
+    const submitButton = document.querySelector('#editarHostForm .submit-btn');
+    submitButton.textContent = 'Solicitar Alterações';
+    submitButton.disabled = false;
+    submitButton.classList.remove('success', 'error');
+}
+
+// Função para pré-visualizar localização no mapa
+function previewLocation() {
+    const local = document.getElementById('local').value.trim();
+    if (validateCoordinates(local)) {
+        const [lat, lng] = local.split(', ').map(Number);
+        map.flyTo([lat, lng], 18, { duration: 0.5 });
+        const tempMarker = L.marker([lat, lng], {
+            icon: L.divIcon({
+                className: 'temp-marker',
+                html: `<div style="background-color: yellow; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            })
+        }).addTo(map);
+        setTimeout(() => {
+            map.removeLayer(tempMarker);
+        }, 5000);
     } else {
-        toggleSwView.style.border = "1px solid var(--color-secondary)";
-        toggleDependencias.style.display = "none";
-        if (showDependencias === 1) toggleDependencias.click();
-        ocultarSw();
-        showIconesMaps = 0;
+        document.getElementById('local-error').textContent = 'Coordenadas inválidas.';
+        document.getElementById('local').classList.add('error');
     }
 }
 
-function fecharPopups() {
-    const buttons = document.getElementsByClassName('leaflet-popup-close-button');
-    for (let button of buttons) button.click();
-}
-
-
-// Função para exibir popup de hosts offline
-function showRedHostsPopup(dados = dadosAtuais) {
-    if (!dados || !dados.hosts || !Array.isArray(dados.hosts)) {
-        console.error('Dados inválidos em showRedHostsPopup:', dados);
-        document.getElementById('redHostsList').innerHTML = 'Erro ao carregar dados.';
-        return;
+// Validação em tempo real
+document.getElementById('ip').addEventListener('input', function () {
+    const ip = this.value.trim();
+    const errorSpan = document.getElementById('ip-error');
+    if (!ip) {
+        errorSpan.textContent = 'O campo "IP" é obrigatório.';
+        this.classList.add('error');
+    } else if (!validateIP(ip)) {
+        errorSpan.textContent = 'Por favor, insira um IP válido (ex.: 192.168.1.1).';
+        this.classList.add('error');
+    } else {
+        errorSpan.textContent = '';
+        this.classList.remove('error');
     }
-    const redHosts = dados.hosts.filter(host => host.ativo === "red");
-    const redHostsList = document.getElementById('redHostsList');
-    redHostsList.innerHTML = redHosts.length === 0 ? 'Sem alertas.' : '';
+});
 
-    redHosts.forEach(host => {
-        const buttonLocal = host.local ? `
-            <svg width="15" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14 16.5974L21.0072 13.4725C22.3309 12.8822 22.3309 11.1178 21.0072 10.5275L4.49746 3.16496C3.00163 2.49789 1.45007 3.97914 2.19099 5.36689L5.34302 11.2706C5.58818 11.7298 5.58817 12.2702 5.34302 12.7294L2.19099 18.6331C1.45006 20.0209 3.00163 21.5021 4.49746 20.835L9.24873 18.7162" stroke="var(--color-primary)" fill="var(--color-secondary)" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>` : '';
-        const hostItem = document.createElement('div');
-        hostItem.className = 'host-item';
-        hostItem.innerHTML = `<span style="color:${host.ativo}; display: flex; align-items: center;" onclick="map.flyTo([${host.local}], 18, { duration: 0.5 })"><b>${host.nome}</b> (${host.ip}) ${buttonLocal}</span>`;
-        redHostsList.appendChild(hostItem);
-    });
+document.getElementById('local').addEventListener('input', function () {
+    const local = this.value.trim();
+    const errorSpan = document.getElementById('local-error');
+    if (local && !validateCoordinates(local)) {
+        errorSpan.textContent = 'Por favor, insira coordenadas válidas (ex.: -23.5505, -46.6333).';
+        this.classList.add('error');
+    } else {
+        errorSpan.textContent = '';
+        this.classList.remove('error');
+    }
+});
 
-    document.getElementById('redHostsPopup').style.display = 'block';
-}
+// Submissão do formulário
+document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
 
-// Requisição de dados via HTTP
-async function fetchDadosHTTP() {
+    const ip = document.getElementById('ip').value.trim();
+    const nome = document.getElementById('nome').value.trim();
+    const local = document.getElementById('local').value.trim();
+    const observacao = document.getElementById('observacao').value.trim();
+    const tipo = 'sw';
+    const ativo = 'blue';
+
+    const messageDiv = document.getElementById('message');
+    const submitButton = document.querySelector('#editarHostForm .submit-btn');
+    const ipError = document.getElementById('ip-error');
+    const localError = document.getElementById('local-error');
+
+    // Resetar mensagens de erro
+    messageDiv.textContent = '';
+    messageDiv.classList.remove('success', 'error');
+    ipError.textContent = '';
+    localError.textContent = '';
+    document.querySelectorAll('.form-group input').forEach(input => input.classList.remove('error'));
+
+    // Validação
+    let hasError = false;
+
+    if (!ip) {
+        ipError.textContent = 'O campo "IP" é obrigatório.';
+        document.getElementById('ip').classList.add('error');
+        hasError = true;
+    } else if (!validateIP(ip)) {
+        ipError.textContent = 'Por favor, insira um IP válido (ex.: 192.168.1.1).';
+        document.getElementById('ip').classList.add('error');
+        hasError = true;
+    }
+
+    if (local && !validateCoordinates(local)) {
+        localError.textContent = 'Por favor, insira coordenadas válidas (ex.: -23.5505, -46.6333).';
+        document.getElementById('local').classList.add('error');
+        hasError = true;
+    }
+
+    if (hasError) return;
+
+    // Enviar solicitação
+    submitButton.textContent = 'Enviando...';
+    submitButton.disabled = true;
+    submitButton.classList.remove('success', 'error');
+
     try {
-        const response = await fetch(`${server}/status`, {
+        const response = await fetch(`${server}/editar-host`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ip, nome, local, observacao, tipo, ativo })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            submitButton.textContent = 'Enviado';
+            submitButton.classList.add('success');
+            messageDiv.textContent = 'Solicitação enviada para aprovação!';
+            messageDiv.classList.add('success');
+            setTimeout(() => {
+                resetForm();
+            }, 3000);
+        } else {
+            submitButton.textContent = 'Solicitar Alterações';
+            submitButton.classList.add('error');
+            messageDiv.textContent = `Erro: ${data.erro || 'Falha ao enviar solicitação.'}`;
+            messageDiv.classList.add('error');
+            submitButton.disabled = false;
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        submitButton.textContent = 'Solicitar Alterações';
+        submitButton.classList.add('error');
+        messageDiv.textContent = 'Erro ao conectar ao servidor.';
+        messageDiv.classList.add('error');
+        submitButton.disabled = false;
+    }
+});
+
+// Funções para alternar seções
+function showSection(section) {
+    document.getElementById('editarSection').classList.add('hidden');
+    document.getElementById('adicionarSection')?.classList.add('hidden');
+    document.getElementById('approvalSection').classList.add('hidden');
+    document.getElementById(`${section}Section`).classList.remove('hidden');
+}
+
+function exibirAprovacao() {
+    console.log('Exibindo Aprovação');
+    const editarEquipamento = document.getElementById('editarEquipamento');
+    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+    const homebox = document.getElementById('homebox');
+    const approvalSection = document.getElementById('approvalSection');
+    const databoxsection = document.getElementById('databox');
+
+    editarEquipamento.style.display = 'none';
+    adicionarEquipamento.style.display = 'none';
+    homebox.style.display = 'none';
+    approvalSection.style.display = 'block';
+    databoxsection.style.display = 'block';
+    loadPendingEdits();
+}
+
+function limparAprove() {
+    const approvalSection = document.getElementById('approvalSection');
+    approvalSection.style.display = 'none';
+}
+
+function exibirEditar() {
+    const editarEquipamento = document.getElementById('editarEquipamento');
+    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+    const homebox = document.getElementById('homebox');
+    const databoxsection = document.getElementById('databox');
+
+    editarEquipamento.style.display = 'block';
+    adicionarEquipamento.style.display = 'none';
+    homebox.style.display = 'none';
+    databoxsection.style.display = 'block';
+    limparInput?.();
+}
+
+function exibirAdicionar() {
+    const editarEquipamento = document.getElementById('editarEquipamento');
+    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+    const homebox = document.getElementById('homebox');
+    const databoxsection = document.getElementById('databox');
+
+    editarEquipamento.style.display = 'none';
+    adicionarEquipamento.style.display = 'block';
+    homebox.style.display = 'none';
+    databoxsection.style.display = 'block';
+}
+
+function exibirHome() {
+    const editarEquipamento = document.getElementById('editarEquipamento');
+    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+    const homebox = document.getElementById('homebox');
+    const databoxsection = document.getElementById('databox');
+
+    databoxsection.style.display = 'none';
+    editarEquipamento.style.display = 'none';
+    adicionarEquipamento.style.display = 'none';
+    homebox.style.display = 'flex';
+}
+
+// Funções para a seção de aprovação
+async function loadPendingEdits() {
+    try {
+        console.log('Carregando edições pendentes...');
+        const response = await fetch(`${server}/pending-edits`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
-        if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
-        const dados = await response.json();
-        if (dados && dados.hosts) {
-            console.log('Dados carregados via HTTP:', dados);
-            dadosAtuais = dados;
-            atualizarInterface(dados);
-            return dados;
-        }
-        console.error('Dados inválidos:', dados);
-        return null;
-    } catch (error) {
-        console.error('Erro ao carregar dados via HTTP:', error);
-        return null;
-    }
-}
+        const pendingEdits = await response.json();
+        console.log('Edições:', pendingEdits);
+        const list = document.getElementById('pendingEditsList');
+        list.innerHTML = pendingEdits.length === 0 ? '<p>Nenhuma edição pendente.</p>' : '';
 
-// Função para pesquisar por IP
-// Otimizar a pesquisa
-function pesquisarPorIP(hostsArray = dadosAtuais.hosts) {
-    const ipBusca = document.getElementById('ipBusca').value.toLowerCase().trim();
-    
-    if (!ipBusca) return hostsArray;
-    
-    // Usar um índice para pesquisa mais rápida (pré-calculado)
-    if (!window.hostsIndex) {
-        // Implementar apenas uma vez ou quando os dados base mudarem
-        window.hostsIndex = {};
-        hostsArray.forEach((host, index) => {
-            const lowerIp = host.ip.toLowerCase();
-            const lowerNome = host.nome.toLowerCase();
-            
-            // Indexar prefixos para pesquisa mais rápida
-            for (let i = 1; i <= lowerIp.length; i++) {
-                const prefix = lowerIp.substring(0, i);
-                if (!window.hostsIndex[prefix]) window.hostsIndex[prefix] = [];
-                window.hostsIndex[prefix].push(index);
-            }
-            
-            for (let i = 1; i <= lowerNome.length; i++) {
-                const prefix = lowerNome.substring(0, i);
-                if (!window.hostsIndex[prefix]) window.hostsIndex[prefix] = [];
-                window.hostsIndex[prefix].push(index);
-            }
-        });
-    }
-    
-    // Usar o índice para pesquisa
-    const indices = window.hostsIndex[ipBusca] || [];
-    const resultSet = new Set();
-    
-    indices.forEach(index => {
-        if (index < hostsArray.length) {
-            resultSet.add(hostsArray[index]);
-        }
-    });
-    
-    // Fallback para pesquisa normal se o índice não tiver resultados
-    if (resultSet.size === 0) {
-        return hostsArray.filter(host => 
-            host.ip.toLowerCase().includes(ipBusca) || 
-            host.nome.toLowerCase().includes(ipBusca)
-        );
-    }
-    
-    return Array.from(resultSet);
-}
+        pendingEdits.forEach(edit => {
+            const div = document.createElement('div');
+            const formattedDate = formatDate(edit.data_solicitacao);
+            const originalHost = dadosAtuais.hosts.find(host => host.ip === edit.ip) || {};
+            const original = {
+                ip: originalHost.ip || '',
+                nome: originalHost.nome || '',
+                local: originalHost.local || '',
+                observacao: originalHost.observacao || ''
+            };
+            const novo = edit;
 
-// Função para pré-carregar linhas
-function preloadLines(dados) {
-    const pontosMapeados = {};
-    linesLayer.clearLayers();
-
-    dados.hosts.forEach(ponto => {
-        if (ponto.local) {
-            const [lat, lng] = ponto.local.split(', ').map(Number);
-            pontosMapeados[ponto.ip] = { lat, lng };
-        }
-    });
-
-    dados.hosts.forEach(ponto => {
-        if (ponto.ship) {
-            ponto.ship.split(', ').forEach(ship => {
-                if (pontosMapeados[ponto.ip] && pontosMapeados[ship]) {
-                    const { lat: lat1, lng: lng1 } = pontosMapeados[ponto.ip];
-                    const { lat: lat2, lng: lng2 } = pontosMapeados[ship];
-                    L.polyline([[lat1, lng1], [lat2, lng2]], { color: ponto.ativo }).addTo(linesLayer);
+            const highlightChange = (field, originalValue, newValue) => {
+                if (originalValue !== newValue) {
+                    return `${field}:<br><span style="background-color: #00ff0078; font-weight: bold;"> ${newValue || '(vazia)'}</span> -> <span style="background-color: #ff000066; font-weight: bold;">${originalValue || '(vazia)'}</span>`;
                 }
-            });
-        }
-    });
+                return `<span>${field}:<br> ${newValue || '(vazia)'}</span>`;
+            };
 
-    if (linesVisible) {
-        linesLayer.addTo(map);
-    }
-}
-
-// Atualização da interface
-function atualizarInterface(dados) {
-    console.log('Dados recebidos em atualizarInterface:', dados);
-    dadosAtuais = dados;
-
-    const ipBusca = document.getElementById('ipBusca')?.value.toLowerCase().trim() || '';
-    let dadosFiltrados = { hosts: pesquisarPorIP(dados.hosts) };
-    console.log('Dados filtrados:', dadosFiltrados);
-
-    // Atualizar contadores gerais
-    const countEquipamentos = document.getElementById('countEquipamentos');
-    const countEquipamentosSemLocal = document.getElementById('countEquipamentosSemLocal');
-    if (dadosFiltrados.hosts && Array.isArray(dadosFiltrados.hosts)) {
-        if (countEquipamentos) countEquipamentos.innerHTML = dadosFiltrados.hosts.length;
-        if (countEquipamentosSemLocal) countEquipamentosSemLocal.innerHTML = dadosFiltrados.hosts.filter(host => !host.local).length;
-    } else {
-        console.error('Dados.hosts não é um array:', dadosFiltrados);
-        if (countEquipamentos) countEquipamentos.innerHTML = '0';
-        if (countEquipamentosSemLocal) countEquipamentosSemLocal.innerHTML = '0';
-    }
-
-    // Agrupar por estado, unidade e host
-    const estadosMap = {};
-    if (Array.isArray(dadosFiltrados.hosts)) {
-        dadosFiltrados.hosts.forEach(host => {
-            // console.log('Processando host:', host);
-            const match = host.nome.match(/^BR-([A-Z]{2})-([A-Z]{3})-([A-Z]{3})(?:-([\w._-]+(?:\.[A-Za-z]{2,})?))?$/);
-            if (match) {
-                const estado = match[1];
-                const unidade = `${match[2]}-${match[3]}`;
-                const hostNome = host.nome;
-                if (!estadosMap[estado]) {
-                    estadosMap[estado] = { total: 0, online: 0, offline: 0, unidades: {} };
-                }
-                if (!estadosMap[estado].unidades[unidade]) {
-                    estadosMap[estado].unidades[unidade] = { total: 0, online: 0, offline: 0, hosts: {} };
-                }
-                if (!estadosMap[estado].unidades[unidade].hosts[hostNome]) {
-                    estadosMap[estado].unidades[unidade].hosts[hostNome] = { ativo: host.ativo };
-                }
-                estadosMap[estado].total += 1;
-                estadosMap[estado].unidades[unidade].total += 1;
-                if (host.ativo === "#00d700" || host.ativo === "green") {
-                    estadosMap[estado].online += 1;
-                    estadosMap[estado].unidades[unidade].online += 1;
-                } else if (host.ativo === "red") {
-                    estadosMap[estado].offline += 1;
-                    estadosMap[estado].unidades[unidade].offline += 1;
-                }
-            } else {
-                console.warn('Nome do host não corresponde ao padrão:', host.nome);
-            }
-        });
-    } else {
-        console.error('dadosFiltrados.hosts não é um array');
-    }
-    console.log('Estados mapeados:', estadosMap);
-
-    // Atualizar a lista de estados, unidades e hosts
-    const estadosList = document.getElementById('estadosList');
-    if (estadosList) {
-        estadosList.innerHTML = '';
-        Object.keys(estadosMap).sort().forEach(estado => {
-            const stats = estadosMap[estado];
-            const estadoItem = document.createElement('div');
-            estadoItem.className = 'estado-item';
-            estadoItem.innerHTML = `
-                <div class="estado-header">
-                    <span class="estado-nome">${estado}</span>
-                    <span class="total">${stats.total}</span>
-                    <div class="estado-status">
-                        <span class="online">⬤ ${stats.online}</span>
-                        <span class="offline">⬤ ${stats.offline}</span>
-                    </div>
-                </div>
-                <div class="unidades-list"></div>
+            const changesHtml = `
+                <p>${highlightChange('IP', original.ip, novo.ip)}</p>
+                <p>${highlightChange('Nome', original.nome, novo.nome)}</p>
+                <p>${highlightChange('Local', original.local, novo.local)}</p>
+                <p>${highlightChange('Observação', original.observacao, novo.observacao)}</p>
             `;
-            estadosList.appendChild(estadoItem);
 
-            const sortedUnidades = Object.keys(stats.unidades).sort();
-            const unidadesHTML = sortedUnidades.map(unidade => {
-                const unidadeStats = stats.unidades[unidade];
-                return `
-                    <div class="unidade-item">
-                        <div class="unidade-header">
-                            <span>${unidade}</span>
-                            <div class="status">
-                                <span class="online">⬤ ${unidadeStats.online}</span>
-                                <span class="offline">⬤ ${unidadeStats.offline}</span>
-                            </div>
-                        </div>
-                        <div class="hosts-list">
-                            <div class="hosts-content"></div>
-                            <div class="pagination-controls">
-                                <button class="prev-page" disabled>Anterior</button>
-                                <span class="page-info">Pág. 1 de 1</span>
-                                <button class="next-page" disabled>Próximo</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            estadoItem.querySelector('.unidades-list').innerHTML = unidadesHTML;
+            const mapButton = original.local !== novo.local && novo.local 
+                ? `<br><button class="button is-ghost" onclick="showProposedLocation('${novo.local}', '${novo.ip}')">Ver no Mapa</button>` 
+                : '';
 
-            // Adicionar listeners para estado
-            const estadoHeader = estadoItem.querySelector('.estado-header');
-            const unidadesList = estadoItem.querySelector('.unidades-list');
-            if (estadoHeader && unidadesList) {
-                estadoHeader.addEventListener('click', () => {
-                    unidadesList.classList.toggle('expanded');
-                    estadoHeader.classList.toggle('expanded');
-                });
-            }
-
-            // Adicionar listeners para unidades e paginação
-            const unidadeItems = estadoItem.querySelectorAll('.unidade-item');
-            unidadeItems.forEach(unidadeItem => {
-                const unidadeHeader = unidadeItem.querySelector('.unidade-header');
-                const hostsList = unidadeItem.querySelector('.hosts-list');
-                const hostsContent = unidadeItem.querySelector('.hosts-content');
-                const prevButton = unidadeItem.querySelector('.prev-page');
-                const nextButton = unidadeItem.querySelector('.next-page');
-                const pageInfo = unidadeItem.querySelector('.page-info');
-
-                if (unidadeHeader && hostsList && hostsContent && prevButton && nextButton && pageInfo) {
-                    const unidade = unidadeHeader.querySelector('span').textContent;
-                    const hostsMap = stats.unidades[unidade].hosts;
-
-                    // Separar hosts em offline e online
-                    const offlineHosts = [];
-                    const onlineHosts = [];
-                    Object.keys(hostsMap).forEach(hostNome => {
-                        const hostStats = hostsMap[hostNome];
-                        if (hostStats.ativo === 'red') {
-                            offlineHosts.push(hostNome);
-                        } else {
-                            onlineHosts.push(hostNome);
-                        }
-                    });
-
-                    // Ordenar cada grupo alfabeticamente pelo displayName
-                    const getDisplayName = hostNome => hostNome
-                        .replace(/\.suzano\.com\.br$/, '')
-                        .replace(/^BR-[A-Z]{2}-[A-Z]{3}-[A-Z]{3}-/, '')
-                        .toLowerCase();
-
-                    offlineHosts.sort((a, b) => getDisplayName(a).localeCompare(getDisplayName(b)));
-                    onlineHosts.sort((a, b) => getDisplayName(a).localeCompare(getDisplayName(b)));
-
-                    // Combinar os grupos: offline primeiro, depois online
-                    const sortedHosts = [...offlineHosts, ...onlineHosts];
-
-                    const hostsPerPage = 10; // Número de hosts por página
-                    let currentPage = 1;
-                    const totalHosts = sortedHosts.length;
-                    const totalPages = Math.ceil(totalHosts / hostsPerPage);
-
-                    // Função para renderizar hosts da página atual
-                    const renderHostsPage = (page) => {
-                        const start = (page - 1) * hostsPerPage;
-                        const end = start + hostsPerPage;
-                        const hostsToShow = sortedHosts.slice(start, end);
-
-                        hostsContent.innerHTML = hostsToShow.map(hostNome => {
-                            const hostStats = stats.unidades[unidade].hosts[hostNome];
-                            const displayName = hostNome
-                                .replace(/\.suzano\.com\.br$/, '')
-                                .replace(/^BR-[A-Z]{2}-[A-Z]{3}-[A-Z]{3}-/, '');
-
-                            // Encontrar o host correspondente em dadosAtuais.hosts para obter todos os dados
-                            const hostData = dadosAtuais.hosts.find(h => h.nome === hostNome) || {};
-
-                            return `
-                                <div class="host-item" tabindex="0" onfocus="this.classList.add('focused')" onblur="this.classList.remove('focused')">
-                                    <span class="status-indicator ${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'online' : 'offline'}" 
-                                          title="${hostStats.ativo === '#00d700' || hostStats.ativo === 'green' ? 'Online' : 'Offline'}">
-                                        ⬤
-                                    </span>
-                                    <span class="host-name" title="${hostNome} - IP: ${hostData.ip || 'N/A'} ${hostData.observacao ? ' - ' + hostData.observacao : ''}">
-                                        ${displayName}
-                                    </span>
-                                    <button class="edit-host-btn" 
-                                            onclick='navigateToEditHost(${JSON.stringify(hostData)})' 
-                                            aria-label="Editar host ${displayName}" 
-                                            title="Editar ${displayName}">
-                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M11 4H7.2C6.0799 4 5.51984 4 5.09202 4.21799C4.71569 4.40973 4.40973 4.71569 4.21799 5.09202C4 5.51984 4 6.0799 4 7.2V16.8C4 17.9201 4 18.4802 4.21799 18.908C4.40973 19.2843 4.71569 19.5903 5.09202 19.782C5.51984 20 6.0799 20 7.2 20H16.8C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V12.5M15 4H14.5C13.3954 4 12.5 4.89543 12.5 6C12.5 7.10457 13.3954 8 14.5 8H15V8.5C15 9.60457 15.8954 10.5 17 10.5C18.1046 10.5 19 9.60457 19 8.5V8C20.1046 8 21 7.10457 21 6C21 4.89543 20.1046 4 19 4H15ZM12 12H15.5C15.7761 12 16 12.2239 16 12.5V16C16 16.2761 15.7761 16.5 15.5 16.5H12C11.7239 16.5 11.5 16.2761 11.5 16V12.5C11.5 12.2239 11.7239 12 12 12Z" 
-                                                  stroke="var(--color-primary)" 
-                                                  stroke-width="2" 
-                                                  stroke-linecap="round" 
-                                                  stroke-linejoin="round"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                            `;
-                        }).join('');
-
-                        // Atualizar informações da página
-                        pageInfo.textContent = `Pág. ${page} de ${totalPages}`;
-                        prevButton.disabled = page === 1;
-                        nextButton.disabled = page === totalPages;
-
-                        // Adicionar classe 'scrollable' se houver conteúdo rolável
-                        if (hostsContent.scrollHeight > hostsContent.clientHeight) {
-                            hostsContent.classList.add('scrollable');
-                        } else {
-                            hostsContent.classList.remove('scrollable');
-                        }
-                    };
-
-                    // Inicializar a primeira página
-                    if (totalHosts > 0) {
-                        renderHostsPage(currentPage);
-                    } else {
-                        hostsContent.innerHTML = '<div class="no-hosts">Nenhum equipamento encontrado.</div>';
-                    }
-
-                    // Evento de clique para expandir/colapsar a unidade
-                    unidadeHeader.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        // Collapse other units
-                        unidadeItems.forEach(otherItem => {
-                            if (otherItem !== unidadeItem) {
-                                otherItem.querySelector('.hosts-list').classList.remove('expanded');
-                                otherItem.querySelector('.unidade-header').classList.remove('expanded');
-                            }
-                        });
-                        hostsList.classList.toggle('expanded');
-                        unidadeHeader.classList.toggle('expanded');
-                    });
-
-                    // Evento de clique para o botão "Anterior"
-                    prevButton.addEventListener('click', () => {
-                        if (currentPage > 1) {
-                            currentPage--;
-                            renderHostsPage(currentPage);
-                        }
-                    });
-
-                    // Evento de clique para o botão "Próximo"
-                    nextButton.addEventListener('click', () => {
-                        if (currentPage < totalPages) {
-                            currentPage++;
-                            renderHostsPage(currentPage);
-                        }
-                    });
-                }
-            });
+            div.className = 'modal-container';
+            div.innerHTML = `
+                <header class="modal-container-header">
+                    <span class="modal-container-title">
+                        <svg aria-hidden="true" height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M14 9V4H5v16h6.056c.328.417.724.785 1.18 1.085l1.39.915H3.993A.993.993 0 0 1 3 21.008V2.992C3 2.455 3.449 2 4.002 2h10.995L21 8v1h-7zm-2 2h9v5.949c0 .99-.501 1.916-1.336 2.465L16.5 21.498l-3.164-2.084A2.953 2.953 0 0 1 12 16.95V11zm2 5.949c0 .316.162.614.436.795l2.064 1.36 2.064-1.36a.954.954 0 0 0 .436-.795V13h-5v3.949z" fill="var(--color-primary)"></path>
+                        </svg>
+                        Solicitação de ${edit.solicitante}
+                    </span>
+                </header>
+                <section class="modal-container-body rtf">
+                    ${changesHtml}
+                    <p style="color: var(--color-secondary); font-size: 0.9em; margin-top: 1em;">Data: ${formattedDate}</p>
+                </section>
+                <footer class="modal-container-footer">
+                    <button class="button is-ghost" onclick="rejectEdit('${edit.id}')">Rejeitar</button>
+                    <button class="button is-primary" onclick="approveEdit('${edit.id}')">Aprovar</button>
+                    ${mapButton}
+                </footer>
+            `;
+            list.appendChild(div);
         });
-    } else {
-        console.error('Elemento estadosList não encontrado');
-    }
-
-    const countUnidades = document.getElementById('countUnidades');
-    if (countUnidades) countUnidades.innerHTML = Object.keys(estadosMap).length;
-
-    if (!map) {
-        inicializarMapa();
-    }
-
-    atualizarMarcadores(dadosFiltrados.hosts);
-    atualizarLinhas(dadosFiltrados.hosts);
-    atualizarListas(dadosFiltrados);
-}
-
-function navigateToEditHost(host) {
-    // Navigate to the editing section
-    exibirJanela('toggleTitulo');
-    exibirEditar();
-
-    // Pre-fill the form with the host's data
-    document.getElementById('ip').value = host.ip || '';
-    document.getElementById('nome').value = host.nome || '';
-    document.getElementById('local').value = host.local || '';
-    document.getElementById('observacao').value = host.observacao || '';
-    document.getElementById('ativo').value = host.ativo === "#00d700" ? "green" : "red";
-}
-
-function atualizarMarcadores(hosts) {
-    // Manter um cache de marcadores existentes
-    const marcadoresExistentes = {};
-    
-    // Registrar todos os marcadores atuais
-    markersLayer.eachLayer(marker => {
-        const options = marker.options;
-        if (options.hostId) {
-            marcadoresExistentes[options.hostId] = marker;
-        }
-    });
-    
-    // Atualizar ou criar marcadores
-    hosts.forEach(ponto => {
-        if (ponto.local) {
-            const [lat, lng] = ponto.local.split(', ').map(Number);
-            const hostId = ponto.ip;
-            
-            // Verificar se já existe um marcador para este host
-            if (marcadoresExistentes[hostId]) {
-                // Atualizar propriedades do marcador existente se necessário
-                const marker = marcadoresExistentes[hostId];
-                const maiorValorC = ponto.valores?.filter(v => v.includes('C')).map(v => parseFloat(v.replace('°C', ''))).reduce((a, b) => Math.max(a, b), null);
-                const info = ponto.valores ? `<br><br><span style="font-size: 12px; color: gray;">🌡️ Temp: <b>${maiorValorC ? maiorValorC + '°C' : 'N/A'}</b> | 💻 CPU: <b>${ponto.valores[0]}%</b> | 📶 Lat: <b>${ponto.valores[2]}ms</b></span>` : '';
-                
-                // Atualizar apenas o conteúdo do popup e o ícone se o status mudou
-                if (marker.options.status !== ponto.ativo) {
-                    marker.setIcon(criarIcone(ponto));
-                    marker.setPopupContent(`<b class="nomedosw" style="color: ${ponto.ativo}; ">${ponto.nome} <br> <span class="latitude" style="text-align: center; width: 100%; opacity: 0.5;">${ponto.local}</span><span style="color: var(--color-background);"> "${ponto.observacao}" </span> ${info}</b>`);
-                    marker.options.status = ponto.ativo;
-                }
-                
-                // Remover do objeto para sabermos quais ainda precisam ser processados
-                delete marcadoresExistentes[hostId];
-            } else {
-                // Criar novo marcador
-                const maiorValorC = ponto.valores?.filter(v => v.includes('C')).map(v => parseFloat(v.replace('°C', ''))).reduce((a, b) => Math.max(a, b), null);
-                const info = ponto.valores ? `<br><br><span style="font-size: 12px; color: gray;">🌡️ Temp: <b>${maiorValorC ? maiorValorC + '°C' : 'N/A'}</b> | 💻 CPU: <b>${ponto.valores[0]}%</b> | 📶 Lat: <b>${ponto.valores[2]}ms</b></span>` : '';
-                
-                const marker = L.marker([lat, lng], { 
-                    icon: criarIcone(ponto),
-                    hostId: hostId,
-                    status: ponto.ativo
-                }).addTo(markersLayer)
-                .bindPopup(`<b class="nomedosw" style="color: ${ponto.ativo}; ">${ponto.nome} <br> <span class="latitude" style="text-align: center; width: 100%; opacity: 0.5;">${ponto.local}</span><span style="color: var(--color-background);"> "${ponto.observacao}" </span> ${info}</b>`);
-                
-                pontosMapeados[ponto.ip] = { lat, lng, marker };
-            }
-        }
-    });
-    
-    // Remover marcadores que não existem mais nos dados
-    for (const hostId in marcadoresExistentes) {
-        markersLayer.removeLayer(marcadoresExistentes[hostId]);
-        delete pontosMapeados[hostId];
-    }
-}
-
-function atualizarLinhas(hosts) {
-    // Preparar as linhas independentemente do estado de visibilidade
-    const linhasChave = {};
-    const novosHosts = {};
-    
-    // Mapear todos os pontos primeiro
-    hosts.forEach(ponto => {
-        if (ponto.local) {
-            const [lat, lng] = ponto.local.split(', ').map(Number);
-            novosHosts[ponto.ip] = { lat, lng, ativo: ponto.ativo };
-        }
-    });
-    
-    // Limpar as linhas existentes
-    linesLayer.clearLayers();
-    
-    // Criar novas linhas
-    hosts.forEach(ponto => {
-        if (ponto.ship && ponto.local) {
-            ponto.ship.split(', ').forEach(ship => {
-                if (novosHosts[ponto.ip] && novosHosts[ship]) {
-                    const chave = ponto.ip < ship ? `${ponto.ip}-${ship}` : `${ship}-${ponto.ip}`;
-                    
-                    if (!linhasChave[chave]) {
-                        const { lat: lat1, lng: lng1 } = novosHosts[ponto.ip];
-                        const { lat: lat2, lng: lng2 } = novosHosts[ship];
-                        L.polyline([[lat1, lng1], [lat2, lng2]], { color: ponto.ativo }).addTo(linesLayer);
-                        linhasChave[chave] = true;
-                    }
-                }
-            });
-        }
-    });
-    
-    // Adicionar ao mapa apenas se estiver visível
-    if (linesVisible) {
-        if (!map.hasLayer(linesLayer)) {
-            linesLayer.addTo(map);
-        }
-    } else {
-        if (map.hasLayer(linesLayer)) {
-            map.removeLayer(linesLayer);
-        }
-    }
-}
-
-// Função auxiliar para criar ícones
-function criarIcone(ponto) {
-    const [lat, lng] = ponto.local.split(', ').map(Number);
-    const zindex = ponto.ativo === 'red' ? 'z-index: 99999999999999999999;' : '';
-    
-    return L.divIcon({
-        className: 'custom-marker',
-        html: `<img src="https://i.ibb.co/21HsN0y1/sw.png" id="icone-sw" style="border: 2px solid ${ponto.ativo}; ${zindex} box-shadow: inset 0 0 0 1.5px blue; cursor: grab;" onclick="map.flyTo([${lat}, ${lng}], 18, { duration: 0.5 }); fillForm({ip: '${ponto.ip}', nome: '${ponto.nome}', local: '${ponto.local}', tipo: '${ponto.tipo}', ativo: '${ponto.ativo}'})"/>`,
-        iconSize: [0, 0],
-        iconAnchor: [15, 30],
-        popupAnchor: [0, -30]
-    });
-}
-
-// Inicialização do mapa
-function inicializarMapa() {
-    map = L.map('map', { 
-        maxZoom: 18, 
-        minZoom: 4, 
-        zoomControl: false, 
-        doubleClickZoom: false, 
-        attributionControl: false 
-    }).setView(visaoDefault || [-15.7883, -47.9292], 4);
-
-    map.on('contextmenu', e => {
-        const { lat, lng } = e.latlng;
-        L.popup()
-            .setLatLng(e.latlng)
-            .setContent(`<div onclick="copiarCoordenadas('${lat.toFixed(6)}', '${lng.toFixed(6)}')"><b>${lat.toFixed(6)}, ${lng.toFixed(6)}</b></div>`)
-            .openOn(map);
-    });
-
-    exibirToggleMap();
-    mapaAtual = mapaPadraoEscuro;
-    mapaAtual.addTo(map);
-    markersLayer = L.layerGroup().addTo(map);
-    linesLayer = L.layerGroup();
-
-    document.getElementById('mapToggleImage').addEventListener('click', () => toggleMapView(mapaAtual, mapaSatelite));
-    document.getElementById('ipBusca').addEventListener('input', () => {
-        atualizarInterface(dadosAtuais); // Atualiza a interface com base no valor atual do input
-    });
-}
-
-// Funções auxiliares do mapa
-function toggleTheme(mapaAtualParam, mapaClaro, mapaEscuro) {
-    const isSatelliteActive = map.hasLayer(mapaSatelite);
-    const mapToggleImage = document.getElementById('mapToggleImage');
-
-    if (mapaAtualParam === mapaClaro || countChangeTheme === 1) {
-        mapaAtual = mapaEscuro;
-        countChangeTheme = 2;
-        theme.innerHTML = `<style>:root{--color-glass: #16191ec2;--color-background: #16191E;--color-secondary: #404851;--color-primary: #4A87C0;--color-text: #e2e2e2;}</style>`;
-        if (isSatelliteActive) mapToggleImage.src = 'https://i.ibb.co/S4xWMD61/map.png';
-    } else {
-        mapaAtual = mapaClaro;
-        countChangeTheme = 1;
-        theme.innerHTML = `<style>:root{--color-glass: rgba(241, 246, 255, 0.76);--color-background: #c8c8c8;--color-secondary: rgb(149, 184, 236);--color-primary: rgb(11, 58, 102);--color-text: rgb(71, 69, 69);}</style>`;
-        if (isSatelliteActive) mapToggleImage.src = 'https://i.ibb.co/YBD7CMr7/satc.png';
-    }
-
-    if (!isSatelliteActive) {
-        map.removeLayer(mapaClaro);
-        map.removeLayer(mapaEscuro);
-        mapaAtual.addTo(map);
-    }
-
-    return mapaAtual;
-}
-
-function toggleMapView(mapaAtual, mapaSatelite) {
-    const isSatelliteActive = map.hasLayer(mapaSatelite);
-    const mapToggleImage = document.getElementById('mapToggleImage');
-
-    if (isSatelliteActive) {
-        map.removeLayer(mapaSatelite);
-        mapaAtual.addTo(map);
-        mapToggleImage.src = 'https://i.ibb.co/vv6Zs4vP/sat.png';
-    } else {
-        map.removeLayer(mapaAtual);
-        mapaSatelite.addTo(map);
-        mapToggleImage.src = mapaAtual === mapaPadraoEscuro ? 'https://i.ibb.co/S4xWMD61/map.png' : 'https://i.ibb.co/YBD7CMr7/satc.png';
-    }
-}
-
-
-
-// Atualização das listas
-function atualizarListas(dados) {
-    const listaItensSL = document.getElementById('listaItensSL');
-    listaItensSL.innerHTML = '';
-    const itensSemLocal = dados.hosts.filter(ponto => !ponto.local);
-    document.getElementById('countEquipamentosSemLocal').innerHTML = itensSemLocal.length;
-    itensSemLocal.forEach(ponto => {
-        const item = document.createElement('div');
-        item.className = 'item-sem-local';
-        item.innerHTML = `<b style="color: var(--color-primary);">${ponto.nome} <span style="color: ${ponto.ativo};">⁕</span></b><br><span>IP: ${ponto.ip}</span>`;
-        listaItensSL.appendChild(item);
-    });
-
-    const listaItensOff = document.getElementById('listaItensOff');
-    listaItensOff.innerHTML = '';
-    const itensComStatusRed = dados.hosts.filter(ponto => ponto.ativo === 'red');
-    document.getElementById('alertNum').innerHTML = itensComStatusRed.length;
-    itensComStatusRed.forEach(ponto => {
-        const item = document.createElement('div');
-        item.className = 'item-status-red';
-        item.innerHTML = `<b style="color: var(--color-primary);">${ponto.nome} <span style="color: ${ponto.ativo};">⁕</span></b><br><span>Local: ${ponto.local || 'N/A'}</span>`;
-        listaItensOff.appendChild(item);
-    });
-}
-
-// Configuração do WebSocket
-function configurarWebSocket() {
-    const socket = io(server, {
-        transports: ['websocket'],
-        reconnection: true,
-        reconnectionAttempts: 5,
-        reconnectionDelay: 1000
-    });
-
-    socket.on('connect', () => console.log('Conectado ao WebSocket!'));
-    socket.on('atualizar_dados', dados => {
-        if (!dados) return console.error('Dados inválidos via WebSocket');
-        console.log('Dados via WebSocket:', dados);
-        if (isEditing) {
-            pendingWebSocketUpdate = dados;
-        } else {
-            dadosAtuais = dados;
-            atualizarInterface(dados);
-        }
-    });
-    socket.on('connect_error', error => console.error('Erro no WebSocket:', error));
-    socket.on('disconnect', () => console.log('Desconectado do WebSocket'));
-    return socket;
-}
-
-// Funções de carregamento de hosts
-async function loadHosts() {
-    if (dadosAtuais.hosts && dadosAtuais.hosts.length > 0) {
-        hosts = dadosAtuais.hosts;
-        initializeInfiniteScroll();
-        return;
-    }
-    try {
-        const response = await fetch(`${server}/status`);
-        const data = await response.json();
-        if (!data || !data.hosts) throw new Error('Dados inválidos');
-        hosts = data.hosts;
-        dadosAtuais = data;
-        initializeInfiniteScroll();
     } catch (error) {
-        console.error('Erro ao carregar hosts:', error);
-        document.getElementById('hostList').innerHTML = 
-            '<div class="error-message">Erro ao carregar hosts. Tente novamente mais tarde.</div>';
+        console.error('Erro:', error);
+        document.getElementById('pendingEditsList').innerHTML = '<p>Erro ao carregar edições.</p>';
     }
 }
 
-function getVisibleMapIPs() {
-    const visibleIPs = [];
-    
-    // Itera sobre os marcadores no markersLayer
-    markersLayer.eachLayer(marker => {
-        const hostId = marker.options.hostId; // O IP do host
-        if (hostId && map.getBounds().contains(marker.getLatLng())) {
-            visibleIPs.push(hostId);
-        }
-    });
-    
-    console.log('IPs visíveis no mapa com zoom atual:', visibleIPs);
-    return visibleIPs;
-}
-
-async function sendVisibleIPsToBackend() {
-    const ips = getVisibleMapIPs();
-    try {
-        const response = await fetch(`${server}/prioritize-pings`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ips })
-        });
-        if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
-        const result = await response.json();
-        console.log('Resposta do backend:', result);
-    } catch (error) {
-        console.error('Erro ao enviar IPs visíveis ao backend:', error);
-    }
-}
-
-function displayHosts(hosts, isNewSearch = true) {
-    const hostList = document.getElementById('hostList');
-    
-    // Se for uma nova pesquisa, resetamos o estado
-    if (isNewSearch) {
-        hostList.innerHTML = '';
-        currentPage = 0;
-        allDisplayedHosts = [...hosts]; // Cópia do array de hosts
-        hasMoreHosts = true;
-    }
-    
-    // Se não houver hosts, mostra mensagem
-    if (hosts.length === 0) {
-        hostList.innerHTML = '<div class="no-hosts">Nenhum host encontrado.</div>';
-        return;
-    }
-    
-    // Calcula o intervalo de hosts para exibir
-    const startIndex = currentPage * hostsPerPage;
-    const endIndex = Math.min(startIndex + hostsPerPage, allDisplayedHosts.length);
-    
-    // Verifica se há mais hosts para carregar
-    hasMoreHosts = endIndex < allDisplayedHosts.length;
-    
-    // Cria um fragmento para melhor performance
-    const fragment = document.createDocumentFragment();
-    
-    // Adiciona os hosts do intervalo atual
-    for (let i = startIndex; i < endIndex; i++) {
-        const host = allDisplayedHosts[i];
-        const hostItem = document.createElement('div');
-        hostItem.className = 'host-item';
-        hostItem.innerHTML = `<b style="color: ${host.ativo};">*</b> ${host.ip} - ${host.nome}`;
-        hostItem.onclick = () => {
-            fillForm(host);
-            if (host.local) {
-                const [lat, lng] = host.local.split(', ').map(Number);
-                map.flyTo([lat, lng], 18, { duration: 0.5 });
-                // Encontrar o marcador correspondente de forma mais eficiente
-                if (pontosMapeados[host.ip] && pontosMapeados[host.ip].marker) {
-                    pontosMapeados[host.ip].marker.openPopup();
-                }
-            }
-        };
-        fragment.appendChild(hostItem);
-    }
-    
-    // Se for primeira página, substitui o conteúdo, senão adiciona ao final
-    if (isNewSearch) {
-        hostList.innerHTML = '';
-    }
-    
-    hostList.appendChild(fragment);
-    currentPage++;
-    isLoading = false;
-    
-    // Adiciona indicador de carregamento se houver mais hosts
-    if (hasMoreHosts) {
-        const loadingIndicator = document.getElementById('loading-indicator');
-        if (!loadingIndicator) {
-            const indicator = document.createElement('div');
-            indicator.id = 'loading-indicator';
-            indicator.className = 'loading-indicator';
-            indicator.textContent = 'Pesquise por ip ou nome...';
-            hostList.appendChild(indicator);
-        }
-    } else {
-        // Remove o indicador se não houver mais hosts
-        const loadingIndicator = document.getElementById('loading-indicator');
-        if (loadingIndicator) {
-            loadingIndicator.remove();
-        }
-        
-        // Adicionar indicador de fim da lista se houver muitos hosts
-        if (allDisplayedHosts.length > hostsPerPage) {
-            const endIndicator = document.createElement('div');
-            endIndicator.className = 'end-indicator';
-            endIndicator.textContent = `Fim da lista - ${allDisplayedHosts.length} hosts encontrados`;
-            hostList.appendChild(endIndicator);
-        }
-    }
-}
-// Função para carregar mais hosts quando o scroll chegar ao fim
-function loadMoreHosts() {
-    if (!isLoading && hasMoreHosts) {
-        isLoading = true;
-        // Simulamos uma pequena latência para mostrar o indicador de carregamento
+function showProposedLocation(local, ip) {
+    console.log('Chamando showProposedLocation com local:', local, 'e IP:', ip);
+    const [lat, lng] = local.split(', ').map(Number);
+    if (!isNaN(lat) && !isNaN(lng)) {
+        console.log('Coordenadas válidas:', lat, lng);
+        map.flyTo([lat, lng], 18, { duration: 0.5 });
+        const tempMarker = L.marker([lat, lng], {
+            icon: L.divIcon({
+                className: 'temp-marker',
+                html: `<div style="background-color: yellow; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            })
+        }).addTo(map);
+        console.log('Marcador temporário adicionado em:', [lat, lng]);
         setTimeout(() => {
-            displayHosts(allDisplayedHosts, false);
-        }, 200);
-    }
-}
+            map.removeLayer(tempMarker);
+            console.log('Marcador temporário removido');
+        }, 5000);
 
-// Configurar o evento de scroll para o containerHostList (ou o elemento que contém hostList)
-function setupInfiniteScroll() {
-    const containerHostList = document.getElementById('hostList').parentElement;
-    
-    containerHostList.addEventListener('scroll', () => {
-        // Verifica se o scroll chegou perto do fim (últimos 150px)
-        if (containerHostList.scrollHeight - containerHostList.scrollTop - containerHostList.clientHeight < 150) {
-            loadMoreHosts();
-        }
-    });
-    
-    // Adicionar CSS para o indicador de carregamento
-    const style = document.createElement('style');
-    style.textContent = `
-        .loading-indicator {
-            text-align: center;
-            padding: 10px;
-            color: var(--color-primary);
-            font-size: 14px;
-        }
-        .end-indicator {
-            text-align: center;
-            padding: 10px;
-            color: var(--color-secondary);
-            font-size: 12px;
-            opacity: 0.8;
-        }
-        /* Adicionar estilo para dar feedback visual quando o host é clicado */
-        .host-item {
-            transition: background-color 0.3s ease;
-        }
-        .host-item:hover {
-            background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.1);
-        }
-        .host-item:active {
-            background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.2);
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-
-function filterHosts() {
-    const searchText = document.getElementById('search').value.toLowerCase().trim();
-    const showOnlyWithoutLocation = document.getElementById('showOnlyWithoutLocation').checked;
-    
-    // Definir um limite para busca em tempo real para conjuntos muito grandes
-    const isLargeDataset = hosts.length > 1000;
-    
-    // Se for uma base de dados muito grande e a busca for menor que 3 caracteres, 
-    // exigir pelo menos 3 caracteres para iniciar a busca
-    if (isLargeDataset && searchText.length > 0 && searchText.length < 3) {
-        document.getElementById('hostList').innerHTML = 
-            '<div class="search-instruction">Digite pelo menos 3 caracteres para buscar em uma base grande.</div>';
-        return;
-    }
-    
-    // Se a busca estiver vazia e estiver mostrando apenas sem localização, 
-    // usar um subconjunto para desempenho
-    let filteredHosts;
-    if (!searchText && showOnlyWithoutLocation) {
-        filteredHosts = hosts.filter(host => !host.local || host.local.trim() === '');
-    } else if (!searchText && !showOnlyWithoutLocation) {
-        // Se não houver busca e não estiver filtrando por localização, 
-        // mostrar apenas os primeiros X hosts para performance
-        filteredHosts = hosts.slice(0, 200);
-        if (hosts.length > 200) {
-            // Adicionar um aviso de que é necessário buscar para ver mais
-            setTimeout(() => {
-                const hostList = document.getElementById('hostList');
-                const endNote = document.createElement('div');
-                endNote.className = 'end-indicator';
-                endNote.innerHTML = ``;
-                hostList.appendChild(endNote);
-            }, 100);
+        if (ip && pontosMapeados[ip] && pontosMapeados[ip].marker) {
+            const marker = pontosMapeados[ip].marker;
+            marker.openPopup();
+            console.log('Popup aberto para marcador do IP:', ip);
+        } else {
+            console.warn('Nenhum marcador encontrado para o IP:', ip);
+            markersLayer.eachLayer(marker => {
+                const markerLatLng = marker.getLatLng();
+                const tolerance = 0.0001;
+                if (
+                    Math.abs(markerLatLng.lat - lat) < tolerance &&
+                    Math.abs(markerLatLng.lng - lng) < tolerance
+                ) {
+                    marker.openPopup();
+                    console.log('Popup aberto por coordenadas como fallback em:', [lat, lng]);
+                }
+            });
         }
     } else {
-        // Busca normal com filtros
-        filteredHosts = hosts.filter(host => {
-            const matchesSearch = host.nome.toLowerCase().includes(searchText) || 
-                                 host.ip.toLowerCase().includes(searchText);
-            const hasNoLocation = !host.local || host.local.trim() === '';
-            return showOnlyWithoutLocation ? matchesSearch && hasNoLocation : matchesSearch;
-        });
-    }
-    
-    // Usar o sistema de scroll infinito para exibir os hosts
-    displayHosts(filteredHosts, true);
-}
-
-function debounce(func, wait) {
-    let timeout;
-    return function(...args) {
-        const context = this;
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(context, args), wait);
-    };
-}
-
-function setupSearchFilter() {
-    const debouncedFilterHosts = debounce(filterHosts, 300);
-    
-    document.getElementById('search').addEventListener('input', debouncedFilterHosts);
-    document.getElementById('showOnlyWithoutLocation')?.addEventListener('change', filterHosts);
-    
-    // Adicionar evento de limpeza para o campo de busca
-    const searchInput = document.getElementById('search');
-    const clearButton = document.createElement('button');
-    clearButton.type = 'button';
-    clearButton.className = 'clear-search';
-    clearButton.innerHTML = '&times;';
-    clearButton.style.display = 'none';
-    clearButton.onclick = () => {
-        searchInput.value = '';
-        clearButton.style.display = 'none';
-        filterHosts();
-    };
-    
-    searchInput.parentNode.style.position = 'relative';
-    searchInput.parentNode.appendChild(clearButton);
-    
-    // Mostrar/ocultar botão de limpar
-    searchInput.addEventListener('input', () => {
-        clearButton.style.display = searchInput.value ? 'block' : 'none';
-    });
-    
-    // Estilo para o botão de limpar
-    const style = document.createElement('style');
-    style.textContent = `
-        .clear-search {
-            position: absolute;
-            right: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: var(--color-secondary);
-            font-size: 18px;
-            cursor: pointer;
-            padding: 0;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        .clear-search:hover {
-            background-color: rgba(var(--color-secondary-rgb, 64, 72, 81), 0.1);
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-// Inicialização para scroll infinito
-function initializeInfiniteScroll() {
-    setupInfiniteScroll();
-    setupSearchFilter();
-    // Fazer a primeira carga de dados
-    filterHosts();
-}
-
-
-function fillForm(host) {
-    document.getElementById('ip').value = host.ip;
-    document.getElementById('nome').value = host.nome;
-    document.getElementById('local').value = host.local || '';
-    document.getElementById('ativo').value = host.ativo === "#00d700" ? "green" : "red";
-}
-
-// Inicialização
-async function carregarDados() {
-    await fetchDadosHTTP();
-    configurarWebSocket();
-    await loadHosts();
-}
-
-async function atualizarDadosManualmente() {
-    sendVisibleIPsToBackend()
-    console.log('Atualização manual solicitada');
-    const novosDados = await fetchDadosHTTP();
-    if (novosDados) {
-        console.log('Dados atualizados manualmente');
+        console.error('Coordenadas inválidas:', local);
+        alert('Coordenadas inválidas!');
     }
 }
 
-function copiarCoordenadas(lat, lng) {
-    navigator.clipboard.writeText(`${lat}, ${lng}`)
-        .then(() => {
-            exibirFeedbackCopia?.();
-            fecharPopups();
-        })
-        .catch(err => console.error('Erro ao copiar coordenadas:', err));
+function formatDate(isoDate) {
+    const date = new Date(isoDate);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
 
-// Configuração do menu de atalhos
-menuContainer.innerHTML = `
-    <div class="menu-list" onclick="map.flyTo([-15.7883, -47.9292], 4, { duration: 0.5 })"><b>Mapa geral</b></div>
-    <div class="menu-list" onclick="map.flyTo(imperatriz, 17, { duration: 0.5 })">Fabrica Imperatriz</div>
-    <div class="menu-list" onclick="map.flyTo(belem, 17, { duration: 0.5 })">Fabrica Belem</div>
-    <div class="menu-list" onclick="map.flyTo(aracruz, 17, { duration: 0.5 })">Fabrica Aracruz</div>
-    <div class="menu-list" onclick="map.flyTo(mucuri, 17, { duration: 0.5 })">Fabrica Mucuri</div>
-`;
+async function approveEdit(id) {
+    try {
+        const response = await fetch(`${server}/approve-edit/${id}`, { method: 'POST' });
+        if (response.ok) {
+            loadPendingEdits();
+        }
+    } catch (error) {
+        console.error('Erro ao aprovar:', error);
+    }
+}
 
-// Inicialização
-carregarDados();
+async function rejectEdit(id) {
+    try {
+        const response = await fetch(`${server}/reject-edit/${id}`, { method: 'DELETE' });
+        if (response.ok) {
+            loadPendingEdits();
+        }
+    } catch (error) {
+        console.error('Erro ao rejeitar:', error);
+    }
+}
+            </script>
+        </div>
 
-// Evento de toggle theme (removido do HTML, adicionado aqui se necessário)
-document.getElementById('toggleThemeButton')?.addEventListener('click', () => {
-    mapaAtual = toggleTheme(mapaAtual, mapaPadraoClaro, mapaPadraoEscuro);
+
+</div>    <div id="listaItensSL">
+          </div>    <div id="listaItensOff">
+              </div>    </div>
+    <script>document.getElementById("toggleTitulo").addEventListener("click", function() {
+    document.getElementById("tituloBox").classList.toggle("ativo");
+    if (janela == 0) {
+        janela = 1;
+    } else {
+        janela = 0;
+    }
+});    </script>    <div class="container">            <!-- Popup para exibir hosts com status "red" -->
+<div id="redHostsPopup" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Offline</h2>
+        <div id="redHostsList"></div>
+    </div>    <style>
+        /* Estilo do Modal (Popup) */
+.modal {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    z-index: 999999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-glass); /* Fundo escuro */
+}.modal-content {
+    background-color: var(--color-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid var(--color-secondary);
+    width: 600px;
+    height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+#redHostsList{
+    height: 225px;
+    overflow: auto;
+}
+.close {
+    color: var(--color-text);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+    </style>    <script>        function name(params) {
+                  }        // Função para abrir o popup com hosts "red"
+let countSemLocalNosHosts = 0;
+let buttonLocal = ``;// Fechar o popup quando o usuário clicar no "X"
+document.querySelector('.close').addEventListener('click', function () {
+    const modal = document.getElementById('redHostsPopup');
+    modal.style.display = 'none';
+});// Fechar o popup quando o usuário clicar fora dele
+window.addEventListener('click', function (event) {
+    const modal = document.getElementById('redHostsPopup');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
 });
+    </script>
+</div>        <div class="opcoes" id="opcoes">
+          <button id="toggleShowSwitches" onclick="showSw()"><img src="https://switch-map-2-dev.vercel.app/frontend/source/sw.png" alt=""></button>
+        <style>        #toggleShowSwitches{
+            background-color: var(--color-background);
+            border: 1px solid var(--color-secondary);
+            border-radius: 50px;
+            padding: 10px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+          }
+          #toggleShowSwitches img{
+            border: none;
+          }</style>
+              <button id="toggleLinesButton" onclick="toggleDependenciasState()"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">        <path clip-rule="evenodd" d="M18 5C17.4477 5 17 5.44772 17 6C17 6.27642 17.1108 6.52505 17.2929 6.70711C17.475 6.88917 17.7236 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5ZM15 6C15 4.34315 16.3431 3 18 3C19.6569 3 21 4.34315 21 6C21 7.65685 19.6569 9 18 9C17.5372 9 17.0984 8.8948 16.7068 8.70744L8.70744 16.7068C8.8948 17.0984 9 17.5372 9 18C9 19.6569 7.65685 21 6 21C4.34315 21 3 19.6569 3 18C3 16.3431 4.34315 15 6 15C6.46278 15 6.90157 15.1052 7.29323 15.2926L15.2926 7.29323C15.1052 6.90157 15 6.46278 15 6ZM6 17C5.44772 17 5 17.4477 5 18C5 18.5523 5.44772 19 6 19C6.55228 19 7 18.5523 7 18C7 17.7236 6.88917 17.475 6.70711 17.2929C6.52505 17.1108 6.27642 17 6 17Z" />
+        </svg></button>                      <div class="menu">                            <!-- From Uiverse.io by pathikcomp --> 
+            <label class="main">
+                Atalhos
+                <input class="inp" checked="" type="checkbox" />
+                <div class="bar">
+                <span class="top bar-list"></span>
+                <span class="middle bar-list"></span>
+                <span class="bottom bar-list"></span>
+                </div>
+                <section class="menu-container" id="menu-container">
+                </section>
+            </label>
+            </div>        </div>
+          </div>    <div class="popup" id="popup">
+        <!-- From Uiverse.io by revanth-004 --> 
+        <div class="popup-container">
+            <div class="popup success-popup">
+                <div class="popup-icon success-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="success-svg">
+                        <path fill-rule="evenodd" d="m12 1c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11-4.925-11-11-11zm4.768 9.14c.0878-.1004.1546-.21726.1966-.34383.0419-.12657.0581-.26026.0477-.39319-.0105-.13293-.0475-.26242-.1087-.38085-.0613-.11844-.1456-.22342-.2481-.30879-.1024-.08536-.2209-.14938-.3484-.18828s-.2616-.0519-.3942-.03823c-.1327.01366-.2612.05372-.3782.1178-.1169.06409-.2198.15091-.3027.25537l-4.3 5.159-2.225-2.226c-.1886-.1822-.4412-.283-.7034-.2807s-.51301.1075-.69842.2929-.29058.4362-.29285.6984c-.00228.2622.09851.5148.28067.7034l3 3c.0983.0982.2159.1748.3454.2251.1295.0502.2681.0729.4069.0665.1387-.0063.2747-.0414.3991-.1032.1244-.0617.2347-.1487.3236-.2554z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="success-message">Dados Carregados</div>                <div class="popup-icon close-icon" onclick="fecharFeedbackDados()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" class="close-svg">
+                        <path d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z" class="close-path"></path>
+                    </svg>
+                </div>            </div>
+        </div>
+    </div>
+        <div class="popupcopiar" id="popupcopiar">
+        <!-- From Uiverse.io by revanth-004 --> 
+        <div class="popup-container">
+            <div class="popup info-popup">
+                <div class="popup-icon info-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="info-svg">
+                        <path fill-rule="evenodd" d="m12 1c-6.075 0-11 4.925-11 11s4.925 11 11 11 11-4.925 11-11-4.925-11-11-11zm4.768 9.14c.0878-.1004.1546-.21726.1966-.34383.0419-.12657.0581-.26026.0477-.39319-.0105-.13293-.0475-.26242-.1087-.38085-.0613-.11844-.1456-.22342-.2481-.30879-.1024-.08536-.2209-.14938-.3484-.18828s-.2616-.0519-.3942-.03823c-.1327.01366-.2612.05372-.3782.1178-.1169.06409-.2198.15091-.3027.25537l-4.3 5.159-2.225-2.226c-.1886-.1822-.4412-.283-.7034-.2807s-.51301.1075-.69842.2929-.29058.4362-.29285.6984c-.00228.2622.09851.5148.28067.7034l3 3c.0983.0982.2159.1748.3454.2251.1295.0502.2681.0729.4069.0665.1387-.0063.2747-.0414.3991-.1032.1244-.0617.2347-.1487.3236-.2554z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="info-message">Local copiado</div>                <div class="popup-icon close-icon" onclick="fecharFeedbackCopia()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" class="close-svg">
+                        <path d="m15.8333 5.34166-1.175-1.175-4.6583 4.65834-4.65833-4.65834-1.175 1.175 4.65833 4.65834-4.65833 4.6583 1.175 1.175 4.65833-4.6583 4.6583 4.6583 1.175-1.175-4.6583-4.6583z" class="close-path"></path>
+                    </svg>
+                </div>
+                          </div>
+        </div>
+    </div>
+    
+    <div class="loading" id="loading">
+<!-- From Uiverse.io by Nawsome --> 
+<svg class="pl" viewBox="0 0 160 160" width="160px" height="160px" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#000"></stop>
+            <stop offset="100%" stop-color="#fff"></stop>
+        </linearGradient>
+        <mask id="mask1">
+            <rect x="0" y="0" width="160" height="160" fill="url(#grad)"></rect>
+        </mask>
+        <mask id="mask2">
+            <rect x="28" y="28" width="104" height="104" fill="url(#grad)"></rect>
+        </mask>
+    </defs>
+      <g>
+        <g class="pl__ring-rotate">
+            <circle class="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(223,90%,55%)" stroke-width="16" stroke-dasharray="452.39 452.39" stroke-dashoffset="452" stroke-linecap="round" transform="rotate(-45,80,80)"></circle>
+        </g>
+    </g>
+    <g mask="url(#mask1)">
+        <g class="pl__ring-rotate">
+            <circle class="pl__ring-stroke" cx="80" cy="80" r="72" fill="none" stroke="hsl(193,90%,55%)" stroke-width="16" stroke-dasharray="452.39 452.39" stroke-dashoffset="452" stroke-linecap="round" transform="rotate(-45,80,80)"></circle>
+        </g>
+    </g>
+      <g>
+        <g stroke-width="4" stroke-dasharray="12 12" stroke-dashoffset="12" stroke-linecap="round" transform="translate(80,80)">
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-135,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-90,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(-45,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(0,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(45,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(90,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(135,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,10%,90%)" points="0,2 0,14" transform="rotate(180,0,0) translate(0,40)"></polyline>
+        </g>
+    </g>
+    <g mask="url(#mask1)">
+        <g stroke-width="4" stroke-dasharray="12 12" stroke-dashoffset="12" stroke-linecap="round" transform="translate(80,80)">
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(-135,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(-90,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(-45,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(0,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(45,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(90,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(135,0,0) translate(0,40)"></polyline>
+            <polyline class="pl__tick" stroke="hsl(223,90%,80%)" points="0,2 0,14" transform="rotate(180,0,0) translate(0,40)"></polyline>
+        </g>
+    </g>
+      <g>
+        <g transform="translate(64,28)">
+            <g class="pl__arrows" transform="rotate(45,16,52)">
+                <path fill="hsl(3,90%,55%)" d="M17.998,1.506l13.892,43.594c.455,1.426-.56,2.899-1.998,2.899H2.108c-1.437,0-2.452-1.473-1.998-2.899L14.002,1.506c.64-2.008,3.356-2.008,3.996,0Z"></path>
+                <path fill="hsl(223,10%,90%)" d="M14.009,102.499L.109,58.889c-.453-1.421,.559-2.889,1.991-2.889H29.899c1.433,0,2.444,1.468,1.991,2.889l-13.899,43.61c-.638,2.001-3.345,2.001-3.983,0Z"></path>
+            </g>
+        </g>
+    </g>
+    <g mask="url(#mask2)">
+        <g transform="translate(64,28)">
+            <g class="pl__arrows" transform="rotate(45,16,52)">
+                <path fill="hsl(333,90%,55%)" d="M17.998,1.506l13.892,43.594c.455,1.426-.56,2.899-1.998,2.899H2.108c-1.437,0-2.452-1.473-1.998-2.899L14.002,1.506c.64-2.008,3.356-2.008,3.996,0Z"></path>
+                <path fill="hsl(223,90%,80%)" d="M14.009,102.499L.109,58.889c-.453-1.421,.559-2.889,1.991-2.889H29.899c1.433,0,2.444,1.468,1.991,2.889l-13.899,43.61c-.638,2.001-3.345,2.001-3.983,0Z"></path>
+            </g>
+        </g>
+    </g>
+</svg>    </div>    <div id="css-sw"></div>        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/info.js"></script>
+        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/open.js"></script>
+        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/scriptDados.js" defer></script>
+        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/manipularMapa.js"></script>
+        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/error.js"></script>
+        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/credits.js"></script>
+        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/mudancasTelas.js"></script>
+</html>
