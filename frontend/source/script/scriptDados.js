@@ -879,7 +879,7 @@ function displayHosts(hosts, isNewSearch = true) {
             const indicator = document.createElement('div');
             indicator.id = 'loading-indicator';
             indicator.className = 'loading-indicator';
-            indicator.textContent = 'Carregando mais...';
+            indicator.textContent = 'Pesquise por ip ou nome...';
             hostList.appendChild(indicator);
         }
     } else {
