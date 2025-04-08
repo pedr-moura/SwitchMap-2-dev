@@ -981,7 +981,7 @@ function filterHosts() {
                 const hostList = document.getElementById('hostList');
                 const endNote = document.createElement('div');
                 endNote.className = 'end-indicator';
-                endNote.innerHTML = `Mostrando os primeiros 200 de ${hosts.length} hosts.<br>Use a busca para filtrar.`;
+                endNote.innerHTML = ``;
                 hostList.appendChild(endNote);
             }, 100);
         }
