@@ -7,7 +7,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://switch-map-2-dev.vercel.app/frontend/source/style.css">    <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/locaisDeafult.js"></script>    <!-- websocket -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="style.css">    <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/locaisDeafult.js"></script>    <!-- websocket -->
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.min.js"></script></head>
 <body>    <div class="theme" id="theme">
         <style>
@@ -891,149 +891,960 @@
     </div>
         </div>        <div class="approval-section" id="approvalSection" style="display: none;">
             <h2>Solicitações</h2>
-            <div id="pendingEditsList" style="overflow: auto; height: 85dvh;"></div>
-        </div><div class="editarEquipamento" id="editarEquipamento">
-    
-    <div id="editarSection">
-        <div class="editarbox">            <div class="search-container">
-                <label for="search" class="search"> 
-
-                    <div class="boxinputsearch">
-                        <input type="text" name="search" id="search" placeholder="Pesquisar por IP" style="top: 4px; border: none;" oninput="filterHosts()"></div>
-                </label>
+            <div id="pendingEditsList" style="
+    overflow: auto;
+    height: 75dvh;
+    width: 100%;
+    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+            "></div>
+        </div>
+        
+        <div class="editarEquipamento" id="editarEquipamento">
+            <div id="editarSection">
+                <!-- Seção de Busca e Filtro -->
+                <div class="editarbox">
+                    <div class="search-container">
+                        <label for="search" class="search">
+                            <div class="boxinputsearch">
+                                <svg class="search-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                </svg>
+                                <input type="text" name="search" id="search" placeholder="Pesquisar por IP" oninput="filterHosts()" aria-label="Pesquisar por IP">
+                            </div>
+                        </label>
+                    </div>
+                    <div class="exibirSemLocal">
+                        <label class="checkbox-container">
+                            <input class="custom-checkbox" type="checkbox" id="showOnlyWithoutLocation" onchange="filterHosts()" aria-label="Exibir apenas equipamentos sem local">
+                            <span class="checkmark"></span>
+                            Exibir Sem Local
+                        </label>
+                    </div>
+                    <div class="host-list" id="hostList"></div>
+                </div>
+        
+                <!-- Formulário de Edição -->
+                <form id="editarHostForm" class="edit-form">
+                    <h2 class="form-title">Editar Equipamento</h2>
+                    <div class="form-group">
+                        <label for="ip">IP <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2a10 10 0 00-7.35 16.65l.35.35H12v2H6a1 1 0 01-1-1v-1a1 1 0 011-1h1.59A8 8 0 114 12a1 1 0 011-1h14a1 1 0 011 1 8 8 0 01-3.59 6.65H18a1 1 0 011 1v1a1 1 0 01-1 1h-6v-2h7.35l.35-.35A10 10 0 0012 2z"/>
+                            </svg>
+                            <input type="text" id="ip" name="ip" placeholder="Digite o IP (ex.: 192.168.1.1)" required aria-describedby="ip-error">
+                        </div>
+                        <span class="error-message" id="ip-error"></span>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2a10 10 0 00-10 10c0 4.41 2.86 8.14 6.81 9.47A6 6 0 0112 16a6 6 0 013.19 5.47C19.14 20.14 22 16.41 22 12A10 10 0 0012 2zm0 12a4 4 0 100-8 4 4 0 000 8z"/>
+                            </svg>
+                            <input type="text" id="nome" name="nome" placeholder="Digite o nome do host" aria-describedby="nome-error">
+                        </div>
+                        <span class="error-message" id="nome-error"></span>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="observacao">Observação</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 2H4a2 2 0 00-2 2v16a2 2 0 002 2h12l4-4V4a2 2 0 00-2-2zm-2 16h-2v2l-2.59-2.59L12 16H4V4h16v14zM9 9h6v2H9V9zm0 4h6v2H9v-4z"/>
+                            </svg>
+                            <input type="text" id="observacao" name="observacao" placeholder="Adicione uma observação" aria-describedby="observacao-error">
+                        </div>
+                        <span class="error-message" id="observacao-error"></span>
+                    </div>
+        
+                    <div class="form-group">
+                        <label for="local">Local</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 10a3 3 0 110-6 3 3 0 010 6z"/>
+                            </svg>
+                            <input type="text" id="local" name="local" placeholder="Latitude, Longitude (ex.: -23.5505, -46.6333)" aria-describedby="local-error">
+                            <button type="button" class="view-map-btn" onclick="previewLocation()">Ver no Mapa</button>
+                        </div>
+                        <span class="error-message" id="local-error"></span>
+                    </div>
+        
+                    <div class="form-group hidden">
+                        <label for="ativo">Status:</label>
+                        <select id="ativo" name="ativo">
+                            <option value="green">Green</option>
+                            <option value="red">Red</option>
+                        </select>
+                    </div>
+        
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" onclick="resetForm()">Cancelar</button>
+                        <button type="submit" class="submit-btn">Solicitar Alterações</button>
+                    </div>
+                </form>
+        
+                <div id="message" class="message"></div>
             </div>
-            <div class="exibirSemLocal">                <label class="checkbox-container">
-                    <input class="custom-checkbox" type="checkbox" id="showOnlyWithoutLocation" onchange="filterHosts()"><span class="checkmark"></span> Exibir Sem Local 
-                                                   </label>
-                <br><br>
-                <style>
-                    /* From Uiverse.io by DaniloMGutavo */ 
-                .checkbox-container {
-                  display: inline-block;
-                  position: relative;
-                  margin-bottom: 12px;
-                  font-size: 12px;
-                  user-select: none;
-                  width: 100%;
-                height: 30px;
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                gap: 10px;
-                border-bottom: 1px solid
-                }
-                .custom-checkbox {
-                  position: absolute;
-                  opacity: 0;
-                  height: 0;
-                  width: 0;
-                }
-                              .checkmark {
-                  position: relative;
-                  top: 0;
-                  height: 10px;
-                  width: 10px;
-                  background-color: var(--color-background);
-                  border: 1px solid var(--color-primary);
-                  border-radius: 20px;
-                  transition: background-color 0.3s;
-                  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                }
-                              .pendingEditsLists {
-    border: 1px solid var(--color-primary);
-    border-radius: 10px;
-    margin: 10px;
-    padding: 10px;
-    text-align: center;
-    background: var(--color-glass);
-    color: var(--color-text);
-}.pendingEditsLists p {
-    text-align: left;
-    margin: 10px 0;
-}.pendingEditsLists button {
-    margin: 5px;
-    padding: 5px 10px;
-    background: var(--color-primary);
-    border: none;
-    color: var(--color-text);
-    border-radius: 4px;
-    
-}.pendingEditsLists button:hover {
-    border: 1px solid var(--color-text);
+        
+            <!-- Seção de Aprovação -->
+            <div id="approvalSection" class="approval-section">
+                <h2 class="section-title">Aprovações Pendentes</h2>
+                <div id="pendingEditsList" class="pending-edits-list"></div>
+            </div>
+
+            <style>
+                /* Estilo do container principal */
+.editarEquipamento {
+    padding: 20px;
+    border-radius: 8px;
+    color: var(--color-text, #e2e2e2);
+    max-height: 90vh;
+    overflow-y: auto;
+    width: 285px;
+    box-sizing: border-box;
 }
-                              .custom-checkbox:checked ~ .checkmark {
-                  background-color: var(--color-primary);
-                  box-shadow: 0 3px 7px var(--color-secondary);
-                }
-                              .custom-checkbox:checked ~ .checkmark:after {
-                  display: block;
-                }
-                              @keyframes checkAnim {
-                  0% {
-                    height: 0;
-                  }
-                                100% {
-                    height: 10px;
-                  }
-                }
-                              .custom-checkbox:checked ~ .checkmark:after {
-                  animation: checkAnim 0.2s forwards;
-                }
-                              </style>
-                                                  </div>
-            <div class="host-list" id="hostList"></div>  
-        </div>        <form id="editarHostForm">
-            <label for="ip">IP</label>
-            <input type="text" id="ip" name="ip" placeholder="IP do equipamento" required><br>            <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" placeholder="Hostname"><br>            <label for="observacao">Observacao</label>
-            <input type="text" id="observacao" name="observacao" placeholder="Observacao"><br>            <label for="local">Local</label>
-            <input type="text" id="local" name="local" placeholder="Latitude, Longitude"><br>
-            <br>
-            <!-- <label for="tipo">Tipo:</label>
-            <select id="tipo" name="tipo">
-                <option value="sw">Switch</option>
-                <option value="router">Router</option>
-                <option value="server">Server</option>
-            </select><br> -->
-            <label for="ativo" style="display: none;">Status:</label>
-            <select id="ativo" name="ativo" style="display: none;">
-                <option value="green">Green</option>
-                <option value="red">Red</option>
-            </select><br><br>            <button id="submit" type="submit">Solicitar Alterações</button>
-        </form>
-    </div>      <div id="message" class="message"></div>
-    <script>
-let approvalSection = document.getElementById('approvalSection');
-let databoxsection = document.getElementById('databox')
+
+#editarSection {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Estilo da seção de busca */
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+.boxinputsearch {
+    position: relative;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--color-background, #16191E);
+    border: 1px solid var(--color-primary, #4a87c0);
+    padding: 5px 0;
+    box-sizing: border-box;
+}
+
+#search {
+    padding: 5px 5px 5px 36px;
+    text-align: left;
+    border-radius: 7px;
+    color: var(--color-text, #e2e2e2);
+    outline: none;
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    border: none;
+    box-sizing: border-box;
+}
+
+#search:focus,
+#search:not(:placeholder-shown) {
+    color: var(--color-primary, #4a87c0);
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    fill: var(--color-primary, #4a87c0);
+    z-index: 2;
+}
+
+/* Estilo do checkbox */
+.exibirSemLocal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    font-size: 12px;
+    user-select: none;
+    width: 100%;
+    height: 30px;
+    border-bottom: 1px solid var(--color-secondary, #404851);
+}
+
+.custom-checkbox {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: relative;
+    height: 14px;
+    width: 14px;
+    background-color: var(--color-background, #16191E);
+    border: 1px solid var(--color-primary, #4a87c0);
+    border-radius: 20px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.custom-checkbox:checked ~ .checkmark {
+    background-color: var(--color-primary, #4a87c0);
+    box-shadow: 0 3px 7px rgba(var(--color-secondary-rgb, 64, 72, 81), 0.5);
+}
+
+.checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 4px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--color-text, #e2e2e2);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.custom-checkbox:checked ~ .checkmark:after {
+    display: block;
+    animation: checkAnim 0.2s forwards;
+}
+
+@keyframes checkAnim {
+    0% { height: 0; }
+    100% { height: 8px; }
+}
+
+/* Estilo da lista de hosts */
+#hostList {
+    overflow-x: hidden;
+    height: 130px;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+/* Estilo do formulário de edição */
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    max-width: 500px;
+    margin: 20px auto 0;
+}
+
+.edit-form .form-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-primary, #4a87c0) !important;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text, #e2e2e2);
+}
+
+.form-group .required {
+    color: #ff4d4d;
+    font-size: 14px;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 12px;
+    fill: var(--color-secondary, #404851);
+    transition: fill 0.3s ease;
+}
+
+.edit-form .form-group input {
+    width: 100% !important;
+    padding: 12px 12px 12px 40px;
+    border: 1px solid var(--color-secondary, #404851);
+    border-radius: 6px;
+    background: var(--color-background, #16191E);
+    color: var(--color-text, #e2e2e2);
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.edit-form .form-group input:focus {
+    border-color: var(--color-primary, #4a87c0);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb, 74, 135, 192), 0.1);
+    outline: none;
+}
+
+.edit-form .form-group input:focus + .input-icon,
+.edit-form .form-group input:not(:placeholder-shown) + .input-icon {
+    fill: var(--color-primary, #4a87c0);
+}
+
+.view-map-btn {
+    position: absolute;
+    right: -3px;
+    top: 45px;
+    background: none;
+    border: none;
+    color: var(--color-primary, #4a87c0);
+    font-size: 12px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.view-map-btn:hover {
+    color: #3a7bc8;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--color-secondary, #404851);
+    border-radius: 6px;
+    background: var(--color-background, #16191E);
+    color: var(--color-text, #e2e2e2);
+    font-size: 14px;
+}
+
+.error-message {
+    font-size: 12px;
+    color: #ff4d4d;
+    min-height: 16px;
+    display: block;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.cancel-btn,
+.submit-btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+}
+
+.cancel-btn {
+    background: var(--color-secondary, #404851);
+    border: none;
+    color: var(--color-text, #e2e2e2);
+}
+
+.cancel-btn:hover {
+    background: #505860;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cancel-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.submit-btn {
+    background: var(--color-primary, #4a87c0);
+    border: none;
+    color: #ffffff;
+}
+
+.submit-btn:hover {
+    background: #3a7bc8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.submit-btn:disabled {
+    background: var(--color-secondary, #404851);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.submit-btn.success {
+    background: #28a745;
+}
+
+.submit-btn.error {
+    background: #ff4d4d;
+}
+
+.message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.message.success {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.message.error {
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+}
+
+/* Estilo da seção de aprovação */
+.approval-section {
+    display: none;
+    padding: 0px;
+    border-radius: 8px;
+    color: var(--color-text, #e2e2e2);
+    max-height: 90vh;
+    overflow-x: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.approval-section .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-primary, #4a87c0);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.pending-edits-list {
+    overflow-x: hidden;
+    height: 85dvh;
+}
+
+.modal-container {
+    width: 260px;
+    height: fit-content;
+    margin: 0 auto;
+    background: var(--color-glass, #16191ec2);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--color-primary);
+}
+
+.modal-container-header {
+    padding: 16px 23px;
+    border-bottom: 1px solid var(--color-secondary, #404851);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-container-title {
+    display: flex;
+    align-items: center;
+    color: var(--color-text, #e2e2e2);
+    gap: 15px;
+    line-height: 1;
+    font-weight: 700;
+    font-size: 0.9em;
+}
+
+.modal-container-title svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--color-primary, #4a87c0);
+}
+
+.modal-container-body {
+    padding: 12px;
+    overflow-y: auto;
+    color: var(--color-text, #e2e2e2);
+    font-size: 14px;
+    max-height: 140px;
+}
+
+.rtf > * + * {
+    margin-top: 0.5em;
+}
+
+.modal-container-body p {
+    margin: 8px 0;
+}
+
+.modal-container-body p span {
+    display: inline-block;
+    margin: 2px 0;
+}
+
+.modal-container-footer {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid var(--color-secondary, #404851);
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.modal-container-footer button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--color-primary, #4a87c0);
+    font-weight: 600;
+    color: var(--color-text, #e2e2e2);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.modal-container-footer .button.is-ghost:hover,
+.modal-container-footer .button.is-ghost:focus {
+    background: var(--color-secondary, #404851);
+    transform: translateY(-1px);
+}
+
+.modal-container-footer .button.is-primary {
+    background: var(--color-primary, #4a87c0);
+    border: none;
+}
+
+.modal-container-footer .button.is-primary:hover,
+.modal-container-footer .button.is-primary:focus {
+    background: #3a7bc8;
+    transform: translateY(-1px);
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .editarEquipamento {
+        padding: 15px;
+    }
+
+    .edit-form {
+        gap: 0px;
+    }
+
+    .edit-form .form-title,
+    .approval-section .section-title {
+        font-size: 18px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .edit-form .form-group input,
+    .edit-form .form-group select {
+        padding: 10px 10px 10px 36px;
+        font-size: 13px;
+    }
+
+    .input-icon {
+        width: 18px;
+        height: 18px;
+        left: 10px;
+    }
+
+    .view-map-btn {
+        font-size: 11px;
+        right: 8px;
+    }
+
+    .error-message {
+        font-size: 11px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .cancel-btn,
+    .submit-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+        width: 100%;
+    }
+
+    #hostList {
+        height: 100px;
+        width: 100%;
+    }
+
+    .modal-container {
+        width: 90%;
+    }
+
+    .modal-container-footer button {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 360px) {
+    .editarEquipamento {
+        padding: 10px;
+    }
+
+    .edit-form .form-title,
+    .approval-section .section-title {
+        font-size: 16px;
+    }
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .edit-form .form-group input,
+    .edit-form .form-group select {
+        padding: 8px 8px 8px 32px;
+        font-size: 12px;
+    }
+
+    .input-icon {
+        width: 16px;
+        height: 16px;
+        left: 8px;
+    }
+
+    .view-map-btn {
+        font-size: 10px;
+        right: 6px;
+    }
+
+    .error-message {
+        font-size: 10px;
+    }
+
+    .cancel-btn,
+    .submit-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    #hostList {
+        height: 80px;
+        width: 100%;
+    }
+
+    .modal-container-footer button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Acessibilidade */
+@media (forced-colors: active) {
+    .edit-form .form-group input:focus,
+    .edit-form .form-group select:focus {
+        outline: 2px solid Highlight;
+    }
+
+    .cancel-btn,
+    .submit-btn,
+    .modal-container-footer button {
+        forced-color-adjust: none;
+        border: 1px solid transparent;
+    }
+
+    .cancel-btn:hover,
+    .submit-btn:hover,
+    .modal-container-footer button:hover {
+        background: Highlight;
+        color: HighlightText;
+    }
+
+    .submit-btn:disabled {
+        opacity: 0.5;
+    }
+}
+
+/* Correção para cursor e seleção de texto */
+.edit-form input,
+.edit-form select,
+.edit-form button,
+.cancel-btn,
+.submit-btn,
+.modal-container-footer button {
+    cursor: text;
+    user-select: text;
+}
+
+.edit-form button,
+.cancel-btn,
+.submit-btn,
+.modal-container-footer button {
+    cursor: pointer;
+}
+            </style>
+
+            <script>
+                // Função para validar IP
+function validateIP(ip) {
+    const ipRegex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    return ipRegex.test(ip);
+}
+
+// Função para validar coordenadas (Latitude, Longitude)
+function validateCoordinates(local) {
+    if (!local) return true; // Campo opcional
+    const coordsRegex = /^-?\d{1,2}\.\d{4,},\s*-?\d{1,3}\.\d{4,}$/;
+    return coordsRegex.test(local);
+}
+
+// Função para limpar o formulário
+function resetForm() {
+    const form = document.getElementById('editarHostForm');
+    form.reset();
+    document.querySelectorAll('.error-message').forEach(span => span.textContent = '');
+    document.querySelectorAll('.form-group input').forEach(input => input.classList.remove('error'));
+    const messageDiv = document.getElementById('message');
+    messageDiv.textContent = '';
+    messageDiv.classList.remove('success', 'error');
+    const submitButton = document.querySelector('#editarHostForm .submit-btn');
+    submitButton.textContent = 'Solicitar Alterações';
+    submitButton.disabled = false;
+    submitButton.classList.remove('success', 'error');
+}
+
+// Função para pré-visualizar localização no mapa
+function previewLocation() {
+    const local = document.getElementById('local').value.trim();
+    if (validateCoordinates(local)) {
+        const [lat, lng] = local.split(', ').map(Number);
+        map.flyTo([lat, lng], 18, { duration: 0.5 });
+        const tempMarker = L.marker([lat, lng], {
+            icon: L.divIcon({
+                className: 'temp-marker',
+                html: `<div style="background-color: yellow; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            })
+        }).addTo(map);
+        setTimeout(() => {
+            map.removeLayer(tempMarker);
+        }, 5000);
+    } else {
+        document.getElementById('local-error').textContent = 'Coordenadas inválidas.';
+        document.getElementById('local').classList.add('error');
+    }
+}
+
+// Validação em tempo real
+document.getElementById('ip').addEventListener('input', function () {
+    const ip = this.value.trim();
+    const errorSpan = document.getElementById('ip-error');
+    if (!ip) {
+        errorSpan.textContent = 'O campo "IP" é obrigatório.';
+        this.classList.add('error');
+    } else if (!validateIP(ip)) {
+        errorSpan.textContent = 'Por favor, insira um IP válido (ex.: 192.168.1.1).';
+        this.classList.add('error');
+    } else {
+        errorSpan.textContent = '';
+        this.classList.remove('error');
+    }
+});
+
+document.getElementById('local').addEventListener('input', function () {
+    const local = this.value.trim();
+    const errorSpan = document.getElementById('local-error');
+    if (local && !validateCoordinates(local)) {
+        errorSpan.textContent = 'Por favor, insira coordenadas válidas (ex.: -23.5505, -46.6333).';
+        this.classList.add('error');
+    } else {
+        errorSpan.textContent = '';
+        this.classList.remove('error');
+    }
+});
+
+// Submissão do formulário
+document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const ip = document.getElementById('ip').value.trim();
+    const nome = document.getElementById('nome').value.trim();
+    const local = document.getElementById('local').value.trim();
+    const observacao = document.getElementById('observacao').value.trim();
+    const tipo = 'sw';
+    const ativo = 'blue';
+
+    const messageDiv = document.getElementById('message');
+    const submitButton = document.querySelector('#editarHostForm .submit-btn');
+    const ipError = document.getElementById('ip-error');
+    const localError = document.getElementById('local-error');
+
+    // Resetar mensagens de erro
+    messageDiv.textContent = '';
+    messageDiv.classList.remove('success', 'error');
+    ipError.textContent = '';
+    localError.textContent = '';
+    document.querySelectorAll('.form-group input').forEach(input => input.classList.remove('error'));
+
+    // Validação
+    let hasError = false;
+
+    if (!ip) {
+        ipError.textContent = 'O campo "IP" é obrigatório.';
+        document.getElementById('ip').classList.add('error');
+        hasError = true;
+    } else if (!validateIP(ip)) {
+        ipError.textContent = 'Por favor, insira um IP válido (ex.: 192.168.1.1).';
+        document.getElementById('ip').classList.add('error');
+        hasError = true;
+    }
+
+    if (local && !validateCoordinates(local)) {
+        localError.textContent = 'Por favor, insira coordenadas válidas (ex.: -23.5505, -46.6333).';
+        document.getElementById('local').classList.add('error');
+        hasError = true;
+    }
+
+    if (hasError) return;
+
+    // Enviar solicitação
+    submitButton.textContent = 'Enviando...';
+    submitButton.disabled = true;
+    submitButton.classList.remove('success', 'error');
+
+    try {
+        const response = await fetch(`${server}/editar-host`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ip, nome, local, observacao, tipo, ativo })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            submitButton.textContent = 'Enviado';
+            submitButton.classList.add('success');
+            messageDiv.textContent = 'Solicitação enviada para aprovação!';
+            messageDiv.classList.add('success');
+            setTimeout(() => {
+                resetForm();
+            }, 3000);
+        } else {
+            submitButton.textContent = 'Solicitar Alterações';
+            submitButton.classList.add('error');
+            messageDiv.textContent = `Erro: ${data.erro || 'Falha ao enviar solicitação.'}`;
+            messageDiv.classList.add('error');
+            submitButton.disabled = false;
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        submitButton.textContent = 'Solicitar Alterações';
+        submitButton.classList.add('error');
+        messageDiv.textContent = 'Erro ao conectar ao servidor.';
+        messageDiv.classList.add('error');
+        submitButton.disabled = false;
+    }
+});
+
+// Funções para alternar seções
+function showSection(section) {
+    document.getElementById('editarSection').classList.add('hidden');
+    document.getElementById('adicionarSection')?.classList.add('hidden');
+    document.getElementById('approvalSection').classList.add('hidden');
+    document.getElementById(`${section}Section`).classList.remove('hidden');
+}
+
 function exibirAprovacao() {
     console.log('Exibindo Aprovação');
-    console.log('editarEquipamento:', editarEquipamento);
-    console.log('approvalSection:', approvalSection);
+    const editarEquipamento = document.getElementById('editarEquipamento');
+    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+    const homebox = document.getElementById('homebox');
+    const approvalSection = document.getElementById('approvalSection');
+    const databoxsection = document.getElementById('databox');
+
     editarEquipamento.style.display = 'none';
     adicionarEquipamento.style.display = 'none';
     homebox.style.display = 'none';
     approvalSection.style.display = 'block';
     databoxsection.style.display = 'block';
     loadPendingEdits();
-}function limparAprove() {
+}
+
+function limparAprove() {
+    const approvalSection = document.getElementById('approvalSection');
     approvalSection.style.display = 'none';
-}function exibirEditar() {
+}
+
+function exibirEditar() {
+    const editarEquipamento = document.getElementById('editarEquipamento');
+    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+    const homebox = document.getElementById('homebox');
+    const databoxsection = document.getElementById('databox');
+
     editarEquipamento.style.display = 'block';
     adicionarEquipamento.style.display = 'none';
     homebox.style.display = 'none';
     databoxsection.style.display = 'block';
     limparInput?.();
-}function exibirAdicionar() {
+}
+
+function exibirAdicionar() {
+    const editarEquipamento = document.getElementById('editarEquipamento');
+    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+    const homebox = document.getElementById('homebox');
+    const databoxsection = document.getElementById('databox');
+
     editarEquipamento.style.display = 'none';
     adicionarEquipamento.style.display = 'block';
     homebox.style.display = 'none';
     databoxsection.style.display = 'block';
-}function exibirHome() {
+}
+
+function exibirHome() {
+    const editarEquipamento = document.getElementById('editarEquipamento');
+    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+    const homebox = document.getElementById('homebox');
+    const databoxsection = document.getElementById('databox');
+
     databoxsection.style.display = 'none';
     editarEquipamento.style.display = 'none';
     adicionarEquipamento.style.display = 'none';
     homebox.style.display = 'flex';
-}async function loadPendingEdits() {
+}
+
+// Funções para a seção de aprovação
+async function loadPendingEdits() {
     try {
         console.log('Carregando edições pendentes...');
         const response = await fetch(`${server}/pending-edits`, {
@@ -1043,29 +1854,39 @@ function exibirAprovacao() {
         const pendingEdits = await response.json();
         console.log('Edições:', pendingEdits);
         const list = document.getElementById('pendingEditsList');
-        list.innerHTML = pendingEdits.length === 0 ? '<p>Nenhuma edição pendente.</p>' : '';        pendingEdits.forEach(edit => {
+        list.innerHTML = pendingEdits.length === 0 ? '<p>Nenhuma edição pendente.</p>' : '';
+
+        pendingEdits.forEach(edit => {
             const div = document.createElement('div');
-            const formattedDate = formatDate(edit.data_solicitacao);            const originalHost = dadosAtuais.hosts.find(host => host.ip === edit.ip) || {};
+            const formattedDate = formatDate(edit.data_solicitacao);
+            const originalHost = dadosAtuais.hosts.find(host => host.ip === edit.ip) || {};
             const original = {
                 ip: originalHost.ip || '',
                 nome: originalHost.nome || '',
                 local: originalHost.local || '',
                 observacao: originalHost.observacao || ''
             };
-            const novo = edit;            const highlightChange = (field, originalValue, newValue) => {
+            const novo = edit;
+
+            const highlightChange = (field, originalValue, newValue) => {
                 if (originalValue !== newValue) {
                     return `${field}:<br><span style="background-color: #00ff0078; font-weight: bold;"> ${newValue || '(vazia)'}</span> -> <span style="background-color: #ff000066; font-weight: bold;">${originalValue || '(vazia)'}</span>`;
                 }
                 return `<span>${field}:<br> ${newValue || '(vazia)'}</span>`;
-            };            const changesHtml = `
+            };
+
+            const changesHtml = `
                 <p>${highlightChange('IP', original.ip, novo.ip)}</p>
                 <p>${highlightChange('Nome', original.nome, novo.nome)}</p>
                 <p>${highlightChange('Local', original.local, novo.local)}</p>
                 <p>${highlightChange('Observação', original.observacao, novo.observacao)}</p>
-            `;            // Passa o IP junto com o local
+            `;
+
             const mapButton = original.local !== novo.local && novo.local 
                 ? `<br><button class="button is-ghost" onclick="showProposedLocation('${novo.local}', '${novo.ip}')">Ver no Mapa</button>` 
-                : '';            div.className = 'modal-container';
+                : '';
+
+            div.className = 'modal-container';
             div.innerHTML = `
                 <header class="modal-container-header">
                     <span class="modal-container-title">
@@ -1092,12 +1913,14 @@ function exibirAprovacao() {
         console.error('Erro:', error);
         document.getElementById('pendingEditsList').innerHTML = '<p>Erro ao carregar edições.</p>';
     }
-}// Função para mostrar a localização proposta no mapa
+}
+
 function showProposedLocation(local, ip) {
-    console.log('Chamando showProposedLocation com local:', local, 'e IP:', ip);    const [lat, lng] = local.split(', ').map(Number);
+    console.log('Chamando showProposedLocation com local:', local, 'e IP:', ip);
+    const [lat, lng] = local.split(', ').map(Number);
     if (!isNaN(lat) && !isNaN(lng)) {
-        console.log('Coordenadas válidas:', lat, lng);        // "Voa" para a nova localização no mapa
-        map.flyTo([lat, lng], 18, { duration: 0.5 });        // Adiciona um marcador temporário para destacar a localização proposta
+        console.log('Coordenadas válidas:', lat, lng);
+        map.flyTo([lat, lng], 18, { duration: 0.5 });
         const tempMarker = L.marker([lat, lng], {
             icon: L.divIcon({
                 className: 'temp-marker',
@@ -1105,18 +1928,19 @@ function showProposedLocation(local, ip) {
                 iconSize: [20, 20],
                 iconAnchor: [10, 10]
             })
-        }).addTo(map);        console.log('Marcador temporário adicionado em:', [lat, lng]);        // Remove o marcador temporário após 5 segundos
+        }).addTo(map);
+        console.log('Marcador temporário adicionado em:', [lat, lng]);
         setTimeout(() => {
             map.removeLayer(tempMarker);
             console.log('Marcador temporário removido');
-        }, 5000);        // Busca o marcador pelo IP em pontosMapeados
+        }, 5000);
+
         if (ip && pontosMapeados[ip] && pontosMapeados[ip].marker) {
             const marker = pontosMapeados[ip].marker;
             marker.openPopup();
             console.log('Popup aberto para marcador do IP:', ip);
         } else {
             console.warn('Nenhum marcador encontrado para o IP:', ip);
-            // Caso não encontre pelo IP, tenta pelas coordenadas como fallback
             markersLayer.eachLayer(marker => {
                 const markerLatLng = marker.getLatLng();
                 const tolerance = 0.0001;
@@ -1133,17 +1957,19 @@ function showProposedLocation(local, ip) {
         console.error('Coordenadas inválidas:', local);
         alert('Coordenadas inválidas!');
     }
-}// Função para formatar a data
+}
+
 function formatDate(isoDate) {
     const date = new Date(isoDate);
     const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // +1 porque getMonth começa em 0
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
+
 async function approveEdit(id) {
     try {
         const response = await fetch(`${server}/approve-edit/${id}`, { method: 'POST' });
@@ -1153,7 +1979,9 @@ async function approveEdit(id) {
     } catch (error) {
         console.error('Erro ao aprovar:', error);
     }
-}async function rejectEdit(id) {
+}
+
+async function rejectEdit(id) {
     try {
         const response = await fetch(`${server}/reject-edit/${id}`, { method: 'DELETE' });
         if (response.ok) {
@@ -1163,313 +1991,11 @@ async function approveEdit(id) {
         console.error('Erro ao rejeitar:', error);
     }
 }
-// Função para alternar entre as seções
-        function showSection(section) {
-            document.getElementById('editarSection').classList.add('hidden');
-            document.getElementById('adicionarSection').classList.add('hidden');
-                      document.getElementById(`${section}Section`).classList.remove('hidden');
-        }document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
-    event.preventDefault();    const ip = document.getElementById('ip').value;
-    const nome = document.getElementById('nome').value;
-    const local = document.getElementById('local').value;
-    const observacao = document.getElementById('observacao').value;
-    const tipo = 'sw';
-    const ativo = "blue";    const messageDiv = document.getElementById('message');
-    const submitButton = document.querySelector('#editarHostForm button[type="submit"]'); // Referência ao botão
-    messageDiv.textContent = '';
-    messageDiv.classList.remove('success', 'error');    if (!ip) {
-        messageDiv.textContent = 'O campo "IP" é obrigatório.';
-        messageDiv.classList.add('error');
-        return;
-    }    // Mudar o texto do botão para "Enviando..." e desabilitá-lo durante o envio
-    submitButton.textContent = 'Enviando...';
-    submitButton.disabled = true;    try {
-        const response = await fetch(`${server}/editar-host`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ ip, nome, local, observacao, tipo, ativo })
-        });        const data = await response.json();        if (response.ok) {
-            // Mudar o texto do botão para "Enviado" e aplicar estilo de sucesso
-            submitButton.textContent = 'Enviado';
-            submitButton.style.backgroundColor = '#28a745'; // Verde para sucesso
-            submitButton.style.color = '#fff';            // Limpar o formulário
-            const form = document.getElementById('editarHostForm');
-            form.reset();            // Exibir mensagem de sucesso no messageDiv
-            messageDiv.textContent = 'Solicitação enviada para aprovação!';
-            messageDiv.classList.add('success');            // Restaurar o botão ao estado original após 3 segundos
-            setTimeout(() => {
-                submitButton.textContent = 'Solicitar Alterações';
-                submitButton.style.backgroundColor = ''; // Volta ao estilo original
-                submitButton.style.color = '';
-                submitButton.disabled = false;
-                messageDiv.textContent = '';
-                messageDiv.classList.remove('success');
-            }, 3000);
-        } else {
-            messageDiv.textContent = `Erro: ${data.erro || 'Falha ao enviar solicitação.'}`;
-            messageDiv.classList.add('error');
-            submitButton.textContent = 'Solicitar Alterações';
-            submitButton.disabled = false;
-        }
-    } catch (error) {
-        console.error('Erro:', error);
-        messageDiv.textContent = 'Erro ao conectar ao servidor.';
-        messageDiv.classList.add('error');
-        submitButton.textContent = 'Solicitar Alterações';
-        submitButton.disabled = false;
-    }
-});   </script>
-<style>
-    #editarHostForm button[type="submit"] {
-    padding: 10px 20px;
-    background: var(--color-primary);
-    border: none;
-    color: var(--color-text);
-    border-radius: 4px;
-    
-    transition: background-color 0.3s ease, color 0.3s ease;
-}#editarHostForm button[type="submit"]:disabled {
-    background: var(--color-secondary);
-    cursor: not-allowed;
-}#editarHostForm button[type="submit"]:hover:not(:disabled) {
-    background: #3a6b9a; /* Um tom mais escuro de --color-primary */
-}
-      .custom-alert {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--color-glass);
-    color: var(--color-text);
-    padding: 15px 25px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
-    white-space: pre-line; /* Permite quebras de linha (\n) */
-    font-size: 14px;
-    max-width: 400px;
-    text-align: center;
-    opacity: 0;
-    animation: fadeInOut 3s ease-in-out forwards;
-}/* Animação de entrada e saída */
-@keyframes fadeInOut {
-    0% { opacity: 0; transform: translate(-50%, -20px); }
-    10% { opacity: 1; transform: translate(-50%, 0); }
-    90% { opacity: 1; transform: translate(-50%, 0); }
-    100% { opacity: 0; transform: translate(-50%, -20px); }
-}
-          .databox { position: relative; width: 100%;}
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 999999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--color-glass);
-        }
-        .modal-content {
-            background-color: var(--color-glass);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            margin: 10% auto;
-            padding: 20px;
-            border: 1px solid var(--color-secondary);
-            width: 600px;
-            height: 300px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        #redHostsList {
-            height: 225px;
-            overflow: auto;
-        }
-        .close {
-            color: var(--color-text);
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        #toggleShowSwitches {
-            background-color: var(--color-background);
-            border: 1px solid var(--color-secondary);
-            border-radius: 50px;
-            padding: 10px;
-            width: 50px;
-            height: 50px;
-            display: flex;
-        }
-        #toggleShowSwitches img { border: none; }
-        .checkbox-container {
-            display: inline-block;
-            position: relative;
-            margin-bottom: 12px;
-            font-size: 12px;
-            user-select: none;
-            width: 100%;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 10px;
-            border-bottom: 1px solid var(--color-secondary);
-        }
-        .custom-checkbox {
-            position: absolute;
-            opacity: 0;
-            height: 0;
-            width: 0;
-        }
-        .checkmark {
-            position: relative;
-            top: 0;
-            height: 10px;
-            width: 10px;
-            background-color: var(--color-background);
-            border: 1px solid var(--color-primary);
-            border-radius: 20px;
-            transition: background-color 0.3s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        .custom-checkbox:checked ~ .checkmark {
-            background-color: var(--color-primary);
-            box-shadow: 0 3px 7px var(--color-secondary);
-        }
-        .custom-checkbox:checked ~ .checkmark:after { display: block; }
-        @keyframes checkAnim {
-            0% { height: 0; }
-            100% { height: 10px; }
-        }
-        .custom-checkbox:checked ~ .checkmark:after { animation: checkAnim 0.2s forwards; }
-        .approval-section {
-            display: none;
-            background: var(--color-glass);
-            padding: 20px;
-            border-radius: 8px;
-            color: var(--color-text);
-            height: 100%;
-            overflow-y: auto;
-            width: auto;
-            box-sizing: border-box;
-        }
-        .approval-section button {
-            margin: 5px;
-    padding: 5px 10px;
-    background: #e2e2e2;
-    border: none;
-    color: var(--color-primary);
-    border-radius: 4px;
-    
-    border: 1px solid var(--color-primary);
-        }
-        .approval-section button:hover{
-            border: 1px solid var(--color-text);
-        }
-        .modal-container {
-    width: 215px;
-    margin: 10px auto;
-    background-color: var(--color-text);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 16px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.25);
-    color: var(--color-text);
-}@media (max-width: 600px) {
-    .modal-container {
-        width: 90%;
-    }
-}.modal-container-header {
-    padding: 16px 23px;
-    border-bottom: 1px solid var(--color-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}.modal-container-title {
-    display: flex;
-    align-items: center;
-    color: var(--color-background);
-    gap: 15px;
-    line-height: 1;
-    font-weight: 700;
-    font-size: 0.9em;
-}.modal-container-title svg {
-    width: 32px;
-    height: 32px;
-    color: var(--color-primary);
-}.modal-container-body {
-    padding: 0px 12px 0px;
-    overflow-y: auto;
-    color: var(--color-background);
-    font-size: 14px;
-    height: 140px;
-}.rtf > * + * {
-    margin-top: 0em;
-    margin-bottom: 0.5em;
-}.modal-container-footer {
-    padding: 15px 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top: 1px solid var(--color-secondary);
-    gap: 8px;
-    position: relative;
-    flex-wrap: wrap;
-    height: fit-content;
-}.modal-container-footer:after {
-    content: "";
-    display: block;
-    position: absolute;
-    top: -51px;
-    left: 0px;
-    right: 0px;
-    height: 50px;
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.233), transparent);
-    pointer-events: none;
-}.button {
-    padding: 12px 20px;
-    border-radius: 8px;
-    background-color: transparent;
-    border: 0;
-    font-weight: 600;
-    
-    transition: 0.15s ease;
-    color: var(--color-text);
-}.button.is-ghost:hover,
-.button.is-ghost:focus {
-    background-color: var(--color-secondary);
-}.button.is-primary {
-    background-color: var(--color-primary);
-    color: var(--color-text);
-}.button.is-primary:hover,
-.button.is-primary:focus {
-    background-color: #3a6b9a; /* Um tom mais escuro de --color-primary (#4A87C0) */
-}.icon-button {
-    padding: 0;
-    border: 0;
-    background-color: transparent;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    border-radius: 8px;
-    transition: 0.15s ease;
-}.icon-button svg {
-    width: 24px;
-    height: 24px;
-}.icon-button:hover,
-.icon-button:focus {
-    background-color: var(--color-secondary);
-}
-</style>
-</div>    </div>    <div id="listaItensSL">
+            </script>
+        </div>
+
+
+</div>    <div id="listaItensSL">
           </div>    <div id="listaItensOff">
               </div>    </div>
     <script>document.getElementById("toggleTitulo").addEventListener("click", function() {
