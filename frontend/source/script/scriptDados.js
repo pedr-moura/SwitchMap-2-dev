@@ -301,7 +301,7 @@ function atualizarInterface(dados) {
     const estadosMap = {};
     if (Array.isArray(dadosFiltrados.hosts)) {
         dadosFiltrados.hosts.forEach(host => {
-            console.log('Processando host:', host);
+            // console.log('Processando host:', host);
             const match = host.nome.match(/^BR-([A-Z]{2})-([A-Z]{3})-([A-Z]{3})(?:-([\w._-]+(?:\.[A-Za-z]{2,})?))?$/);
             if (match) {
                 const estado = match[1];
