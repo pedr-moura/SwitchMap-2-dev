@@ -11,7 +11,6 @@ function exibirEditar() {
     adicionarEquipamento.style.display = 'none'
     homebox.style.display = 'none'
     limparInput?.()
-    atualizarDadosManualmente()
 }
 function exibirAdicionar() {
     editarEquipamento.style.display = 'none'
