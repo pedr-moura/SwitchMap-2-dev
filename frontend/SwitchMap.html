@@ -104,7 +104,6 @@
     <div class="titulo" id="tituloBox" style="
     flex-wrap: wrap;
     align-content: center;
-    justify-content: center;
         ">        <button id="toggleTitulo"></button>      <div class="homebox" id="homebox">
                       <label for="ipBusca" class="pesquisa" style="display: none;"> 
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -144,10 +143,20 @@
             </g>
             </svg>
             <div class="quantidadeEquipamentos">
+                
                 <span><b id="countUnidades">0</b> Estados</span>
+                <div id="lastUpdate"></div>
+                <style>
+                    #lastUpdate{
+                        position: absolute;
+                        top: 15px;
+                        opacity: 0.4;
+                    }
+                </style>
             </div>         </div>
          <div class="unidadesPorEstado" style="">
             <h3>Equipamentos por Estado</h3>
+
             <div class="estados-box">
                 <div id="estadosList" class="estados-container">
                     <!-- Aqui serão inseridos os estados e unidades dinamicamente -->
@@ -191,7 +200,7 @@
 
 /* Container da lista de estados */
 .estados-box {
-    max-height: 320px;
+    max-height: 220px;
     overflow-y: auto;
     overflow-x: hidden;
     border: 1px solid var(--color-secondary, #404851);
@@ -251,7 +260,7 @@
     border-radius: 6px;
     border: 1px solid var(--color-secondary, #404851);
     background: var(--color-background, #ffffff);
-    
+    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     /* Garantir que o elemento seja focável */
     position: relative;
@@ -338,7 +347,7 @@
     padding: 6px 12px;
     border-top: 1px solid var(--color-secondary, #404851);
     background: var(--color-background, #ffffff);
-    
+    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     position: relative;
     user-select: none;
@@ -404,7 +413,7 @@
     justify-content: space-between;
     border-top: 1px dashed var(--color-secondary, #404851);
     transition: background-color 0.3s ease, transform 0.1s ease;
-    
+    cursor: pointer;
     position: relative;
     user-select: none;
 }
@@ -449,7 +458,7 @@
     background: none;
     border: none;
     padding: 5px;
-    
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -557,7 +566,7 @@
     color: #ffffff;
     border: none;
     border-radius: 4px;
-    
+    cursor: pointer;
     font-size: 13px;
     transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
 }
@@ -681,7 +690,7 @@
     }
 
     .estados-box {
-        max-height: 220px;
+
         padding-bottom: 40px;
     }
 
@@ -1219,7 +1228,7 @@
     border: none;
     color: var(--color-primary, #4a87c0);
     font-size: 12px;
-    
+    cursor: pointer;
     transition: color 0.3s ease;
 }
 
@@ -1257,7 +1266,7 @@
     border-radius: 6px;
     font-size: 14px;
     font-weight: 500;
-    
+    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
 }
 
@@ -1354,7 +1363,7 @@
 }
 
 .modal-container {
-    width: 260px;
+    width: 90%;
     height: fit-content;
     margin: 0 auto;
     background: var(--color-glass, #16191ec2);
@@ -1428,7 +1437,7 @@
     border: 1px solid var(--color-primary, #4a87c0);
     font-weight: 600;
     color: var(--color-text, #e2e2e2);
-    
+    cursor: pointer;
     transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
@@ -1609,7 +1618,7 @@
 .cancel-btn,
 .submit-btn,
 .modal-container-footer button {
-    
+    cursor: pointer;
 }
             </style>
 
@@ -1743,7 +1752,7 @@ document.getElementById('editarHostForm').addEventListener('submit', async funct
     submitButton.classList.remove('success', 'error');
 
     try {
-        const response = await fetch(`${server}/editar-host`, {
+        const response = await fetch(`${server}:5000/editar-host`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -1848,7 +1857,7 @@ function exibirHome() {
 async function loadPendingEdits() {
     try {
         console.log('Carregando edições pendentes...');
-        const response = await fetch(`${server}/pending-edits`, {
+        const response = await fetch(`${server}:5000/pending-edits`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -1973,7 +1982,7 @@ function formatDate(isoDate) {
 
 async function approveEdit(id) {
     try {
-        const response = await fetch(`${server}/approve-edit/${id}`, { method: 'POST' });
+        const response = await fetch(`${server}:5000/approve-edit/${id}`, { method: 'POST' });
         if (response.ok) {
             loadPendingEdits();
         }
@@ -1984,7 +1993,7 @@ async function approveEdit(id) {
 
 async function rejectEdit(id) {
     try {
-        const response = await fetch(`${server}/reject-edit/${id}`, { method: 'DELETE' });
+        const response = await fetch(`${server}:5000/reject-edit/${id}`, { method: 'DELETE' });
         if (response.ok) {
             loadPendingEdits();
         }
@@ -2189,7 +2198,7 @@ window.addEventListener('click', function (event) {
     </g>
 </svg>    </div>    <div id="css-sw"></div>        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/info.js"></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/open.js"></script>
-        <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/scriptDados.js" defer></script>
+        <script src="scriptDados.js" defer></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/manipularMapa.js"></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/error.js"></script>
         <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/credits.js"></script>
