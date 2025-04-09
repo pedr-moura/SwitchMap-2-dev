@@ -7,7 +7,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://switch-map-2-dev.vercel.app/frontend/source/style.css">    <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/locaisDeafult.js"></script>    <!-- websocket -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="style.css">    <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/locaisDeafult.js"></script>    <!-- websocket -->
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.min.js"></script></head>
 <body>    <div class="theme" id="theme">
         <style>
@@ -120,7 +120,7 @@
             <span style="color: var(--color-text);"><b id="countOff"></b> Sem Conexão</span>
          </div> -->
 <br> <br><br><br>
-         <div class="unidadesAgregadas">
+         <div class="unidadesAgregadas" style="display: none;">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                 viewBox="0 0 511.999 511.999" xml:space="preserve">
             <g>
@@ -200,18 +200,16 @@
 
 /* Container da lista de estados */
 .estados-box {
-    max-height: 220px;
+    max-height: 60dvh;
     overflow-y: auto;
     overflow-x: hidden;
     border: 1px solid var(--color-secondary, #404851);
     border-radius: 8px;
     padding: 8px;
-    padding-bottom: 50px; /* Espaço para pagination-controls */
+    padding-bottom: 50px;
     background: var(--color-background, #ffffff);
     position: relative;
-    /* Garantir que a barra de rolagem não quebre o layout */
     box-sizing: border-box;
-    /* Evitar que o conteúdo transborde */
     contain: content;
 }
 
