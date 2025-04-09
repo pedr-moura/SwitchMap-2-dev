@@ -10,7 +10,7 @@ const menuContainer = document.getElementById('menu-container');
 const pontosMapeados = {};
 
 // Estado global
-let server = "http://172.16.196.36:5000";
+let server = "http://172.16.196.36";
 let showIconesMaps = 0;
 let showDependencias = 0;
 let mapaAtual;
@@ -176,7 +176,7 @@ function showRedHostsPopup(dados = dadosAtuais) {
 // Requisição de dados via HTTP
 async function fetchDadosHTTP() {
     try {
-        const response = await fetch(`${server}/status`, {
+        const response = await fetch(`${server}:5001/get-data`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -276,7 +276,40 @@ function preloadLines(dados) {
     }
 }
 
-// Atualização da interface
+// Função auxiliar para formatar a data e calcular o tempo relativo
+function formatarDataUltimaAtualizacao(isoDate) {
+    const data = new Date(isoDate); // Converte a string ISO 8601 para objeto Date
+    const agora = new Date(); // Data atual
+    const diffMs = agora - data; // Diferença em milissegundos
+    const diffSegundos = Math.floor(diffMs / 1000); // Diferença em segundos
+
+    // Formatar a data no estilo brasileiro (DD/MM/AAAA HH:MM:SS)
+    const dia = String(data.getUTCDate()).padStart(2, '0');
+    const mes = String(data.getUTCMonth() + 1).padStart(2, '0'); // +1 porque os meses começam em 0
+    const ano = data.getUTCFullYear();
+    const horas = String(data.getUTCHours()).padStart(2, '0');
+    const minutos = String(data.getUTCMinutes()).padStart(2, '0');
+    const segundos = String(data.getUTCSeconds()).padStart(2, '0');
+    const dataFormatada = `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
+
+    // Calcular o tempo relativo
+    let tempoRelativo = '';
+    if (diffSegundos < 60) {
+        tempoRelativo = `há ${diffSegundos} segundos`;
+    } else if (diffSegundos < 3600) {
+        const minutos = Math.floor(diffSegundos / 60);
+        tempoRelativo = `há ${minutos} minuto${minutos > 1 ? 's' : ''}`;
+    } else if (diffSegundos < 86400) {
+        const horas = Math.floor(diffSegundos / 3600);
+        tempoRelativo = `há ${horas} hora${horas > 1 ? 's' : ''}`;
+    } else {
+        const dias = Math.floor(diffSegundos / 86400);
+        tempoRelativo = `há ${dias} dia${dias > 1 ? 's' : ''}`;
+    }
+
+    return `<p style="text-align: center;">${dataFormatada} <br> <span style="font-size: 10px;">(${tempoRelativo})</span><p>`;
+}
+
 function atualizarInterface(dados) {
     console.log('Dados recebidos em atualizarInterface:', dados);
     dadosAtuais = dados;
@@ -297,16 +330,25 @@ function atualizarInterface(dados) {
         if (countEquipamentosSemLocal) countEquipamentosSemLocal.innerHTML = '0';
     }
 
+    // Exibir last_update se o elemento #lastUpdate existir
+    const lastUpdateElement = document.getElementById('lastUpdate');
+    if (lastUpdateElement && dados.last_update) {
+        const dataFormatada = formatarDataUltimaAtualizacao(dados.last_update);
+        lastUpdateElement.innerHTML = `${dataFormatada}`;
+    }
+
     // Agrupar por estado, unidade e host
     const estadosMap = {};
     if (Array.isArray(dadosFiltrados.hosts)) {
         dadosFiltrados.hosts.forEach(host => {
-            // console.log('Processando host:', host);
-            const match = host.nome.match(/^BR-([A-Z]{2})-([A-Z]{3})-([A-Z]{3})(?:-([\w._-]+(?:\.[A-Za-z]{2,})?))?$/);
-            if (match) {
-                const estado = match[1];
-                const unidade = `${match[2]}-${match[3]}`;
+            // Dividir o nome do host pelos hífens
+            const partes = host.nome.split('-');
+            if (partes.length >= 4 && partes[0] === 'BR' && partes[1].length === 2) {
+                const estado = partes[1]; // Ex.: BA, SP
+                const unidade = `${partes[2]}-${partes[3]}`; // Ex.: CM-MCA, FAB-SUZ
                 const hostNome = host.nome;
+
+                // Inicializar estrutura de dados se não existir
                 if (!estadosMap[estado]) {
                     estadosMap[estado] = { total: 0, online: 0, offline: 0, unidades: {} };
                 }
@@ -316,6 +358,8 @@ function atualizarInterface(dados) {
                 if (!estadosMap[estado].unidades[unidade].hosts[hostNome]) {
                     estadosMap[estado].unidades[unidade].hosts[hostNome] = { ativo: host.ativo };
                 }
+
+                // Atualizar contadores
                 estadosMap[estado].total += 1;
                 estadosMap[estado].unidades[unidade].total += 1;
                 if (host.ativo === "#00d700" || host.ativo === "green") {
@@ -326,7 +370,7 @@ function atualizarInterface(dados) {
                     estadosMap[estado].unidades[unidade].offline += 1;
                 }
             } else {
-                console.warn('Nome do host não corresponde ao padrão:', host.nome);
+                console.warn('Nome do host fora do padrão esperado:', host.nome);
             }
         });
     } else {
@@ -474,7 +518,7 @@ function atualizarInterface(dados) {
                         }).join('');
 
                         // Atualizar informações da página
-                        pageInfo.textContent = `Pág. ${page} de ${totalPages}`;
+                        pageInfo.innerHTML = `<p>${page}/${totalPages}</p>`;
                         prevButton.disabled = page === 1;
                         nextButton.disabled = page === totalPages;
 
@@ -772,11 +816,12 @@ function atualizarListas(dados) {
 
 // Configuração do WebSocket
 function configurarWebSocket() {
-    const socket = io(server, {
-        transports: ['websocket'],
+    const socket = io(server+':5001', {
         reconnection: true,
         reconnectionAttempts: 5,
-        reconnectionDelay: 1000
+        reconnectionDelay: 1000,
+        transports: ['websocket'],  // Forçar usar WebSocket diretamente
+        upgrade: false
     });
 
     socket.on('connect', () => console.log('Conectado ao WebSocket!'));
@@ -803,7 +848,7 @@ async function loadHosts() {
         return;
     }
     try {
-        const response = await fetch(`${server}/status`);
+        const response = await fetch(`${server}:5001/get-data`);
         const data = await response.json();
         if (!data || !data.hosts) throw new Error('Dados inválidos');
         hosts = data.hosts;
@@ -834,7 +879,7 @@ function getVisibleMapIPs() {
 async function sendVisibleIPsToBackend() {
     const ips = getVisibleMapIPs();
     try {
-        const response = await fetch(`${server}/prioritize-pings`, {
+        const response = await fetch(`${server}:5000/prioritize-pings`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ips })
@@ -1113,8 +1158,15 @@ function fillForm(host) {
 // Inicialização
 async function carregarDados() {
     await fetchDadosHTTP();
-    configurarWebSocket();
     await loadHosts();
+}
+
+function iniciarPolling() {
+    const intervalo = 50000; 
+    setInterval(async () => {
+        console.log('Atualizando dados via polling...');
+        await fetchDadosHTTP();
+    }, intervalo);
 }
 
 async function atualizarDadosManualmente() {
