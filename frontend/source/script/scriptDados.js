@@ -1170,7 +1170,7 @@ function iniciarPolling() {
 }
 
 async function atualizarDadosManualmente() {
-    sendVisibleIPsToBackend()
+    // sendVisibleIPsToBackend()
     console.log('Atualização manual solicitada');
     const novosDados = await fetchDadosHTTP();
     if (novosDados) {
