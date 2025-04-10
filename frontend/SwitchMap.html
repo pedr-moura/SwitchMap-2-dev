@@ -2011,30 +2011,14 @@ async function rejectEdit(id) {
 </div>    <div id="listaItensSL">
           </div>    <div id="listaItensOff">
               </div>    </div>
-    <script>
-<script>
-    let cliquePermitido = false;
-
-    document.getElementById("toggleTitulo").addEventListener("click", function(event) {
-        if (!cliquePermitido) {
-            event.preventDefault();
-            event.stopPropagation();
-            return false;
-        }
-        document.getElementById("tituloBox").classList.toggle("ativo");
-        janela = (janela === 0) ? 1 : 0;
-    });
-
-    function exibirJanela(id) {
-        if (id === "toggleTitulo" && janela === 0) {
-            cliquePermitido = true;
-            document.getElementById(id).click();
-            cliquePermitido = false;
-        }
+    <script>document.getElementById("toggleTitulo").addEventListener("click", function() {
+    document.getElementById("tituloBox").classList.toggle("ativo");
+    if (janela == 0) {
+        janela = 1;
+    } else {
+        janela = 0;
     }
-</script>  
-    
-    </script>    <div class="container">            <!-- Popup para exibir hosts com status "red" -->
+});    </script>    <div class="container">            <!-- Popup para exibir hosts com status "red" -->
 <div id="redHostsPopup" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
