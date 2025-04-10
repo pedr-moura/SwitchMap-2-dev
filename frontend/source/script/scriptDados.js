@@ -33,13 +33,13 @@ let allDisplayedHosts = []; // Array para armazenar todos os hosts filtrados atu
 let hasMoreHosts = true; // Flag para controlar se existem mais hosts para carregar
 
 // Declaração global das camadas de mapa
-const mapaPadraoClaro = L.tileLayer(`http://${server}:3000/tiles/light/{z}/{x}/{y}`, { 
+const mapaPadraoClaro = L.tileLayer(`${server}:3000/tiles/light/{z}/{x}/{y}`, { 
     attribution: '© OpenStreetMap © CartoDB' 
 });
 const mapaPadraoEscuro = L.tileLayer('https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', { 
     attribution: '© OpenStreetMap' 
 });
-const mapaSatelite = L.tileLayer(`http://${server}:3000/tiles/satellite/{z}/{x}/{y}`, { 
+const mapaSatelite = L.tileLayer(`${server}:3000/tiles/satellite/{z}/{x}/{y}`, { 
     attribution: 'Tiles © Esri' 
 });
 
