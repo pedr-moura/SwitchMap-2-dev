@@ -1624,7 +1624,7 @@
 // Função para buscar informações do usuário via API
 async function fetchUserInfo() {
     try {
-        const response = await fetch(`${server}/get-user-info`, {
+        const response = await fetch(`${server}:5002/get-user-info`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include' // Se necessário para autenticação
