@@ -1621,6 +1621,69 @@
             </style>
 
             <script>
+// Função para buscar informações do usuário via API
+async function fetchUserInfo() {
+    try {
+        const response = await fetch(`${server}/get-user-info`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include' // Se necessário para autenticação
+        });
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar informações do usuário: ${response.status}`);
+        }
+        const data = await response.json();
+        return {
+            hostname: data.hostname,
+            userType: data.user_type
+        };
+    } catch (error) {
+        console.error('Erro ao obter informações do usuário:', error);
+        return { hostname: 'Desconhecido', userType: 'guest' }; // Fallback
+    }
+}
+
+// Função para verificar se o usuário é admin
+async function verificarUsuarioAdmin() {
+    const userInfo = await fetchUserInfo();
+    console.log(`Hostname: ${userInfo.hostname}, Tipo de usuário: ${userInfo.userType}`);
+    return userInfo.userType === 'admin';
+}
+
+// Função para ocultar a seção de aprovação para usuários normais
+async function ocultarAprovacaoParaUsuariosNormais() {
+    const isAdmin = await verificarUsuarioAdmin();
+
+    const approvalSection = document.getElementById('approvalSection');
+    const approvalButton = document.querySelector('button[onclick*="exibirAprovacao"]');
+
+    if (!isAdmin) {
+        // Oculta a seção de aprovação e o botão para usuários não admin
+        if (approvalSection) {
+            approvalSection.style.display = 'none';
+        }
+        if (approvalButton) {
+            approvalButton.style.display = 'none';
+        }
+    } else {
+        // Garante que a seção e o botão estejam visíveis para admins
+        if (approvalSection) {
+            approvalSection.style.display = 'block';
+        }
+        if (approvalButton) {
+            approvalButton.style.display = 'block';
+        }
+    }
+}
+
+// Chame a função ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+    ocultarAprovacaoParaUsuariosNormais();
+});
+            </script>
+
+            
+            <script>
                 // Função para validar IP
 function validateIP(ip) {
     const ipRegex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
