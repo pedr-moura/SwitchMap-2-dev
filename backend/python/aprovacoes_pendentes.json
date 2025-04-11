@@ -1,0 +1,642 @@
+[
+    {
+        "id": "edit_20250409163736",
+        "timestamp": "2025-04-09T16:37:36.842598",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "teste",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "reject",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T16:47:28.159490",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409164211",
+        "timestamp": "2025-04-09T16:42:11.234098",
+        "changes": {
+            "ip": "172.16.189.66",
+            "nome": "BR-CE-CDL-FOR-SWC.189.66.suzano.com.br",
+            "local": "",
+            "observacao": "teste",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "reject",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T16:47:33.279065",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409164825",
+        "timestamp": "2025-04-09T16:48:25.441821",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "teste",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "reject",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T16:48:40.898537",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409164834",
+        "timestamp": "2025-04-09T16:48:34.719514",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "teste",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "reject",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T16:48:43.230360",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409170012",
+        "timestamp": "2025-04-09T17:00:12.657351",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "Estação de Captação de àgua",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:00:16.832569",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409170832",
+        "timestamp": "2025-04-09T17:08:32.585487",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "Teste",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:08:36.571377",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409172456",
+        "timestamp": "2025-04-09T17:24:56.701335",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "Teste",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:24:58.545227",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409173338",
+        "timestamp": "2025-04-09T17:33:38.169279",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "Teste",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:33:40.298645",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409173638",
+        "timestamp": "2025-04-09T17:36:38.262266",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "Captação de água",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:36:41.662854",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409173948",
+        "timestamp": "2025-04-09T17:39:48.954730",
+        "changes": {
+            "ip": "10.22.16.86",
+            "nome": "BR-ES-FAB-ARA-SWA_082.16.86.suzano.com.br",
+            "local": "-19.84171370591188, -40.09076784126128",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:42:02.250740",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409173957",
+        "timestamp": "2025-04-09T17:39:57.916266",
+        "changes": {
+            "ip": "10.22.16.67",
+            "nome": "BR-ES-FAB-ARA-SWA_CCMM.16.67.suzano.com.br",
+            "local": "-19.834593004889946, -40.08354522767786",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:42:03.173695",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174007",
+        "timestamp": "2025-04-09T17:40:07.879174",
+        "changes": {
+            "ip": "10.22.16.10",
+            "nome": "BR-ES-FAB-ARA-SWA_SUP.16.10.suzano.com.br",
+            "local": "-19.84206507683178, -40.079381499768935",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:42:04.174996",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174018",
+        "timestamp": "2025-04-09T17:40:18.217242",
+        "changes": {
+            "ip": "10.22.16.55",
+            "nome": "BR-ES-FAB-ARA-SWA_SW25.16.55.suzano.com.br",
+            "local": "-19.840681923598165, -40.080007275740584",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:42:04.362519",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174028",
+        "timestamp": "2025-04-09T17:40:28.246624",
+        "changes": {
+            "ip": "10.22.16.22",
+            "nome": "BR-ES-FAB-ARA-SWA_TEL.16.22.suzano.com.br",
+            "local": "-19.842254223479518, -40.08131539086924",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:42:04.565640",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174038",
+        "timestamp": "2025-04-09T17:40:38.433066",
+        "changes": {
+            "ip": "10.22.16.1",
+            "nome": "BR-ES-FAB-ARA-SWC_CPD1.16.1.suzano.com.br",
+            "local": "-19.842403728747644, -40.07973668086464",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:42:04.753144",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174058",
+        "timestamp": "2025-04-09T17:40:58.629669",
+        "changes": {
+            "ip": "10.22.16.28",
+            "nome": "BR-ES-FAB-ARA-SWD_CALD.16.28.suzano.com.br",
+            "local": "-19.840386065308707, -40.08169203978371",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:42:04.940646",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174110",
+        "timestamp": "2025-04-09T17:41:10.294961",
+        "changes": {
+            "ip": "10.22.16.68",
+            "nome": "BR-ES-FAB-ARA-SWD_CCMM.16.68.suzano.com.br",
+            "local": "-19.834593004889946, -40.08354522767786",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:42:05.113182",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174122",
+        "timestamp": "2025-04-09T17:41:22.036249",
+        "changes": {
+            "ip": "10.22.16.5",
+            "nome": "BR-ES-FAB-ARA-SWD_CPD1.16.5.suzano.com.br",
+            "local": "-19.842254223479518, -40.08131539086924",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:42:05.285293",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174130",
+        "timestamp": "2025-04-09T17:41:30.410066",
+        "changes": {
+            "ip": "10.22.16.44",
+            "nome": "BR-ES-FAB-ARA-SWD_DIGB.16.44.suzano.com.br",
+            "local": "-19.840492111589455, -40.080082437394694",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:42:05.472822",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174142",
+        "timestamp": "2025-04-09T17:41:42.257847",
+        "changes": {
+            "ip": "10.22.16.78",
+            "nome": "BR-ES-FAB-ARA-SWD_DOC.16.78.suzano.com.br",
+            "local": "-19.84171370591188, -40.09076784126128",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:42:05.644445",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174520",
+        "timestamp": "2025-04-09T17:45:20.072721",
+        "changes": {
+            "ip": "172.16.122.90",
+            "nome": "BR-BA-FAB-MUC-SWA_DEPMED.122.90.suzano.com.br",
+            "local": "-18.043885, -39.916559",
+            "observacao": "",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:45:58.327351",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174555",
+        "timestamp": "2025-04-09T17:45:55.443683",
+        "changes": {
+            "ip": "172.16.189.100",
+            "nome": "BR-AM-CDL-MAN-SWC_RACK_TI.189.100.suzano.com.br",
+            "local": "-3.132385, -59.987063",
+            "observacao": "Teste de mapeamento",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:45:58.860627",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174640",
+        "timestamp": "2025-04-09T17:46:40.151955",
+        "changes": {
+            "ip": "172.16.189.66",
+            "nome": "BR-CE-CDL-FOR-SWC.189.66.suzano.com.br",
+            "local": "-3.755967, -38.523629",
+            "observacao": "Teste de mapeamento",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:51:21.158552",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174720",
+        "timestamp": "2025-04-09T17:47:20.556028",
+        "changes": {
+            "ip": "172.16.189.34",
+            "nome": "BR-DF-CDL-BRA-SWC_CORE.189.34.suzano.com.br",
+            "local": "-15.793276, -47.884346",
+            "observacao": "Teste de mapeamento",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:51:21.612953",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174820",
+        "timestamp": "2025-04-09T17:48:20.911724",
+        "changes": {
+            "ip": "172.16.180.2",
+            "nome": "BR-PR-CDR-CUR-SWC_SL_TEC_ALMX.180.2.suzano.com.br",
+            "local": "-25.426963, -49.265013",
+            "observacao": "Teste de mapemento",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:51:21.802403",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174908",
+        "timestamp": "2025-04-09T17:49:08.687817",
+        "changes": {
+            "ip": "172.16.189.194",
+            "nome": "BR-RS-CDL-POA-SWC_SALA_TI.189.194.suzano.com.br",
+            "local": "-30.042438, -51.233293",
+            "observacao": "Teste de mapeamento",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:51:21.990484",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409174947",
+        "timestamp": "2025-04-09T17:49:47.845055",
+        "changes": {
+            "ip": "172.16.57.2",
+            "nome": "BR-RJ-CDL-RIO-SWC_RACK_TI.57.2.suzano.com.br",
+            "local": "-22.910620, -43.209486",
+            "observacao": "Teste de mapeamento",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T17:51:22.162680",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409183546",
+        "timestamp": "2025-04-09T18:35:46.219272",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "Teste de aprovação",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T18:35:52.922533",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409183742",
+        "timestamp": "2025-04-09T18:37:42.551226",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "Captação de àgua",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T18:37:49.260969",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409184006",
+        "timestamp": "2025-04-09T18:40:06.254953",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "Teste de aprovação",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T18:40:14.900484",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409184051",
+        "timestamp": "2025-04-09T18:40:51.579735",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "Captação de Àgua",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T18:40:55.069350",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409184231",
+        "timestamp": "2025-04-09T18:42:31.212516",
+        "changes": {
+            "ip": "172.16.58.38",
+            "nome": "BR-PA-FAB-BEL-SWD_DC.58.38",
+            "local": "-1.4096768721714554, -48.47294963226382",
+            "observacao": "Teste de aprovação",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "reject",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T18:43:04.531152",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409184253",
+        "timestamp": "2025-04-09T18:42:53.575200",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456520358524474, -47.60914944633161",
+            "observacao": "Teste de aprovação",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "reject",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T18:43:02.716518",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409223855",
+        "timestamp": "2025-04-09T22:38:55.459483",
+        "changes": {
+            "ip": "172.16.189.100",
+            "nome": "BR-AM-CDL-MAN-SWC_RACK_TI.189.100.suzano.com.br",
+            "local": "-3.132385, -59.987063",
+            "observacao": "Teste para mapeamento",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T22:38:57.543748",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409224653",
+        "timestamp": "2025-04-09T22:46:53.462312",
+        "changes": {
+            "ip": "172.16.19.4",
+            "nome": "BR-BA-VIV-ITA-SWA_ADM.19.4.suzano.com.br",
+            "local": "",
+            "observacao": "TEste de aprovação",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "reject",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T22:47:09.035660",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250409224726",
+        "timestamp": "2025-04-09T22:47:26.979593",
+        "changes": {
+            "ip": "172.16.90.2",
+            "nome": "BR-MA-FAZ-CID-SWC_BOA_FE.90.2",
+            "local": "-5.160119, -47.765121",
+            "observacao": "Entrada Fazenda",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-09T22:47:38.013152",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250410150919",
+        "timestamp": "2025-04-10T15:09:19.832497",
+        "changes": {
+            "ip": "172.16.124.17",
+            "nome": "BR-MA-FAB-IMP-SWA_CAPT_EMISSAO_R1.124.17",
+            "local": "-5.456919, -47.609307",
+            "observacao": "Teste de aprovação",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-10T15:09:24.501457",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250410153342",
+        "timestamp": "2025-04-10T15:33:42.871677",
+        "changes": {
+            "ip": "10.129.0.126",
+            "nome": "BR-SP-FAB-LIM-SWA_ADC.0.126.suzano.com.br",
+            "local": "-24.102559, -45.691452",
+            "observacao": "Esse aqui",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-10T15:34:40.334390",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250410165516",
+        "timestamp": "2025-04-10T16:55:16.283535",
+        "changes": {
+            "ip": "172.16.90.3",
+            "nome": "BR-MA-FAZ-CID-SWA_BOA_FE.90.3",
+            "local": "-5.152101038915662, -47.77083221889337",
+            "observacao": "Teste",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "reject",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-10T16:55:22.135221",
+        "processed_by": "anonymous"
+    },
+    {
+        "id": "edit_20250410200535",
+        "timestamp": "2025-04-10T20:05:35.918181",
+        "changes": {
+            "ip": "172.16.122.251",
+            "nome": "BR-BA-FAB-MUC-SWA_DEP_BOB_Tissue.122.251.suzano.com.br",
+            "local": "6.577303, -40.341797",
+            "observacao": "Teste de aprovação",
+            "tipo": "sw",
+            "ativo": "blue"
+        },
+        "status": "approve",
+        "submitted_by": "anonymous",
+        "processed_at": "2025-04-10T20:05:43.613236",
+        "processed_by": "anonymous"
+    }
+]
