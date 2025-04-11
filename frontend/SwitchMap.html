@@ -7,12 +7,9 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="style.css">    <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/locaisDeafult.js"></script>    <!-- websocket -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="https://switch-map-2-dev.vercel.app/frontend/source/style.css">    <script src="https://switch-map-2-dev.vercel.app/frontend/source/script/locaisDeafult.js"></script>    <!-- websocket -->
     <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4/dist/socket.io.min.js"></script></head>
-<body>   
-     <div class="theme" id="theme">
-
-    
+<body>    <div class="theme" id="theme">
         <style>
             :root{
                 --color-glass: #16191ec2;
@@ -24,7 +21,7 @@
         </style>
     </div>
 
-    <div id="lastUpdate"></div>
+        <div id="lastUpdate"></div>
     <style>
         #lastUpdate{
             position: absolute;
@@ -34,7 +31,7 @@
             color: white;
         }
     </style>
-
+    
     <!-- Desenvolvido por pedromoura.idr@suzano.com.br -->      <div id="map"></div>    <div class="mudartipo" id="mudartipo">
         <div class="checkbox-wrapper-4">
             <img src="https://i.ibb.co/vv6Zs4vP/sat.png" id="mapToggleImage" alt="Alternar mapa" onclick="alterarCor()"/>
@@ -1351,7 +1348,7 @@
     color: var(--color-text, #e2e2e2);
     max-height: 90vh;
     overflow-x: hidden;
-    width: 100%;
+    max-width: 285px;
     box-sizing: border-box;
 }
 
@@ -1628,6 +1625,69 @@
 }
             </style>
 
+            <script>
+// Função para buscar informações do usuário via API
+async function fetchUserInfo() {
+    try {
+        const response = await fetch(`${server}:5002/get-user-info`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include' // Se necessário para autenticação
+        });
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar informações do usuário: ${response.status}`);
+        }
+        const data = await response.json();
+        return {
+            hostname: data.hostname,
+            userType: data.user_type
+        };
+    } catch (error) {
+        console.error('Erro ao obter informações do usuário:', error);
+        return { hostname: 'Desconhecido', userType: 'guest' }; // Fallback
+    }
+}
+
+// Função para verificar se o usuário é admin
+async function verificarUsuarioAdmin() {
+    const userInfo = await fetchUserInfo();
+    console.log(`Hostname: ${userInfo.hostname}, Tipo de usuário: ${userInfo.userType}`);
+    return userInfo.userType === 'admin';
+}
+
+// Função para ocultar a seção de aprovação para usuários normais
+async function ocultarAprovacaoParaUsuariosNormais() {
+    const isAdmin = await verificarUsuarioAdmin();
+
+    const approvalSection = document.getElementById('approvalSection');
+    const approvalButton = document.querySelector('button[onclick*="exibirAprovacao"]');
+
+    if (!isAdmin) {
+        // Oculta a seção de aprovação e o botão para usuários não admin
+        if (approvalSection) {
+            approvalSection.style.display = 'none';
+        }
+        if (approvalButton) {
+            approvalButton.style.display = 'none';
+        }
+    } else {
+        // Garante que a seção e o botão estejam visíveis para admins
+        if (approvalSection) {
+            approvalSection.style.display = 'block';
+        }
+        if (approvalButton) {
+            approvalButton.style.display = 'block';
+        }
+    }
+}
+
+// Chame a função ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+    ocultarAprovacaoParaUsuariosNormais();
+});
+            </script>
+
+            
             <script>
                 // Função para validar IP
 function validateIP(ip) {
