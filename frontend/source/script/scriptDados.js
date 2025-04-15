@@ -692,7 +692,7 @@ function atualizarMarcadores(hosts) {
     justify-content: center;">
                             <b class="nomedosw" style="color: ${ponto.ativo}; font-size: 14px;">${ponto.nome}</b>
                             <br>
-                            <span class="latitude" style="text-align: center; width: 100%; opacity: 0.7; font-size: 12px;">${ponto.local}</span>
+                            <span class="latitude" style="text-align: center; width: 100%; opacity: 0.7; font-size: 12px;">${ponto.ip}</span>
                             <span style="color: #6c757d; font-style: italic; font-size: 12px;">"${ponto.observacao}"</span>
                             ${info}
                             ${portasInfo}
@@ -713,11 +713,13 @@ function atualizarMarcadores(hosts) {
                     status: ponto.ativo
                 }).addTo(markersLayer)
                 .bindPopup(`
-                    <div style="font-family: Arial, sans-serif; width: auto;">
+                    <div style="font-family: Arial, sans-serif; width: auto; display: flex;
+    flex-wrap: wrap;
+    justify-content: center;">
                         <b class="nomedosw" style="color: ${ponto.ativo}; font-size: 14px;">${ponto.nome}</b>
                         <br>
-                        <span class="latitude" style="text-align: center; width: 100%; opacity: 0.7; font-size: 12px;">${ponto.local}</span>
-                        <span style="color: #6c757d; font-style: italic; font-size: 12px;">"${ponto.observacao}"</span>
+                        <span class="latitude" style="text-align: center; width: 100%; opacity: 0.7; font-size: 12px;">${ponto.ip}</span>
+                        <span style="color: #6c757d; font-style: italic; font-size: 12px; width: 100%;">"${ponto.observacao}"</span>
                         ${info}
                         ${portasInfo}
                     </div>
