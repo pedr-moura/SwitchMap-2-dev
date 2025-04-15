@@ -621,7 +621,7 @@ function atualizarMarcadores(hosts) {
                 portasInfo = `
                     <br>
                     <button onclick="togglePorts(this)" style="background-color: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
-                        Mostrar Portas (${ponto.ports.length})
+                        Interfaces
                     </button>
                     <div class="ports-table" style="display: none; max-height: 200px; overflow-y: auto; margin-top: 10px;">
                         <table style="font-size: 12px; color: #333; border-collapse: collapse; width: 100%;">
@@ -648,7 +648,7 @@ function atualizarMarcadores(hosts) {
                     const detailsId = `port-details-${hostId}-${index}`;
                     portasInfo += `
                         <tr onclick="togglePortDetails('${detailsId}')" style="background-color: #fff; transition: background-color 0.2s; cursor: pointer;">
-                            <td style="padding: 8px; border: 1px solid #dee2e6;">${portValue}</td>
+                            <td style="padding: 8px; border: 1px solid #dee2e6; color: ${statusColor};">${portValue}</td>
                         </tr>
                         <tr id="${detailsId}" style="display: none; background-color: #f8f9fa;">
                             <td style="padding: 8px; border: 1px solid #dee2e6;">
@@ -739,7 +739,7 @@ function togglePorts(button) {
     const isHidden = portsTable.style.display === 'none';
     portsTable.style.display = isHidden ? 'block' : 'none';
     const portCount = button.textContent.match(/\d+/)?.[0] || '';
-    button.textContent = isHidden ? `Esconder Portas` : `Mostrar Portas (${portCount})`;
+    button.textContent = isHidden ? `Interfaces` : `Interfaces`;
 }
 
 // Função para toggle dos detalhes de uma porta
