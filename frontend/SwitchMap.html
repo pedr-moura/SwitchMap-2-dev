@@ -171,23 +171,7 @@
             </div>
         </div>
        <style>
-           .ports-table table {
-    font-size: 12px;
-    color: #333;
-    border-collapse: collapse;
-    width: 100%;
-}
-.ports-table th, .ports-table td {
-    padding: 8px;
-    border: 1px solid #dee2e6;
-    text-align: left;
-}
-.ports-table tr:hover {
-    background-color: #f8f9fa;
-}
-.ports-table {
-    transition: max-height 0.3s ease;
-}
+
 /* Container principal da seção de unidades por estado */
 .unidadesPorEstado {
     margin-top: 20px;
@@ -1067,7 +1051,7 @@
 
 #search {
     padding: 5px 5px 5px 36px;
-    text-align: left;
+    text-align: center;
     border-radius: 7px;
     color: var(--color-text, #e2e2e2);
     outline: none;
@@ -2161,7 +2145,27 @@ window.addEventListener('click', function (event) {
     </script>
 </div>        <div class="opcoes" id="opcoes">
           <button id="toggleShowSwitches" onclick="showSw()"><img src="https://switch-map-2-dev.vercel.app/frontend/source/sw.png" alt=""></button>
-        <style>        #toggleShowSwitches{
+        <style>   
+        
+        .ports-table table {
+    font-size: 12px;
+    color: #333;
+    border-collapse: collapse;
+    width: 100%;
+}
+.ports-table th, .ports-table td {
+    padding: 8px;
+    border: 1px solid #dee2e6;
+    text-align: center;
+}
+.ports-table tr:hover {
+    background-color: #f8f9fa;
+}
+.ports-table {
+    transition: max-height 0.3s ease;
+}
+
+        #toggleShowSwitches{
             background-color: var(--color-background);
             border: 1px solid var(--color-secondary);
             border-radius: 50px;
