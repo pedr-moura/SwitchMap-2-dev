@@ -599,9 +599,8 @@ function navigateToEditHost(host) {
 }
 
 function atualizarMarcadores(hosts) {
-    // Manter um cache de marcadores existentes
     const marcadoresExistentes = {};
-    
+
     // Registrar todos os marcadores atuais
     markersLayer.eachLayer(marker => {
         const options = marker.options;
@@ -609,52 +608,117 @@ function atualizarMarcadores(hosts) {
             marcadoresExistentes[options.hostId] = marker;
         }
     });
-    
+
     // Atualizar ou criar marcadores
     hosts.forEach(ponto => {
         if (ponto.local) {
             const [lat, lng] = ponto.local.split(', ').map(Number);
             const hostId = ponto.ip;
-            
+
+            // Criar tabela de portas expansível, se existirem
+            let portasInfo = '';
+            if (ponto.ports && ponto.ports.length > 0) {
+                portasInfo = `
+                    <br>
+                    <button onclick="togglePorts(this)" style="background-color: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                        Mostrar Portas (${ponto.ports.length})
+                    </button>
+                    <div class="ports-table" style="display: none; max-height: 200px; overflow-y: auto; margin-top: 10px;">
+                        <table style="font-size: 12px; color: #333; border-collapse: collapse; width: 100%;">
+                            <thead>
+                                <tr style="background-color: #e9ecef; font-weight: bold;">
+                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">Porta</th>
+                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">VLANs</th>
+                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">Status</th>
+                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">Hosts</th>
+                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">OutSpeed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                ponto.ports.forEach(port => {
+                    const statusColor = port.Status.includes('Ok') ? '#28a745' : '#dc3545';
+                    portasInfo += `
+                        <tr style="background-color: #fff; transition: background-color 0.2s;">
+                            <td style="padding: 8px; border: 1px solid #dee2e6;">${port.Port}</td>
+                            <td style="padding: 8px; border: 1px solid #dee2e6;">${port.VLANs || 'N/A'}</td>
+                            <td style="padding: 8px; border: 1px solid #dee2e6; color: ${statusColor};">${port.Status}</td>
+                            <td style="padding: 8px; border: 1px solid #dee2e6;">${port.Hosts || 'N/A'}</td>
+                            <td style="padding: 8px; border: 1px solid #dee2e6;">${port.OutSpeed}</td>
+                        </tr>
+                    `;
+                });
+                portasInfo += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
             // Verificar se já existe um marcador para este host
             if (marcadoresExistentes[hostId]) {
-                // Atualizar propriedades do marcador existente se necessário
+                // Atualizar propriedades do marcador existente
                 const marker = marcadoresExistentes[hostId];
                 const maiorValorC = ponto.valores?.filter(v => v.includes('C')).map(v => parseFloat(v.replace('°C', ''))).reduce((a, b) => Math.max(a, b), null);
-                const info = ponto.valores ? `<br><br><span style="font-size: 12px; color: gray;">🌡️ Temp: <b>${maiorValorC ? maiorValorC + '°C' : 'N/A'}</b> | 💻 CPU: <b>${ponto.valores[0]}%</b> | 📶 Lat: <b>${ponto.valores[2]}ms</b></span>` : '';
-                
-                // Atualizar apenas o conteúdo do popup e o ícone se o status mudou
+                const info = ponto.valores ? `<br><span style="font-size: 12px; color: #6c757d;">🌡️ Temp: <b>${maiorValorC ? maiorValorC + '°C' : 'N/A'}</b> | 💻 CPU: <b>${ponto.valores[0]}%</b> | 📶 Lat: <b>${ponto.valores[2]}ms</b></span>` : '';
+
+                // Atualizar popup e ícone se o status mudou
                 if (marker.options.status !== ponto.ativo) {
                     marker.setIcon(criarIcone(ponto));
-                    marker.setPopupContent(`<b class="nomedosw" style="color: ${ponto.ativo}; ">${ponto.nome} <br> <span class="latitude" style="text-align: center; width: 100%; opacity: 0.5;">${ponto.local}</span><span style="color: var(--color-background);"> "${ponto.observacao}" </span> ${info}</b>`);
+                    marker.setPopupContent(`
+                        <div style="font-family: Arial, sans-serif; max-width: 300px;">
+                            <b class="nomedosw" style="color: ${ponto.ativo}; font-size: 14px;">${ponto.nome}</b>
+                            <br>
+                            <span class="latitude" style="text-align: center; width: 100%; opacity: 0.7; font-size: 12px;">${ponto.local}</span>
+                            <span style="color: #6c757d; font-style: italic; font-size: 12px;">"${ponto.observacao}"</span>
+                            ${info}
+                            ${portasInfo}
+                        </div>
+                    `);
                     marker.options.status = ponto.ativo;
                 }
-                
-                // Remover do objeto para sabermos quais ainda precisam ser processados
+
                 delete marcadoresExistentes[hostId];
             } else {
                 // Criar novo marcador
                 const maiorValorC = ponto.valores?.filter(v => v.includes('C')).map(v => parseFloat(v.replace('°C', ''))).reduce((a, b) => Math.max(a, b), null);
-                const info = ponto.valores ? `<br><br><span style="font-size: 12px; color: gray;">🌡️ Temp: <b>${maiorValorC ? maiorValorC + '°C' : 'N/A'}</b> | 💻 CPU: <b>${ponto.valores[0]}%</b> | 📶 Lat: <b>${ponto.valores[2]}ms</b></span>` : '';
-                
-                const marker = L.marker([lat, lng], { 
+                const info = ponto.valores ? `<br><span style="font-size: 12px; color: #6c757d;">🌡️ Temp: <b>${maiorValorC ? maiorValorC + '°C' : 'N/A'}</b> | 💻 CPU: <b>${ponto.valores[0]}%</b> | 📶 Lat: <b>${ponto.valores[2]}ms</b></span>` : '';
+
+                const marker = L.marker([lat, lng], {
                     icon: criarIcone(ponto),
                     hostId: hostId,
                     status: ponto.ativo
                 }).addTo(markersLayer)
-                .bindPopup(`<b class="nomedosw" style="color: ${ponto.ativo}; ">${ponto.nome} <br> <span class="latitude" style="text-align: center; width: 100%; opacity: 0.5;">${ponto.local}</span><span style="color: var(--color-background);"> "${ponto.observacao}" </span> ${info}</b>`);
-                
+                .bindPopup(`
+                    <div style="font-family: Arial, sans-serif; max-width: 300px;">
+                        <b class="nomedosw" style="color: ${ponto.ativo}; font-size: 14px;">${ponto.nome}</b>
+                        <br>
+                        <span class="latitude" style="text-align: center; width: 100%; opacity: 0.7; font-size: 12px;">${ponto.local}</span>
+                        <span style="color: #6c757d; font-style: italic; font-size: 12px;">"${ponto.observacao}"</span>
+                        ${info}
+                        ${portasInfo}
+                    </div>
+                `);
+
                 pontosMapeados[ponto.ip] = { lat, lng, marker };
             }
         }
     });
-    
-    // Remover marcadores que não existem mais nos dados
+
+    // Remover marcadores que não existem mais
     for (const hostId in marcadoresExistentes) {
         markersLayer.removeLayer(marcadoresExistentes[hostId]);
         delete pontosMapeados[hostId];
     }
 }
+
+// Função JavaScript para expandir/recolher a tabela de portas
+const togglePorts = (button) => {
+    const portsTable = button.nextElementSibling;
+    const isHidden = portsTable.style.display === 'none';
+    portsTable.style.display = isHidden ? 'block' : 'none';
+    button.textContent = isHidden ? 'Esconder Portas' : `Mostrar Portas (${button.textContent.match(/\d+/)[0]})`;
+};
 
 function atualizarLinhas(hosts) {
     // Preparar as linhas independentemente do estado de visibilidade
