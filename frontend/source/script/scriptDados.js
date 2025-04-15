@@ -621,30 +621,39 @@ function atualizarMarcadores(hosts) {
                 portasInfo = `
                     <br>
                     <button onclick="togglePorts(this)" style="background-color: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
-                        Mostrar Portas (${ponto.ports.length})
+                        Portas (${ponto.ports.length})
                     </button>
-                    <div class="ports-table" style="display: none; max-height: 200px; overflow-y: auto; margin-top: 10px;">
-                        <table style="font-size: 12px; color: #333; border-collapse: collapse; width: 100%;">
+                    <div class="ports-table" style="display: none; max-height: 150px; overflow-y: auto; margin-top: 10px;">
+                        <table style="font-size: 10px; color: #333; border-collapse: collapse; width: 100%;">
                             <thead>
                                 <tr style="background-color: #e9ecef; font-weight: bold;">
-                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">Porta</th>
-                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">VLANs</th>
-                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">Status</th>
-                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">Hosts</th>
-                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">OutSpeed</th>
+                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: center;">Porta</th>
+                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: center;">VLANs</th>
+                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: center;">Status</th>
+                                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: center;">Hosts</th>
                                 </tr>
                             </thead>
                             <tbody>
                 `;
                 ponto.ports.forEach(port => {
                     const statusColor = port.Status.includes('Ok') ? '#28a745' : '#dc3545';
+                    // Simplificar status para "Ok" ou "Down"
+                    const statusValue = port.Status.includes('Ok') ? 'Ok' : 'Down';
+                    // Extrair valor dentro de [] e o texto após
+                    const portMatch = port.Port.match(/\[([^\]]*)\](.*)/);
+                    let portValue;
+                    if (portMatch) {
+                        portValue = `${portMatch[1].trim()}<br>${portMatch[2].trim() || ''}`;
+                    } else {
+                        console.warn(`Formato inesperado para porta: ${port.Port}`);
+                        portValue = port.Port;
+                    }
                     portasInfo += `
                         <tr style="background-color: #fff; transition: background-color 0.2s;">
-                            <td style="padding: 8px; border: 1px solid #dee2e6;">${port.Port}</td>
+                            <td style="padding: 8px; border: 1px solid #dee2e6;">${portValue}</td>
                             <td style="padding: 8px; border: 1px solid #dee2e6;">${port.VLANs || 'N/A'}</td>
-                            <td style="padding: 8px; border: 1px solid #dee2e6; color: ${statusColor};">${port.Status}</td>
+                            <td style="padding: 8px; border: 1px solid #dee2e6; color: ${statusColor};">${statusValue}</td>
                             <td style="padding: 8px; border: 1px solid #dee2e6;">${port.Hosts || 'N/A'}</td>
-                            <td style="padding: 8px; border: 1px solid #dee2e6;">${port.OutSpeed}</td>
                         </tr>
                     `;
                 });
@@ -666,11 +675,11 @@ function atualizarMarcadores(hosts) {
                 if (marker.options.status !== ponto.ativo) {
                     marker.setIcon(criarIcone(ponto));
                     marker.setPopupContent(`
-                        <div style="font-family: Arial, sans-serif; max-width: 300px;">
+                        <div style="font-family: Arial, sans-serif; width: auto;">
                             <b class="nomedosw" style="color: ${ponto.ativo}; font-size: 14px;">${ponto.nome}</b>
                             <br>
                             <span class="latitude" style="text-align: center; width: 100%; opacity: 0.7; font-size: 12px;">${ponto.local}</span>
-                            <span style="color: #6c757d; font-style: italic; font-size: 12px;">"${ponto.observacao}"</span>
+                            <br><span style="color: #6c757d; font-style: italic; font-size: 12px;">"${ponto.observacao}"</span>
                             ${info}
                             ${portasInfo}
                         </div>
@@ -690,11 +699,14 @@ function atualizarMarcadores(hosts) {
                     status: ponto.ativo
                 }).addTo(markersLayer)
                 .bindPopup(`
-                    <div style="font-family: Arial, sans-serif; max-width: 300px;">
+                    <div style="font-family: Arial, sans-serif; width: auto;     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;">
                         <b class="nomedosw" style="color: ${ponto.ativo}; font-size: 14px;">${ponto.nome}</b>
                         <br>
                         <span class="latitude" style="text-align: center; width: 100%; opacity: 0.7; font-size: 12px;">${ponto.local}</span>
-                        <span style="color: #6c757d; font-style: italic; font-size: 12px;">"${ponto.observacao}"</span>
+                        <span style="color: #6c757d; font-style: italic; font-size: 12px; width: 100%;
+    text-align: center;">"${ponto.observacao}"</span>
                         ${info}
                         ${portasInfo}
                     </div>
@@ -712,13 +724,13 @@ function atualizarMarcadores(hosts) {
     }
 }
 
-// Função JavaScript para expandir/recolher a tabela de portas
-const togglePorts = (button) => {
+// Função para toggle da tabela de portas
+function togglePorts(button) {
     const portsTable = button.nextElementSibling;
     const isHidden = portsTable.style.display === 'none';
     portsTable.style.display = isHidden ? 'block' : 'none';
-    button.textContent = isHidden ? 'Esconder Portas' : `Mostrar Portas (${button.textContent.match(/\d+/)[0]})`;
-};
+    button.textContent = isHidden ? `Portas (${ponto.ports.length})` : `Portas (${ponto.ports.length})`;
+}
 
 function atualizarLinhas(hosts) {
     // Preparar as linhas independentemente do estado de visibilidade
