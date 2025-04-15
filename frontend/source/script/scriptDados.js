@@ -620,7 +620,7 @@ function atualizarMarcadores(hosts) {
             if (ponto.ports && ponto.ports.length > 0) {
                 portasInfo = `
                     <br>
-                    <button onclick="togglePorts(this)" style="background-color: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+                    <button onclick="togglePorts(this)" style="background-color: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px;  font-size: 12px;">
                         Interfaces
                     </button>
                     <div class="ports-table" style="display: none; max-height: 200px; overflow-y: auto; margin-top: 10px;">
@@ -647,7 +647,7 @@ function atualizarMarcadores(hosts) {
                     // ID único para os detalhes da porta
                     const detailsId = `port-details-${hostId}-${index}`;
                     portasInfo += `
-                        <tr onclick="togglePortDetails('${detailsId}')" style="background-color: #fff; transition: background-color 0.2s; cursor: pointer;">
+                        <tr onclick="togglePortDetails('${detailsId}')" style="background-color: #fff; transition: background-color 0.2s; ">
                             <td style="padding: 8px; border: 1px solid #dee2e6; color: ${statusColor};">${portValue}</td>
                         </tr>
                         <tr id="${detailsId}" style="display: none; background-color: #f8f9fa;">
@@ -1220,7 +1220,7 @@ function setupSearchFilter() {
             border: none;
             color: var(--color-secondary);
             font-size: 18px;
-            cursor: pointer;
+            
             padding: 0;
             width: 20px;
             height: 20px;
