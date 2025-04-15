@@ -678,7 +678,7 @@ function atualizarMarcadores(hosts) {
                         <div style="font-family: Arial, sans-serif; width: auto;">
                             <b class="nomedosw" style="color: ${ponto.ativo}; font-size: 14px;">${ponto.nome}</b>
                             <br>
-                            <span class="latitude" style="text-align: center; width: 100%; opacity: 0.7; font-size: 12px;">${ponto.local}</span>
+                            <span class="latitude" style="text-align: center; width: 100%; opacity: 0.7; font-size: 12px;">${ponto.ip}</span>
                             <br><span style="color: #6c757d; font-style: italic; font-size: 12px;">"${ponto.observacao}"</span>
                             ${info}
                             ${portasInfo}
