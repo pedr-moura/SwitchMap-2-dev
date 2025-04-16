@@ -277,8 +277,21 @@ function preloadLines(dados) {
 }
 
 function formatarDataUltimaAtualizacao(isoDate, elementId) {
+    // Validar data
+    const data = new Date(isoDate);
+    if (isNaN(data.getTime())) {
+        console.error("Data inválida:", isoDate);
+        return () => {};
+    }
+
+    // Validar elemento
+    const elemento = document.getElementById(elementId);
+    if (!elemento) {
+        console.error("Elemento não encontrado:", elementId);
+        return () => {};
+    }
+
     function atualizarData() {
-        const data = new Date(isoDate);
         const agora = new Date();
         const diffMs = agora - data;
         const diffSegundos = Math.floor(diffMs / 1000);
@@ -310,10 +323,8 @@ function formatarDataUltimaAtualizacao(isoDate, elementId) {
             tempoRelativo = `há ${dias} dia${dias > 1 ? 's' : ''}`;
         }
 
-        const elemento = document.getElementById(elementId);
-        if (elemento) {
-            elemento.innerHTML = `${dataFormatada} <br> <span style="font-size: 10px;">(${tempoRelativo})</span>`;
-        }
+        elemento.innerHTML = `${dataFormatada} <br> <span style="font-size: 10px;">(${tempoRelativo})</span>`;
+        console.log("Elemento atualizado:", elemento.innerHTML);
     }
 
     // Atualizar imediatamente
@@ -322,7 +333,7 @@ function formatarDataUltimaAtualizacao(isoDate, elementId) {
     // Atualizar a cada 10 segundos
     const intervalId = setInterval(atualizarData, 10000);
 
-    // Retornar função para limpar o intervalo, se necessário
+    // Retornar função para limpar o intervalo
     return () => clearInterval(intervalId);
 }
 
@@ -636,10 +647,10 @@ function atualizarMarcadores(hosts) {
             if (ponto.ports && ponto.ports.length > 0) {
                 portasInfo = `
                     <br>
-                    <button onclick="togglePorts(this)" style="background-color: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px;  font-size: 12px;">
+                    <button onclick="togglePorts(this)" style="background-color: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px;  font-size: 12px; width: 100%;">
                         Interfaces
                     </button>
-                    <div class="ports-table" style="display: none; max-height: 200px; overflow-y: auto; margin-top: 10px;">
+                    <div class="ports-table" style="display: none; max-height: 200px; overflow-y: auto; margin-top: 10px; width: 100%;">
                         <table style="font-size: 12px; color: #333; border-collapse: collapse; width: 100%;">
                             <thead>
                                 <tr style="background-color: #e9ecef; font-weight: bold;">
