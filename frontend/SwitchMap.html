@@ -31,6 +31,7 @@
     color: white;
     left: 50%;
     transform: translate(-50%, 0px);
+    text-align: center;
         }
     </style>
     
@@ -39,7 +40,7 @@
             <img src="https://i.ibb.co/vv6Zs4vP/sat.png" id="mapToggleImage" alt="Alternar mapa" onclick="alterarCor()"/>
         </div>
     </div>
-      <span id="creditos">Desenvolvido por <b>Pedro Moura</b></span>
+      <!-- <span id="creditos">Desenvolvido por <b>Pedro Moura</b></span> -->
       <div class="barravertical">        <div class="alert" onclick="showRedHostsPopup()">            <div id="countAlert">
                 <div id="alertNum"></div>
             </div>            <svg viewBox="-0.5 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,13 +76,13 @@
     }, 1500); // 1500ms = 1.5s
 }
 </script>      <div class="icons">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="exibirJanela('toggleTitulo'), exibirHome(), limparAprove()">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="exibirJanela('toggleTitulo'), exibirHome(), limparAprove(), limparhistorySection()">
             <path opacity="0.5" d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"  stroke-width="1.5"/>
             <path d="M15 18H9" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
             <br>            <div class="sectionData">
                                    <!-- SVG como botão -->
-                                   <button id="toggleButtonPlus" onclick="showSection('editar'), exibirJanela('toggleTitulo'), exibirEditar(), limparAprove()">
+                                   <button id="toggleButtonPlus" onclick="showSection('editar'), exibirJanela('toggleTitulo'), exibirEditar(), limparAprove(), limparhistorySection()">
                                     <svg id="toggleButtonPlusSVG" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M20.5 20.5L22 22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                         <path d="M16 18.5C16 19.8807 17.1193 21 18.5 21C19.1916 21 19.8175 20.7192 20.2701 20.2654C20.7211 19.8132 21 19.1892 21 18.5C21 17.1193 19.8807 16 18.5 16C17.1193 16 16 17.1193 16 18.5Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -118,7 +119,7 @@
     <div class="titulo" id="tituloBox" style="
     flex-wrap: wrap;
     align-content: center;
-        ">        <button id="toggleTitulo"></button>      <div class="homebox" id="homebox">
+        ">        <button id="toggleTitulo" onclick=" exibirHome(), limparAprove(), limparhistorySection()"></button>      <div class="homebox" id="homebox">
                       <label for="ipBusca" class="pesquisa" style="display: none;"> 
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -882,8 +883,592 @@
         opacity: 0.5;
     }
 }
+
+#btnhistorico{
+        stroke: none;
+        fill: white;
+    }
        </style>
     </div>    <div class="databox" id="databox">
+
+        <!-- Adicionar uma nova seção para o histórico de solicitações no databox -->
+<div class="history-section" id="historySection" style="display: none;">
+    <h2>Histórico de Solicitações</h2>
+    <div class="search-container">
+        <label for="historySearch" class="search">
+            <div class="boxinputsearch" style="border: none;">
+                <svg class="search-icon" style="top: 20px;
+    left: 7px;" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="var(--color-primary)"/>
+                </svg>
+                <input type="text" name="historySearch" id="historySearch" placeholder="Pesquisar por IP ou Nome" oninput="filterHistory()" aria-label="Pesquisar histórico por IP ou Nome">
+            </div>
+        </label>
+    </div>
+    <div class="history-list" id="historyList"></div>
+</div>
+
+<style>
+    .history-section {
+        padding: 15px;
+        max-height: 90vh;
+        overflow-y: auto;
+        width: 285px;
+        box-sizing: border-box;
+        font-family: "Rubik", serif;
+        color: var(--color-text, #e2e2e2);
+    }
+
+    .history-section h2 {
+        font-size: 18px;
+        font-weight: 500;
+        color: var(--color-text);
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .search-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .boxinputsearch {
+        position: relative;
+        width: 100%;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+    }
+
+    #historySearch {
+        width: 100%;
+        padding: 5px 5px 5px 30px;
+        border-radius: 7px;
+        border: 1px solid var(--color-secondary);
+        background-color: var(--color-background);
+        color: var(--color-text);
+        outline: none;
+        height: 19px;
+        font-size: 14px;
+        transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    #historySearch:focus,
+    #historySearch:not(:placeholder-shown) {
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+    }
+
+    .history-list {
+        max-height: 70vh;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .history-item {
+        padding: 10px;
+        color: var(--color-text);
+        transition: color 0.2s ease;
+    }
+
+    .history-item:hover {
+    }
+
+    .history-item .history-header {
+        display: flex;
+    align-items: center;
+    font-size: 14px;
+    flex-wrap: wrap;
+    }
+
+    .history-item .history-details {
+        display: none;
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--color-text);
+    }
+
+    .history-item .history-details.expanded {
+        display: block;
+    }
+
+    .history-item .history-details p {
+        margin: 4px 0;
+    }
+
+    .history-item .history-details span {
+        display: inline-block;
+        margin: 2px 0;
+    }
+
+    /* Estilo da barra de rolagem */
+    .history-section::-webkit-scrollbar,
+    .history-list::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .history-section::-webkit-scrollbar-track,
+    .history-list::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .history-section::-webkit-scrollbar-thumb,
+    .history-list::-webkit-scrollbar-thumb {
+        background: var(--color-secondary);
+        border-radius: 6px;
+    }
+
+    .history-section::-webkit-scrollbar-thumb:hover,
+    .history-list::-webkit-scrollbar-thumb:hover {
+        background: var(--color-primary);
+    }
+
+    .history-section {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-secondary) transparent;
+    }
+
+    .history-list {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-secondary) transparent;
+    }
+
+    /* Responsividade */
+    @media (max-width: 600px) {
+        .history-section {
+            padding: 12px;
+            width: 100%;
+            max-width: none;
+        }
+
+        .history-section h2 {
+            font-size: 16px;
+        }
+
+        .history-list {
+            max-height: 60vh;
+        }
+
+        .history-item {
+            padding: 8px;
+            font-size: 13px;
+        }
+
+        .history-item .history-details {
+            font-size: 11px;
+        }
+
+        #historySearch {
+            font-size: 13px;
+        }
+    }
+
+    @media (max-width: 360px) {
+        .history-section {
+            padding: 10px;
+        }
+
+        .history-section h2 {
+            font-size: 14px;
+        }
+
+        .history-list {
+            max-height: 50vh;
+        }
+
+        .history-item {
+            padding: 6px;
+            font-size: 12px;
+        }
+
+        .history-item .history-details {
+            font-size: 10px;
+        }
+
+        #historySearch {
+            font-size: 12px;
+            padding: 4px 4px 4px 28px;
+        }
+    }
+
+
+</style>
+
+<style>
+    #btnhistorico svg{
+        stroke: none;
+        fill: white;
+    }
+    #btnhistorico svg:hover{
+        fill: var(--color-primary);
+    }
+
+    /* Ajustes para o botão de expansão */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    flex-wrap: wrap;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.expand-btn {
+    background: none;
+    border: none;
+    color: var(--color-primary);
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.expand-btn.expanded {
+    transform: rotate(180deg);
+}
+
+/* Estilizar os detalhes */
+.history-details {
+    display: none;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--color-text);
+    background: var(--color-background-secondary, rgba(255, 255, 255, 0.05));
+    border-left: 3px solid var(--color-primary);
+    padding: 10px;
+    border-radius: 4px;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    
+    top: -30px;
+    position: relative;
+}
+
+.history-details.expanded {
+    display: block;
+    max-height: 500px; /* Ajuste conforme necessário */
+    opacity: 1;
+}
+
+/* Estilizar cada linha de detalhe com ícones */
+.detail-item {
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+}
+
+.detail-item svg {
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+    fill: var(--color-secondary);
+}
+
+.detail-item span {
+    display: inline-block;
+    margin: 2px 0;
+}
+    /* Estilos para a linha do tempo */
+.timeline {
+    position: relative;
+    margin: 10px 0;
+    padding-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 9px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    height: 80%;
+    background: var(--color-secondary);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    border: 2px solid var(--color-background);
+}
+
+.timeline-item.pendente::before {
+    background: #ffa500;
+}
+
+.timeline-item.aprovado::before {
+    background: #00d700;
+}
+
+.timeline-item.rejeitado::before {
+    background: #ff4d4d;
+}
+
+.timeline-item span {
+    font-size: 12px;
+    color: var(--color-text);
+}
+
+.timeline-item .status-label {
+    font-weight: 500;
+    margin-right: 5px;
+}
+</style>
+
+<script>
+// Adicionar botão para acessar o histórico na barra vertical
+const historyButton = `
+    <button onclick="exibirJanela('toggleTitulo'); exibirHistorico(); limparAprove()" style="background: none; border: none;" id="btnhistorico">
+<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
+  <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
+  <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
+  <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
+</svg>
+    </button>
+`;
+
+let historySection = document.getElementById('historySection');
+
+// Função para esconder a seção de histórico
+function limparhistorySection() {
+    historySection.style.display = 'none';
+}
+
+// Inserir o botão na barra vertical após o botão de aprovação
+document.querySelector('.barravertical .icons').insertAdjacentHTML('beforeend', historyButton);
+
+// Função para formatar datas
+function formatDate(dateString) {
+    return new Date(dateString).toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+}
+
+// Função para carregar o histórico de solicitações do endpoint
+async function loadHistory(searchText = '') {
+    try {
+        console.log('Carregando histórico de solicitações...');
+        const response = await fetch(`${server}:5002/history`);
+        if (!response.ok) {
+            throw new Error('Erro ao buscar o histórico');
+        }
+        const historyData = await response.json();
+        console.log('Histórico:', historyData);
+
+        // Mapear os dados do endpoint para o formato esperado
+        const history = historyData.map(item => ({
+            id: item.id,
+            nome: item.changes.nome || '(vazio)',
+            ip: item.changes.ip || '(vazio)',
+            local: item.changes.local || '(vazio)',
+            observacao: item.changes.observacao || '(vazio)',
+            tipo: item.changes.tipo || '(vazio)',
+            status: item.status === 'approve' ? 'aprovado' : item.status === 'pending' ? 'pendente' : 'rejeitado',
+            solicitante: item.submitted_by || '(vazio)',
+            data_solicitacao: item.timestamp,
+            processado_por: item.processed_by || '(vazio)',
+            data_processamento: item.processed_at || null
+        }));
+
+        // Filtrar histórico com base no texto de busca
+        let filteredHistory = history;
+        if (searchText) {
+            searchText = searchText.toLowerCase().trim();
+            filteredHistory = history.filter(item =>
+                item.ip.toLowerCase().includes(searchText) ||
+                item.nome.toLowerCase().includes(searchText)
+            );
+        }
+
+        displayHistory(filteredHistory);
+    } catch (error) {
+        console.error('Erro ao carregar histórico:', error);
+        document.getElementById('historyList').innerHTML = '<p>Erro ao carregar histórico.</p>';
+    }
+}
+
+// Função para exibir o histórico na interface com linha do tempo
+function displayHistory(history) {
+    const historyList = document.getElementById('historyList');
+    historyList.innerHTML = history.length === 0 ? '<p>Nenhuma solicitação encontrada.</p>' : '';
+
+    // Agrupar os itens por ID
+    const groupedHistory = history.reduce((acc, item) => {
+        if (!acc[item.id]) {
+            acc[item.id] = [];
+        }
+        acc[item.id].push(item);
+        return acc;
+    }, {});
+
+    // Exibir cada grupo como um item do histórico com linha do tempo
+    Object.values(groupedHistory).forEach(group => {
+        // Ordenar os itens do grupo por data (mais antigo primeiro)
+        group.sort((a, b) => new Date(a.data_solicitacao) - new Date(b.data_solicitacao));
+
+        const firstItem = group[0]; // Primeiro item do grupo para informações gerais
+        const div = document.createElement('div');
+        div.className = 'history-item';
+
+        // Criar a linha do tempo
+        let timelineHtml = '<div class="timeline">';
+        group.forEach(item => {
+            const formattedDate = item.data_processamento ? formatDate(item.data_processamento) : formatDate(item.data_solicitacao);
+            let statusText;
+            switch (item.status) {
+                case 'aprovado':
+                    statusText = 'Aprovado';
+                    break;
+                case 'rejeitado':
+                    statusText = 'Rejeitado';
+                    break;
+                case 'pendente':
+                    statusText = 'Solicitado';
+                    break;
+                default:
+                    statusText = item.status;
+            }
+
+            timelineHtml += `
+                <div class="timeline-item ${item.status}">
+                    <span class="status-label">${statusText}</span>
+                    <span>em ${formattedDate}</span>
+                </div>
+            `;
+        });
+        timelineHtml += '</div>';
+
+        // Detalhes completos do item com ícones
+        const changesHtml = `
+            <div class="detail-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                <span>ID: ${firstItem.id}</span>
+            </div>
+            <div class="detail-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/></svg>
+                <span>IP: ${firstItem.ip}</span>
+            </div>
+            <div class="detail-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v6l5.25 3.15.75-1.23-4-2.67z"/></svg>
+                <span>Nome: ${firstItem.nome}</span>
+            </div>
+            <div class="detail-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5 14.5 7.62 14.5 9 13.38 11.5 12 11.5z"/></svg>
+                <span>Local: ${firstItem.local}</span>
+            </div>
+
+            <div class="detail-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                <span>Solicitante: ${firstItem.solicitante}</span>
+            </div>
+            ${group.some(item => item.processado_por !== '(vazio)') ? `
+            <div class="detail-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+                <span>Processado por: ${group.find(item => item.processado_por !== '(vazio)').processado_por}</span>
+            </div>` : ''}
+        `;
+
+        // Cabeçalho do item com botão de expansão
+        div.innerHTML = `
+            <div class="history-header">
+                <div>
+                    <span>${firstItem.nome}</span><br>
+                    ${timelineHtml}
+                </div>
+                <button class="expand-btn" aria-label="Expandir detalhes" style="
+    stroke: white;
+    fill: none;
+    width: 50px;
+    position: relative;
+    right: 15px;
+    top: -17px;
+">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="history-details">${changesHtml}</div>
+        `;
+        historyList.appendChild(div);
+
+        // Adicionar evento de clique no botão de expansão
+        const expandBtn = div.querySelector('.expand-btn');
+        expandBtn.addEventListener('click', () => {
+            const details = div.querySelector('.history-details');
+            details.classList.toggle('expanded');
+            expandBtn.classList.toggle('expanded');
+        });
+    });
+}
+
+// Função para filtrar o histórico
+function filterHistory() {
+    const searchText = document.getElementById('historySearch').value;
+    loadHistory(searchText);
+}
+
+// Função para exibir a seção de histórico
+function exibirHistorico() {
+    console.log('Exibindo Histórico');
+    const editarEquipamento = document.getElementById('editarEquipamento');
+    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+    const homebox = document.getElementById('homebox');
+    const approvalSection = document.getElementById('approvalSection');
+    const historySection = document.getElementById('historySection');
+    const databoxsection = document.getElementById('databox');
+
+    editarEquipamento.style.display = 'none';
+    adicionarEquipamento.style.display = 'none';
+    homebox.style.display = 'none';
+    approvalSection.style.display = 'none';
+    historySection.style.display = 'block';
+    databoxsection.style.display = 'block';
+
+    // Carregar histórico inicial
+    loadHistory();
+}
+
+// Modificar a função navigateToEditHost para permitir carregar histórico ao clicar no botão de edição
+function navigateToEditHost(hostData) {
+    showSection('editar');
+    exibirEditar();
+    preencherFormulario(hostData);
+
+    // Carregar histórico do equipamento ao editá-lo
+    loadHistory(hostData.ip);
+}
+
+// Inicializar o filtro de histórico
+document.getElementById('historySearch').addEventListener('input', filterHistory);
+
+</script>
+        
         <div class="adicionarEquipamento" id="adicionarEquipamento">
                 <!-- Seção de Adição de Host -->                  <div id="adicionarSection" class="hidden">
         <h2>Adicionar Host</h2>
@@ -950,7 +1535,8 @@
                             <svg class="input-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 2a10 10 0 00-7.35 16.65l.35.35H12v2H6a1 1 0 01-1-1v-1a1 1 0 011-1h1.59A8 8 0 114 12a1 1 0 011-1h14a1 1 0 011 1 8 8 0 01-3.59 6.65H18a1 1 0 011 1v1a1 1 0 01-1 1h-6v-2h7.35l.35-.35A10 10 0 0012 2z"/>
                             </svg>
-                            <input type="text" id="ip" name="ip" placeholder="Digite o IP (ex.: 192.168.1.1)" required aria-describedby="ip-error">
+                            <input type="text" id="ip" name="ip" placeholder="Selecione um equipamento" readonly required aria-describedby="ip-error ip-readonly">
+                            <span id="ip-readonly" class="sr-only">Este campo é somente leitura e preenchido automaticamente ao selecionar um equipamento.</span>
                         </div>
                         <span class="error-message" id="ip-error"></span>
                     </div>
@@ -967,12 +1553,12 @@
                     </div>
         
                     <div class="form-group">
-                        <label for="observacao">Observação</label>
+                        <label for="observacao">Observação <span class="required">*</span></label>
                         <div class="input-wrapper">
                             <svg class="input-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M20 2H4a2 2 0 00-2 2v16a2 2 0 002 2h12l4-4V4a2 2 0 00-2-2zm-2 16h-2v2l-2.59-2.59L12 16H4V4h16v14zM9 9h6v2H9V9zm0 4h6v2H9v-4z"/>
                             </svg>
-                            <input type="text" id="observacao" name="observacao" placeholder="Adicione uma observação" aria-describedby="observacao-error">
+                            <input type="text" maxlength="200" id="observacao" name="observacao" placeholder="Adicione uma observação" required aria-describedby="observacao-error">
                         </div>
                         <span class="error-message" id="observacao-error"></span>
                     </div>
@@ -983,19 +1569,12 @@
                             <svg class="input-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 10a3 3 0 110-6 3 3 0 010 6z"/>
                             </svg>
-                            <input type="text" id="local" name="local" placeholder="Latitude, Longitude (ex.: -23.5505, -46.6333)" aria-describedby="local-error">
+                            <input type="text" id="local" maxlength="200" name="local" placeholder="Latitude, Longitude (ex.: -23.5505, -46.6333)" aria-describedby="local-error">
                             <button type="button" class="view-map-btn" onclick="previewLocation()">Ver no Mapa</button>
                         </div>
                         <span class="error-message" id="local-error"></span>
                     </div>
         
-                    <div class="form-group hidden">
-                        <label for="ativo">Status:</label>
-                        <select id="ativo" name="ativo">
-                            <option value="green">Green</option>
-                            <option value="red">Red</option>
-                        </select>
-                    </div>
         
                     <div class="form-actions">
                         <button type="button" class="cancel-btn" onclick="resetForm()">Cancelar</button>
@@ -1011,1073 +1590,1178 @@
                 <h2 class="section-title">Aprovações Pendentes</h2>
                 <div id="pendingEditsList" class="pending-edits-list"></div>
             </div>
-
+        
             <style>
                 /* Estilo do container principal */
-.editarEquipamento {
-    padding: 20px;
-    border-radius: 8px;
-    color: var(--color-text, #e2e2e2);
-    max-height: 90vh;
-    overflow-y: auto;
-    width: 285px;
-    box-sizing: border-box;
-}
-
-#editarSection {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    box-sizing: border-box;
-}
-
-/* Estilo da seção de busca */
-.search-container {
-    position: relative;
-    width: 100%;
-    max-width: 280px;
-    margin: 0 auto;
-}
-
-.boxinputsearch {
-    position: relative;
-    height: 34px;
-    border-radius: 10px;
-    background: var(--color-background, #16191E);
-    border: 1px solid var(--color-primary, #4a87c0);
-    padding: 5px 0;
-    box-sizing: border-box;
-}
-
-#search {
-    padding: 5px 5px 5px 36px;
-    text-align: center;
-    border-radius: 7px;
-    color: var(--color-text, #e2e2e2);
-    outline: none;
-    height: 100%;
-    width: 100%;
-    background: transparent;
-    border: none;
-    box-sizing: border-box;
-}
-
-#search:focus,
-#search:not(:placeholder-shown) {
-    color: var(--color-primary, #4a87c0);
-}
-
-.search-icon {
-    position: absolute;
-    left: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    fill: var(--color-primary, #4a87c0);
-    z-index: 2;
-}
-
-/* Estilo do checkbox */
-.exibirSemLocal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 10px 0;
-}
-
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    font-size: 12px;
-    user-select: none;
-    width: 100%;
-    height: 30px;
-    border-bottom: 1px solid var(--color-secondary, #404851);
-}
-
-.custom-checkbox {
-    position: absolute;
-    opacity: 0;
-    height: 0;
-    width: 0;
-}
-
-.checkmark {
-    position: relative;
-    height: 14px;
-    width: 14px;
-    background-color: var(--color-background, #16191E);
-    border: 1px solid var(--color-primary, #4a87c0);
-    border-radius: 20px;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.custom-checkbox:checked ~ .checkmark {
-    background-color: var(--color-primary, #4a87c0);
-    box-shadow: 0 3px 7px rgba(var(--color-secondary-rgb, 64, 72, 81), 0.5);
-}
-
-.checkmark:after {
-    content: '';
-    position: absolute;
-    display: none;
-    left: 4px;
-    top: 1px;
-    width: 4px;
-    height: 8px;
-    border: solid var(--color-text, #e2e2e2);
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-
-.custom-checkbox:checked ~ .checkmark:after {
-    display: block;
-    animation: checkAnim 0.2s forwards;
-}
-
-@keyframes checkAnim {
-    0% { height: 0; }
-    100% { height: 8px; }
-}
-
-/* Estilo da lista de hosts */
-#hostList {
-    overflow-x: hidden;
-    height: 130px;
-    width: 100%;
-    max-width: 280px;
-    margin: 0 auto;
-}
-
-/* Estilo do formulário de edição */
-.edit-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0px;
-    max-width: 500px;
-    margin: 20px auto 0;
-}
-
-.edit-form .form-title {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--color-primary, #4a87c0) !important;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    position: relative;
-}
-
-.form-group label {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-text, #e2e2e2);
-}
-
-.form-group .required {
-    color: #ff4d4d;
-    font-size: 14px;
-}
-
-.input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.input-icon {
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    left: 12px;
-    fill: var(--color-secondary, #404851);
-    transition: fill 0.3s ease;
-}
-
-.edit-form .form-group input {
-    width: 100% !important;
-    padding: 12px 12px 12px 40px;
-    border: 1px solid var(--color-secondary, #404851);
-    border-radius: 6px;
-    background: var(--color-background, #16191E);
-    color: var(--color-text, #e2e2e2);
-    font-size: 14px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box;
-}
-
-.edit-form .form-group input:focus {
-    border-color: var(--color-primary, #4a87c0);
-    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb, 74, 135, 192), 0.1);
-    outline: none;
-}
-
-.edit-form .form-group input:focus + .input-icon,
-.edit-form .form-group input:not(:placeholder-shown) + .input-icon {
-    fill: var(--color-primary, #4a87c0);
-}
-
-.view-map-btn {
-    position: absolute;
-    right: -3px;
-    top: 45px;
-    background: none;
-    border: none;
-    color: var(--color-primary, #4a87c0);
-    font-size: 12px;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.view-map-btn:hover {
-    color: #3a7bc8;
-}
-
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--color-secondary, #404851);
-    border-radius: 6px;
-    background: var(--color-background, #16191E);
-    color: var(--color-text, #e2e2e2);
-    font-size: 14px;
-}
-
-.error-message {
-    font-size: 12px;
-    color: #ff4d4d;
-    min-height: 16px;
-    display: block;
-}
-
-.form-actions {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-    margin-top: 20px;
-}
-
-.cancel-btn,
-.submit-btn {
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-}
-
-.cancel-btn {
-    background: var(--color-secondary, #404851);
-    border: none;
-    color: var(--color-text, #e2e2e2);
-}
-
-.cancel-btn:hover {
-    background: #505860;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.cancel-btn:active {
-    transform: translateY(0);
-    box-shadow: none;
-}
-
-.submit-btn {
-    background: var(--color-primary, #4a87c0);
-    border: none;
-    color: #ffffff;
-}
-
-.submit-btn:hover {
-    background: #3a7bc8;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.submit-btn:active {
-    transform: translateY(0);
-    box-shadow: none;
-}
-
-.submit-btn:disabled {
-    background: var(--color-secondary, #404851);
-    cursor: not-allowed;
-    box-shadow: none;
-}
-
-.submit-btn.success {
-    background: #28a745;
-}
-
-.submit-btn.error {
-    background: #ff4d4d;
-}
-
-.message {
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 6px;
-    font-size: 14px;
-    text-align: center;
-    transition: opacity 0.3s ease;
-}
-
-.message.success {
-    background: rgba(40, 167, 69, 0.1);
-    color: #28a745;
-}
-
-.message.error {
-    background: rgba(255, 77, 77, 0.1);
-    color: #ff4d4d;
-}
-
-/* Estilo da seção de aprovação */
-.approval-section {
-    display: none;
-    padding: 0px;
-    border-radius: 8px;
-    color: var(--color-text, #e2e2e2);
-    max-height: 90vh;
-    overflow-x: hidden;
-    max-width: 285px;
-    box-sizing: border-box;
-}
-
-.approval-section .section-title {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--color-primary, #4a87c0);
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.pending-edits-list {
-    overflow-x: hidden;
-    height: 85dvh;
-}
-
-.modal-container {
-    width: 90%;
-    height: fit-content;
-    margin: 0 auto;
-    background: var(--color-glass, #16191ec2);
-    border-radius: 16px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.25);
-    border: 1px solid var(--color-primary);
-}
-
-.modal-container-header {
-    padding: 16px 23px;
-    border-bottom: 1px solid var(--color-secondary, #404851);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.modal-container-title {
-    display: flex;
-    align-items: center;
-    color: var(--color-text, #e2e2e2);
-    gap: 15px;
-    line-height: 1;
-    font-weight: 700;
-    font-size: 0.9em;
-}
-
-.modal-container-title svg {
-    width: 24px;
-    height: 24px;
-    fill: var(--color-primary, #4a87c0);
-}
-
-.modal-container-body {
-    padding: 12px;
-    overflow-y: auto;
-    color: var(--color-text, #e2e2e2);
-    font-size: 14px;
-    max-height: 140px;
-}
-
-.rtf > * + * {
-    margin-top: 0.5em;
-}
-
-.modal-container-body p {
-    margin: 8px 0;
-}
-
-.modal-container-body p span {
-    display: inline-block;
-    margin: 2px 0;
-}
-
-.modal-container-footer {
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-top: 1px solid var(--color-secondary, #404851);
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.modal-container-footer button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    background: transparent;
-    border: 1px solid var(--color-primary, #4a87c0);
-    font-weight: 600;
-    color: var(--color-text, #e2e2e2);
-    cursor: pointer;
-    transition: background-color 0.15s ease, transform 0.1s ease;
-}
-
-.modal-container-footer .button.is-ghost:hover,
-.modal-container-footer .button.is-ghost:focus {
-    background: var(--color-secondary, #404851);
-    transform: translateY(-1px);
-}
-
-.modal-container-footer .button.is-primary {
-    background: var(--color-primary, #4a87c0);
-    border: none;
-}
-
-.modal-container-footer .button.is-primary:hover,
-.modal-container-footer .button.is-primary:focus {
-    background: #3a7bc8;
-    transform: translateY(-1px);
-}
-
-/* Responsividade */
-@media (max-width: 600px) {
-    .editarEquipamento {
-        padding: 15px;
-    }
-
-    .edit-form {
-        gap: 0px;
-    }
-
-    .edit-form .form-title,
-    .approval-section .section-title {
-        font-size: 18px;
-    }
-
-    .form-group label {
-        font-size: 13px;
-    }
-
-    .edit-form .form-group input,
-    .edit-form .form-group select {
-        padding: 10px 10px 10px 36px;
-        font-size: 13px;
-    }
-
-    .input-icon {
-        width: 18px;
-        height: 18px;
-        left: 10px;
-    }
-
-    .view-map-btn {
-        font-size: 11px;
-        right: 8px;
-    }
-
-    .error-message {
-        font-size: 11px;
-    }
-
-    .form-actions {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .cancel-btn,
-    .submit-btn {
-        padding: 8px 16px;
-        font-size: 13px;
-        width: 100%;
-    }
-
-    #hostList {
-        height: 100px;
-        width: 100%;
-    }
-
-    .modal-container {
-        width: 90%;
-    }
-
-    .modal-container-footer button {
-        padding: 8px 16px;
-        font-size: 13px;
-    }
-}
-
-@media (max-width: 360px) {
-    .editarEquipamento {
-        padding: 10px;
-    }
-
-    .edit-form .form-title,
-    .approval-section .section-title {
-        font-size: 16px;
-    }
-
-    .form-group label {
-        font-size: 12px;
-    }
-
-    .edit-form .form-group input,
-    .edit-form .form-group select {
-        padding: 8px 8px 8px 32px;
-        font-size: 12px;
-    }
-
-    .input-icon {
-        width: 16px;
-        height: 16px;
-        left: 8px;
-    }
-
-    .view-map-btn {
-        font-size: 10px;
-        right: 6px;
-    }
-
-    .error-message {
-        font-size: 10px;
-    }
-
-    .cancel-btn,
-    .submit-btn {
-        padding: 8px 12px;
-        font-size: 12px;
-    }
-
-    #hostList {
-        height: 80px;
-        width: 100%;
-    }
-
-    .modal-container-footer button {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-}
-
-/* Acessibilidade */
-@media (forced-colors: active) {
-    .edit-form .form-group input:focus,
-    .edit-form .form-group select:focus {
-        outline: 2px solid Highlight;
-    }
-
-    .cancel-btn,
-    .submit-btn,
-    .modal-container-footer button {
-        forced-color-adjust: none;
-        border: 1px solid transparent;
-    }
-
-    .cancel-btn:hover,
-    .submit-btn:hover,
-    .modal-container-footer button:hover {
-        background: Highlight;
-        color: HighlightText;
-    }
-
-    .submit-btn:disabled {
-        opacity: 0.5;
-    }
-}
-
-/* Correção para cursor e seleção de texto */
-.edit-form input,
-.edit-form select,
-.edit-form button,
-.cancel-btn,
-.submit-btn,
-.modal-container-footer button {
-    cursor: text;
-    user-select: text;
-}
-
-.edit-form button,
-.cancel-btn,
-.submit-btn,
-.modal-container-footer button {
-    cursor: pointer;
-}
+                .editarEquipamento {
+                    padding: 20px;
+                    border-radius: 8px;
+                    color: var(--color-text, #e2e2e2);
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    width: 285px;
+                    box-sizing: border-box;
+                }
+        
+                #editarSection {
+                    width: 100%;
+                    max-width: 600px;
+                    margin: 0 auto;
+                    box-sizing: border-box;
+                }
+        
+                /* Estilo da seção de busca */
+                .search-container {
+                    position: relative;
+                    width: 100%;
+                    max-width: 280px;
+                    margin: 0 auto;
+                }
+        
+                .boxinputsearch {
+                    position: relative;
+                    height: 34px;
+                    border-radius: 10px;
+                    background: var(--color-background, #16191E);
+                    border: 1px solid var(--color-primary, #4a87c0);
+                    padding: 5px 0;
+                    box-sizing: border-box;
+                }
+        
+                #search {
+                    padding: 5px 5px 5px 36px;
+                    text-align: center;
+                    border-radius: 7px;
+                    color: var(--color-text, #e2e2e2);
+                    outline: none;
+                    height: 100%;
+                    width: 100%;
+                    background: transparent;
+                    border: none;
+                    box-sizing: border-box;
+                }
+        
+                #search:focus,
+                #search:not(:placeholder-shown) {
+                    color: var(--color-primary, #4a87c0);
+                }
+        
+                .search-icon {
+                    position: absolute;
+                    left: 12px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 18px;
+                    height: 18px;
+                    fill: var(--color-primary, #4a87c0);
+                    z-index: 2;
+                }
+        
+                /* Estilo do checkbox */
+                .exibirSemLocal {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 10px 0;
+                }
+        
+                .checkbox-container {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 10px;
+                    font-size: 12px;
+                    user-select: none;
+                    width: 100%;
+                    height: 30px;
+                    border-bottom: 1px solid var(--color-secondary, #404851);
+                }
+        
+                .custom-checkbox {
+                    position: absolute;
+                    opacity: 0;
+                    height: 0;
+                    width: 0;
+                }
+        
+                .checkmark {
+                    position: relative;
+                    height: 14px;
+                    width: 14px;
+                    background-color: var(--color-background, #16191E);
+                    border: 1px solid var(--color-primary, #4a87c0);
+                    border-radius: 20px;
+                    transition: background-color 0.3s, box-shadow 0.3s;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                }
+        
+                .custom-checkbox:checked ~ .checkmark {
+                    background-color: var(--color-primary, #4a87c0);
+                    box-shadow: 0 3px 7px rgba(var(--color-secondary-rgb, 64, 72, 81), 0.5);
+                }
+        
+                .checkmark:after {
+                    content: '';
+                    position: absolute;
+                    display: none;
+                    left: 4px;
+                    top: 1px;
+                    width: 4px;
+                    height: 8px;
+                    border: solid var(--color-text, #e2e2e2);
+                    border-width: 0 2px 2px 0;
+                    transform: rotate(45deg);
+                }
+        
+                .custom-checkbox:checked ~ .checkmark:after {
+                    display: block;
+                    animation: checkAnim 0.2s forwards;
+                }
+        
+                @keyframes checkAnim {
+                    0% { height: 0; }
+                    100% { height: 8px; }
+                }
+        
+                /* Estilo da lista de hosts */
+                #hostList {
+                    overflow-x: hidden;
+                    height: 130px;
+                    width: 100%;
+                    max-width: 280px;
+                    margin: 0 auto;
+                }
+        
+                .host-item {
+                    padding: 8px;
+                    cursor: pointer;
+                    border-bottom: 1px solid var(--color-secondary, #404851);
+                    color: var(--color-text, #e2e2e2);
+                    transition: background-color 0.2s ease;
+                }
+        
+                .host-item:hover {
+                    background-color: var(--color-secondary, #404851);
+                }
+        
+                /* Estilo do formulário de edição */
+                .edit-form {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0px;
+                    max-width: 500px;
+                    margin: 20px auto 0;
+                }
+        
+                .edit-form .form-title {
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: var(--color-primary, #4a87c0) !important;
+                    text-align: center;
+                    margin-bottom: 10px;
+                }
+        
+                .form-group {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    position: relative;
+                }
+        
+                .form-group label {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: var(--color-text, #e2e2e2);
+                }
+        
+                .form-group .required {
+                    color: #ff4d4d;
+                    font-size: 14px;
+                }
+        
+                .input-wrapper {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                }
+        
+                .input-icon {
+                    width: 20px;
+                    height: 20px;
+                    position: absolute;
+                    left: 12px;
+                    fill: var(--color-secondary, #404851);
+                    transition: fill 0.3s ease;
+                }
+        
+                .edit-form .form-group input {
+                    width: 100% !important;
+                    padding: 12px 12px 12px 40px;
+                    border: 1px solid var(--color-secondary, #404851);
+                    border-radius: 6px;
+                    background: var(--color-background, #16191E);
+                    color: var(--color-text, #e2e2e2);
+                    font-size: 14px;
+                    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+                    box-sizing: border-box;
+                }
+        
+                .edit-form .form-group input:focus {
+                    border-color: var(--color-primary, #4a87c0);
+                    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb, 74, 135, 192), 0.1);
+                    outline: none;
+                }
+        
+                .edit-form .form-group input:focus + .input-icon,
+                .edit-form .form-group input:not(:placeholder-shown) + .input-icon {
+                    fill: var(--color-primary, #4a87c0);
+                }
+        
+                /* Estilo para input readonly */
+                .edit-form .form-group input:read-only {
+                    background: var(--color-secondary, #404851);
+                    cursor: not-allowed;
+                    color: var(--color-text, #e2e2e2);
+                    opacity: 0.7;
+                }
+        
+                .edit-form .form-group input:read-only:focus {
+                    border-color: var(--color-secondary, #404851);
+                    box-shadow: none;
+                }
+        
+                .view-map-btn {
+                    position: absolute;
+                    right: -3px;
+                    top: 45px;
+                    background: none;
+                    border: none;
+                    color: var(--color-primary, #4a87c0);
+                    font-size: 12px;
+                    cursor: pointer;
+                    transition: color 0.3s ease;
+                }
+        
+                .view-map-btn:hover {
+                    color: #3a7bc8;
+                }
+        
+                .form-group select {
+                    width: 100%;
+                    padding: 10px;
+                    border: 1px solid var(--color-secondary, #404851);
+                    border-radius: 6px;
+                    background: var(--color-background, #16191E);
+                    color: var(--color-text, #e2e2e2);
+                    font-size: 14px;
+                }
+        
+                .error-message {
+                    font-size: 12px;
+                    color: #ff4d4d;
+                    min-height: 16px;
+                    display: block;
+                }
+        
+                .form-actions {
+                    display: flex;
+                    gap: 12px;
+                    justify-content: flex-end;
+                    margin-top: 20px;
+                }
+        
+                .cancel-btn,
+                .submit-btn {
+                    padding: 10px 20px;
+                    border-radius: 6px;
+                    font-size: 14px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+                }
+        
+                .cancel-btn {
+                    background: var(--color-secondary, #404851);
+                    border: none;
+                    color: var(--color-text, #e2e2e2);
+                }
+        
+                .cancel-btn:hover {
+                    background: #505860;
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                }
+        
+                .cancel-btn:active {
+                    transform: translateY(0);
+                    box-shadow: none;
+                }
+        
+                .submit-btn {
+                    background: var(--color-primary, #4a87c0);
+                    border: none;
+                    color: #ffffff;
+                }
+        
+                .submit-btn:hover {
+                    background: #3a7bc8;
+                    transform: translateY(-1px);
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                }
+        
+                .submit-btn:active {
+                    transform: translateY(0);
+                    box-shadow: none;
+                }
+        
+                .submit-btn:disabled {
+                    background: var(--color-secondary, #404851);
+                    cursor: not-allowed;
+                    box-shadow: none;
+                }
+        
+                .submit-btn.success {
+                    background: #28a745;
+                }
+        
+                .submit-btn.error {
+                    background: #ff4d4d;
+                }
+        
+                .message {
+                    margin-top: 20px;
+                    padding: 10px;
+                    border-radius: 6px;
+                    font-size: 14px;
+                    text-align: center;
+                    transition: opacity 0.3s ease;
+                }
+        
+                .message.success {
+                    background: rgba(40, 167, 69, 0.1);
+                    color: #28a745;
+                }
+        
+                .message.error {
+                    background: rgba(255, 77, 77, 0.1);
+                    color: #ff4d4d;
+                }
+        
+                /* Estilo da seção de aprovação */
+                .approval-section {
+                    display: none;
+                    padding: 0px;
+                    border-radius: 8px;
+                    color: var(--color-text, #e2e2e2);
+                    max-height: 90vh;
+                    overflow-x: hidden;
+                    max-width: 285px;
+                    box-sizing: border-box;
+                }
+        
+                .approval-section .section-title {
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: var(--color-primary, #4a87c0);
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+        
+                .pending-edits-list {
+                    overflow-x: hidden;
+                    height: 85dvh;
+                }
+        
+                .modal-container {
+                    width: 90%;
+                    height: fit-content;
+                    margin: 0 auto;
+                    background: var(--color-glass, #16191ec2);
+                    border-radius: 16px;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.25);
+                    border: 1px solid var(--color-primary);
+                }
+        
+                .modal-container-header {
+                    padding: 16px 23px;
+                    border-bottom: 1px solid var(--color-secondary, #404851);
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+        
+                .modal-container-title {
+                    display: flex;
+                    align-items: center;
+                    color: var(--color-text, #e2e2e2);
+                    gap: 15px;
+                    line-height: 1;
+                    font-weight: 700;
+                    font-size: 0.9em;
+                }
+        
+                .modal-container-title svg {
+                    width: 24px;
+                    height: 24px;
+                    fill: var(--color-primary, #4a87c0);
+                }
+        
+                .modal-container-body {
+                    padding: 12px;
+                    overflow-y: auto;
+                    color: var(--color-text, #e2e2e2);
+                    font-size: 14px;
+                    max-height: 140px;
+                }
+        
+                .rtf > * + * {
+                    margin-top: 0.5em;
+                }
+        
+                .modal-container-body p {
+                    margin: 8px 0;
+                }
+        
+                .modal-container-body p span {
+                    display: inline-block;
+                    margin: 2px 0;
+                }
+        
+                .modal-container-footer {
+                    padding: 15px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-top: 1px solid var(--color-secondary, #404851);
+                    gap: 8px;
+                    flex-wrap: wrap;
+                }
+        
+                .modal-container-footer button {
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    background: transparent;
+                    border: 1px solid var(--color-primary, #4a87c0);
+                    font-weight: 600;
+                    color: var(--color-text, #e2e2e2);
+                    cursor: pointer;
+                    transition: background-color 0.15s ease, transform 0.1s ease;
+                }
+        
+                .modal-container-footer .button.is-ghost:hover,
+                .modal-container-footer .button.is-ghost:focus {
+                    background: var(--color-secondary, #404851);
+                    transform: translateY(-1px);
+                }
+        
+                .modal-container-footer .button.is-primary {
+                    background: var(--color-primary, #4a87c0);
+                    border: none;
+                }
+        
+                .modal-container-footer .button.is-primary:hover,
+                .modal-container-footer .button.is-primary:focus {
+                    background: #3a7bc8;
+                    transform: translateY(-1px);
+                }
+        
+                /* Estilo para acessibilidade (sr-only) */
+                .sr-only {
+                    position: absolute;
+                    width: 1px;
+                    height: 1px;
+                    padding: 0;
+                    margin: -1px;
+                    overflow: hidden;
+                    clip: rect(0, 0, 0, 0);
+                    border: 0;
+                }
+        
+                /* Responsividade */
+                @media (max-width: 600px) {
+                    .editarEquipamento {
+                        padding: 15px;
+                    }
+        
+                    .edit-form {
+                        gap: 0px;
+                    }
+        
+                    .edit-form .form-title,
+                    .approval-section .section-title {
+                        font-size: 18px;
+                    }
+        
+                    .form-group label {
+                        font-size: 13px;
+                    }
+        
+                    .edit-form .form-group input,
+                    .edit-form .form-group select {
+                        padding: 10px 10px 10px 36px;
+                        font-size: 13px;
+                    }
+        
+                    .input-icon {
+                        width: 18px;
+                        height: 18px;
+                        left: 10px;
+                    }
+        
+                    .view-map-btn {
+                        font-size: 11px;
+                        right: 8px;
+                    }
+        
+                    .error-message {
+                        font-size: 11px;
+                    }
+        
+                    .form-actions {
+                        flex-direction: column;
+                        gap: 8px;
+                    }
+        
+                    .cancel-btn,
+                    .submit-btn {
+                        padding: 8px 16px;
+                        font-size: 13px;
+                        width: 100%;
+                    }
+        
+                    #hostList {
+                        height: 100px;
+                        width: 100%;
+                    }
+        
+                    .modal-container {
+                        width: 90%;
+                    }
+        
+                    .modal-container-footer button {
+                        padding: 8px 16px;
+                        font-size: 13px;
+                    }
+                }
+        
+                @media (max-width: 360px) {
+                    .editarEquipamento {
+                        padding: 10px;
+                    }
+        
+                    .edit-form .form-title,
+                    .approval-section .section-title {
+                        font-size: 16px;
+                    }
+        
+                    .form-group label {
+                        font-size: 12px;
+                    }
+        
+                    .edit-form .form-group input,
+                    .edit-form .form-group select {
+                        padding: 8px 8px 8px 32px;
+                        font-size: 12px;
+                    }
+        
+                    .input-icon {
+                        width: 16px;
+                        height: 16px;
+                        left: 8px;
+                    }
+        
+                    .view-map-btn {
+                        font-size: 10px;
+                        right: 6px;
+                    }
+        
+                    .error-message {
+                        font-size: 10px;
+                    }
+        
+                    .cancel-btn,
+                    .submit-btn {
+                        padding: 8px 12px;
+                        font-size: 12px;
+                    }
+        
+                    #hostList {
+                        height: 80px;
+                        width: 100%;
+                    }
+        
+                    .modal-container-footer button {
+                        padding: 6px 12px;
+                        font-size: 12px;
+                    }
+                }
+        
+                /* Acessibilidade */
+                @media (forced-colors: active) {
+                    .edit-form .form-group input:focus,
+                    .edit-form .form-group select:focus {
+                        outline: 2px solid Highlight;
+                    }
+        
+                    .cancel-btn,
+                    .submit-btn,
+                    .modal-container-footer button {
+                        forced-color-adjust: none;
+                        border: 1px solid transparent;
+                    }
+        
+                    .cancel-btn:hover,
+                    .submit-btn:hover,
+                    .modal-container-footer button:hover {
+                        background: Highlight;
+                        color: HighlightText;
+                    }
+        
+                    .submit-btn:disabled {
+                        opacity: 0.5;
+                    }
+                }
+        
+                /* Correção para cursor e seleção de texto */
+                .edit-form input,
+                .edit-form select,
+                .edit-form button,
+                .cancel-btn,
+                .submit-btn,
+                .modal-container-footer button {
+                    cursor: text;
+                    user-select: text;
+                }
+        
+                .edit-form button,
+                .cancel-btn,
+                .submit-btn,
+                .modal-container-footer button {
+                    cursor: pointer;
+                }
             </style>
-
+        
             <script>
-// Função para buscar informações do usuário via API
-async function fetchUserInfo() {
-    try {
-        const response = await fetch(`${server}:5002/get-user-info`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include' // Se necessário para autenticação
-        });
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar informações do usuário: ${response.status}`);
-        }
-        const data = await response.json();
-        return {
-            hostname: data.hostname,
-            userType: data.user_type
-        };
-    } catch (error) {
-        console.error('Erro ao obter informações do usuário:', error);
-        return { hostname: 'Desconhecido', userType: 'guest' }; // Fallback
-    }
-}
-
-// Função para verificar se o usuário é admin
-async function verificarUsuarioAdmin() {
-    const userInfo = await fetchUserInfo();
-    console.log(`Hostname: ${userInfo.hostname}, Tipo de usuário: ${userInfo.userType}`);
-    return userInfo.userType === 'admin';
-}
-
-// Função para ocultar a seção de aprovação para usuários normais
-async function ocultarAprovacaoParaUsuariosNormais() {
-    const isAdmin = await verificarUsuarioAdmin();
-
-    const approvalSection = document.getElementById('approvalSection');
-    const approvalButton = document.querySelector('button[onclick*="exibirAprovacao"]');
-
-    if (!isAdmin) {
-        // Oculta a seção de aprovação e o botão para usuários não admin
-        if (approvalSection) {
-            approvalSection.style.display = 'none';
-        }
-        if (approvalButton) {
-            approvalButton.style.display = 'none';
-        }
-    } else {
-        // Garante que a seção e o botão estejam visíveis para admins
-        if (approvalSection) {
-            approvalSection.style.display = 'block';
-        }
-        if (approvalButton) {
-            approvalButton.style.display = 'block';
-        }
-    }
-}
-
-// Chame a função ao carregar a página
-document.addEventListener('DOMContentLoaded', () => {
-    ocultarAprovacaoParaUsuariosNormais();
-});
-            </script>
-
-            
-            <script>
+                // Função para buscar informações do usuário via API
+                async function fetchUserInfo() {
+                    try {
+                        const response = await fetch(`${server}:5002/get-user-info`, {
+                            method: 'GET',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include'
+                        });
+                        if (!response.ok) {
+                            throw new Error(`Erro ao buscar informações do usuário: ${response.status}`);
+                        }
+                        const data = await response.json();
+                        return {
+                            hostname: data.hostname,
+                            userType: data.user_type
+                        };
+                    } catch (error) {
+                        console.error('Erro ao obter informações do usuário:', error);
+                        return { hostname: 'Desconhecido', userType: 'guest' };
+                    }
+                }
+        
+                // Função para verificar se o usuário é admin
+                async function verificarUsuarioAdmin() {
+                    const userInfo = await fetchUserInfo();
+                    console.log(`Hostname: ${userInfo.hostname}, Tipo de usuário: ${userInfo.userType}`);
+                    return userInfo.userType === 'admin';
+                }
+        
+                // Função para ocultar a seção de aprovação para usuários normais
+                async function ocultarAprovacaoParaUsuariosNormais() {
+                    const isAdmin = await verificarUsuarioAdmin();
+                    const approvalSection = document.getElementById('approvalSection');
+                    const approvalButton = document.querySelector('button[onclick*="exibirAprovacao"]');
+        
+                    if (!isAdmin) {
+                        if (approvalSection) approvalSection.style.display = 'none';
+                        if (approvalButton) approvalButton.style.display = 'none';
+                    } else {
+                        if (approvalSection) approvalSection.style.display = 'block';
+                        if (approvalButton) approvalButton.style.display = 'block';
+                    }
+                }
+        
+                // Chame a função ao carregar a página
+                document.addEventListener('DOMContentLoaded', () => {
+                    ocultarAprovacaoParaUsuariosNormais();
+                });
+        
                 // Função para validar IP
-function validateIP(ip) {
-    const ipRegex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-    return ipRegex.test(ip);
-}
-
-// Função para validar coordenadas (Latitude, Longitude)
-function validateCoordinates(local) {
-    if (!local) return true; // Campo opcional
-    const coordsRegex = /^-?\d{1,2}\.\d{4,},\s*-?\d{1,3}\.\d{4,}$/;
-    return coordsRegex.test(local);
-}
-
-// Função para limpar o formulário
-function resetForm() {
-    const form = document.getElementById('editarHostForm');
-    form.reset();
-    document.querySelectorAll('.error-message').forEach(span => span.textContent = '');
-    document.querySelectorAll('.form-group input').forEach(input => input.classList.remove('error'));
-    const messageDiv = document.getElementById('message');
-    messageDiv.textContent = '';
-    messageDiv.classList.remove('success', 'error');
-    const submitButton = document.querySelector('#editarHostForm .submit-btn');
-    submitButton.textContent = 'Solicitar Alterações';
-    submitButton.disabled = false;
-    submitButton.classList.remove('success', 'error');
-}
-
-// Função para pré-visualizar localização no mapa
-function previewLocation() {
-    const local = document.getElementById('local').value.trim();
-    if (validateCoordinates(local)) {
-        const [lat, lng] = local.split(', ').map(Number);
-        map.flyTo([lat, lng], 18, { duration: 0.5 });
-        const tempMarker = L.marker([lat, lng], {
-            icon: L.divIcon({
-                className: 'temp-marker',
-                html: `<div style="background-color: yellow; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
-            })
-        }).addTo(map);
-        setTimeout(() => {
-            map.removeLayer(tempMarker);
-        }, 5000);
-    } else {
-        document.getElementById('local-error').textContent = 'Coordenadas inválidas.';
-        document.getElementById('local').classList.add('error');
-    }
-}
-
-// Validação em tempo real
-document.getElementById('ip').addEventListener('input', function () {
-    const ip = this.value.trim();
-    const errorSpan = document.getElementById('ip-error');
-    if (!ip) {
-        errorSpan.textContent = 'O campo "IP" é obrigatório.';
-        this.classList.add('error');
-    } else if (!validateIP(ip)) {
-        errorSpan.textContent = 'Por favor, insira um IP válido (ex.: 192.168.1.1).';
-        this.classList.add('error');
-    } else {
-        errorSpan.textContent = '';
-        this.classList.remove('error');
-    }
-});
-
-document.getElementById('local').addEventListener('input', function () {
-    const local = this.value.trim();
-    const errorSpan = document.getElementById('local-error');
-    if (local && !validateCoordinates(local)) {
-        errorSpan.textContent = 'Por favor, insira coordenadas válidas (ex.: -23.5505, -46.6333).';
-        this.classList.add('error');
-    } else {
-        errorSpan.textContent = '';
-        this.classList.remove('error');
-    }
-});
-
-// Submissão do formulário
-document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    const ip = document.getElementById('ip').value.trim();
-    const nome = document.getElementById('nome').value.trim();
-    const local = document.getElementById('local').value.trim();
-    const observacao = document.getElementById('observacao').value.trim();
-    const tipo = 'sw';
-    const ativo = 'blue';
-
-    const messageDiv = document.getElementById('message');
-    const submitButton = document.querySelector('#editarHostForm .submit-btn');
-    const ipError = document.getElementById('ip-error');
-    const localError = document.getElementById('local-error');
-
-    // Resetar mensagens de erro
-    messageDiv.textContent = '';
-    messageDiv.classList.remove('success', 'error');
-    ipError.textContent = '';
-    localError.textContent = '';
-    document.querySelectorAll('.form-group input').forEach(input => input.classList.remove('error'));
-
-    // Validação
-    let hasError = false;
-
-    if (!ip) {
-        ipError.textContent = 'O campo "IP" é obrigatório.';
-        document.getElementById('ip').classList.add('error');
-        hasError = true;
-    } else if (!validateIP(ip)) {
-        ipError.textContent = 'Por favor, insira um IP válido (ex.: 192.168.1.1).';
-        document.getElementById('ip').classList.add('error');
-        hasError = true;
-    }
-
-    if (local && !validateCoordinates(local)) {
-        localError.textContent = 'Por favor, insira coordenadas válidas (ex.: -23.5505, -46.6333).';
-        document.getElementById('local').classList.add('error');
-        hasError = true;
-    }
-
-    if (hasError) return;
-
-    // Enviar solicitação
-    submitButton.textContent = 'Enviando...';
-    submitButton.disabled = true;
-    submitButton.classList.remove('success', 'error');
-
-    try {
-        const response = await fetch(`${server}:5002/editar-host`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ ip, nome, local, observacao, tipo, ativo })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            submitButton.textContent = 'Enviado';
-            submitButton.classList.add('success');
-            messageDiv.textContent = 'Solicitação enviada para aprovação!';
-            messageDiv.classList.add('success');
-            setTimeout(() => {
-                resetForm();
-            }, 3000);
-        } else {
-            submitButton.textContent = 'Solicitar Alterações';
-            submitButton.classList.add('error');
-            messageDiv.textContent = `Erro: ${data.erro || 'Falha ao enviar solicitação.'}`;
-            messageDiv.classList.add('error');
-            submitButton.disabled = false;
-        }
-    } catch (error) {
-        console.error('Erro:', error);
-        submitButton.textContent = 'Solicitar Alterações';
-        submitButton.classList.add('error');
-        messageDiv.textContent = 'Erro ao conectar ao servidor.';
-        messageDiv.classList.add('error');
-        submitButton.disabled = false;
-    }
-});
-
-// Funções para alternar seções
-function showSection(section) {
-    document.getElementById('editarSection').classList.add('hidden');
-    document.getElementById('adicionarSection')?.classList.add('hidden');
-    document.getElementById('approvalSection').classList.add('hidden');
-    document.getElementById(`${section}Section`).classList.remove('hidden');
-}
-
-function exibirAprovacao() {
-    console.log('Exibindo Aprovação');
-    const editarEquipamento = document.getElementById('editarEquipamento');
-    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
-    const homebox = document.getElementById('homebox');
-    const approvalSection = document.getElementById('approvalSection');
-    const databoxsection = document.getElementById('databox');
-
-    editarEquipamento.style.display = 'none';
-    adicionarEquipamento.style.display = 'none';
-    homebox.style.display = 'none';
-    approvalSection.style.display = 'block';
-    databoxsection.style.display = 'block';
-    loadPendingEdits();
-}
-
-function limparAprove() {
-    const approvalSection = document.getElementById('approvalSection');
-    approvalSection.style.display = 'none';
-}
-
-function exibirEditar() {
-    const editarEquipamento = document.getElementById('editarEquipamento');
-    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
-    const homebox = document.getElementById('homebox');
-    const databoxsection = document.getElementById('databox');
-
-    editarEquipamento.style.display = 'block';
-    adicionarEquipamento.style.display = 'none';
-    homebox.style.display = 'none';
-    databoxsection.style.display = 'block';
-    limparInput?.();
-}
-
-function exibirAdicionar() {
-    const editarEquipamento = document.getElementById('editarEquipamento');
-    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
-    const homebox = document.getElementById('homebox');
-    const databoxsection = document.getElementById('databox');
-
-    editarEquipamento.style.display = 'none';
-    adicionarEquipamento.style.display = 'block';
-    homebox.style.display = 'none';
-    databoxsection.style.display = 'block';
-}
-
-function exibirHome() {
-    const editarEquipamento = document.getElementById('editarEquipamento');
-    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
-    const homebox = document.getElementById('homebox');
-    const databoxsection = document.getElementById('databox');
-
-    databoxsection.style.display = 'none';
-    editarEquipamento.style.display = 'none';
-    adicionarEquipamento.style.display = 'none';
-    homebox.style.display = 'flex';
-}
-
-// Funções para a seção de aprovação
-async function loadPendingEdits() {
-    try {
-        console.log('Carregando edições pendentes...');
-        const response = await fetch(`${server}:5002/pending-edits`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`);
-        }
-
-        const pendingEdits = await response.json();
-        console.log('Edições:', pendingEdits);
-        const list = document.getElementById('pendingEditsList');
-        list.innerHTML = pendingEdits.length === 0 ? '<p>Nenhuma edição pendente.</p>' : '';
-
-        pendingEdits.forEach(edit => {
-            const div = document.createElement('div');
-            const formattedDate = formatDate(edit.timestamp); // Alterado de data_solicitacao para timestamp
-            const originalHost = dadosAtuais?.hosts?.find(host => host.ip === edit.changes.ip) || {};
-            const original = {
-                ip: originalHost.ip || '',
-                nome: originalHost.nome || '',
-                local: originalHost.local || '',
-                observacao: originalHost.observacao || ''
-            };
-            const novo = edit.changes; // Acessar mudanças diretamente de changes
-
-            const highlightChange = (field, originalValue, newValue) => {
-                if (originalValue !== newValue) {
-                    return `${field}:<br><span style="background-color: #00ff0078; font-weight: bold;"> ${newValue || '(vazia)'}</span> -> <span style="background-color: #ff000066; font-weight: bold;">${originalValue || '(vazia)'}</span>`;
+                function validateIP(ip) {
+                    const ipRegex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+                    return ipRegex.test(ip);
                 }
-                return `<span>${field}:<br> ${newValue || '(vazia)'}</span>`;
-            };
-
-            const changesHtml = `
-                <p>${highlightChange('IP', original.ip, novo.ip)}</p>
-                <p>${highlightChange('Nome', original.nome, novo.nome)}</p>
-                <p>${highlightChange('Local', original.local, novo.local)}</p>
-                <p>${highlightChange('Observação', original.observacao, novo.observacao)}</p>
-            `;
-
-            const mapButton = original.local !== novo.local && novo.local 
-                ? `<br><button class="button is-ghost" onclick="showProposedLocation('${novo.local}', '${novo.ip}')">Ver no Mapa</button>` 
-                : '';
-
-            div.className = 'modal-container';
-            div.innerHTML = `
-                <header class="modal-container-header">
-                    <span class="modal-container-title">
-                        <svg aria-hidden="true" height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M14 9V4H5v16h6.056c.328.417.724.785 1.18 1.085l1.39.915H3.993A.993.993 0 0 1 3 21.008V2.992C3 2.455 3.449 2 4.002 2h10.995L21 8v1h-7zm-2 2h9v5.949c0 .99-.501 1.916-1.336 2.465L16.5 21.498l-3.164-2.084A2.953 2.953 0 0 1 12 16.95V11zm2 5.949c0 .316.162.614.436.795l2.064 1.36 2.064-1.36a.954.954 0 0 0 .436-.795V13h-5v3.949z" fill="var(--color-primary)"></path>
-                        </svg>
-                        Solicitação de ${edit.submitted_by} <!-- Alterado de solicitante para submitted_by -->
-                    </span>
-                </header>
-                <section class="modal-container-body rtf">
-                    ${changesHtml}
-                    <p style="color: var(--color-secondary); font-size: 0.9em; margin-top: 1em;">Data: ${formattedDate}</p>
-                </section>
-                <footer class="modal-container-footer">
-                    <button class="button is-ghost" onclick="rejectEdit('${edit.id}')">Rejeitar</button>
-                    <button class="button is-primary" onclick="approveEdit('${edit.id}')">Aprovar</button>
-                    ${mapButton}
-                </footer>
-            `;
-            list.appendChild(div);
-        });
-    } catch (error) {
-        console.error('Erro:', error);
-        document.getElementById('pendingEditsList').innerHTML = '<p>Erro ao carregar edições.</p>';
-    }
-}
-
-function showProposedLocation(local, ip) {
-    console.log('Chamando showProposedLocation com local:', local, 'e IP:', ip);
-    const [lat, lng] = local.split(', ').map(Number);
-    if (!isNaN(lat) && !isNaN(lng)) {
-        console.log('Coordenadas válidas:', lat, lng);
-        map.flyTo([lat, lng], 18, { duration: 0.5 });
-        const tempMarker = L.marker([lat, lng], {
-            icon: L.divIcon({
-                className: 'temp-marker',
-                html: `<div style="background-color: yellow; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
-            })
-        }).addTo(map);
-        console.log('Marcador temporário adicionado em:', [lat, lng]);
-        setTimeout(() => {
-            map.removeLayer(tempMarker);
-            console.log('Marcador temporário removido');
-        }, 5000);
-
-        if (ip && pontosMapeados[ip] && pontosMapeados[ip].marker) {
-            const marker = pontosMapeados[ip].marker;
-            marker.openPopup();
-            console.log('Popup aberto para marcador do IP:', ip);
-        } else {
-            console.warn('Nenhum marcador encontrado para o IP:', ip);
-            markersLayer.eachLayer(marker => {
-                const markerLatLng = marker.getLatLng();
-                const tolerance = 0.0001;
-                if (
-                    Math.abs(markerLatLng.lat - lat) < tolerance &&
-                    Math.abs(markerLatLng.lng - lng) < tolerance
-                ) {
-                    marker.openPopup();
-                    console.log('Popup aberto por coordenadas como fallback em:', [lat, lng]);
+        
+                // Função para validar coordenadas (Latitude, Longitude)
+                function validateCoordinates(local) {
+                    if (!local) return true; // Campo opcional
+                    const coordsRegex = /^-?\d{1,2}\.\d{4,},\s*-?\d{1,3}\.\d{4,}$/;
+                    return coordsRegex.test(local);
                 }
-            });
-        }
-    } else {
-        console.error('Coordenadas inválidas:', local);
-        alert('Coordenadas inválidas!');
-    }
-}
-
-function formatDate(isoDate) {
-    const date = new Date(isoDate);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-}
-
-async function approveEdit(id) {
-    try {
-        const response = await fetch(`${server}:5002/approve-edit/${id}`, { method: 'POST' });
-        if (response.ok) {
-            loadPendingEdits();
-        }
-    } catch (error) {
-        console.error('Erro ao aprovar:', error);
-    }
-}
-
-async function rejectEdit(id) {
-    try {
-        const response = await fetch(`${server}:5002/reject-edit/${id}`, { method: 'DELETE' });
-        if (response.ok) {
-            loadPendingEdits();
-        }
-    } catch (error) {
-        console.error('Erro ao rejeitar:', error);
-    }
-}
+        
+                // Função para limpar o formulário
+                function resetForm() {
+                    const form = document.getElementById('editarHostForm');
+                    form.reset();
+                    document.querySelectorAll('.error-message').forEach(span => span.textContent = '');
+                    document.querySelectorAll('.form-group input').forEach(input => input.classList.remove('error'));
+                    const messageDiv = document.getElementById('message');
+                    messageDiv.textContent = '';
+                    messageDiv.classList.remove('success', 'error');
+                    const submitButton = document.querySelector('#editarHostForm .submit-btn');
+                    submitButton.textContent = 'Solicitar Alterações';
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('success', 'error');
+                }
+        
+                // Função para pré-visualizar localização no mapa
+                function previewLocation() {
+                    const local = document.getElementById('local').value.trim();
+                    if (validateCoordinates(local)) {
+                        const [lat, lng] = local.split(', ').map(Number);
+                        map.flyTo([lat, lng], 18, { duration: 0.5 });
+                        const tempMarker = L.marker([lat, lng], {
+                            icon: L.divIcon({
+                                className: 'temp-marker',
+                                html: `<div style="background-color: yellow; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
+                                iconSize: [20, 20],
+                                iconAnchor: [10, 10]
+                            })
+                        }).addTo(map);
+                        setTimeout(() => {
+                            map.removeLayer(tempMarker);
+                        }, 5000);
+                    } else {
+                        document.getElementById('local-error').textContent = 'Coordenadas inválidas.';
+                        document.getElementById('local').classList.add('error');
+                    }
+                }
+        
+                // Validação em tempo real para Observação
+                document.getElementById('observacao').addEventListener('input', function () {
+                    const observacao = this.value.trim();
+                    const errorSpan = document.getElementById('observacao-error');
+                    if (!observacao) {
+                        errorSpan.textContent = 'O campo "Observação" é obrigatório.';
+                        this.classList.add('error');
+                    } else {
+                        errorSpan.textContent = '';
+                        this.classList.remove('error');
+                    }
+                });
+        
+                // Validação em tempo real para Local
+                document.getElementById('local').addEventListener('input', function () {
+                    const local = this.value.trim();
+                    const errorSpan = document.getElementById('local-error');
+                    if (local && !validateCoordinates(local)) {
+                        errorSpan.textContent = 'Por favor, insira coordenadas válidas (ex.: -23.5505, -46.6333).';
+                        this.classList.add('error');
+                    } else {
+                        errorSpan.textContent = '';
+                        this.classList.remove('error');
+                    }
+                });
+        
+                // Submissão do formulário
+                document.getElementById('editarHostForm').addEventListener('submit', async function (event) {
+                    event.preventDefault();
+        
+                    const ip = document.getElementById('ip').value.trim();
+                    const nome = document.getElementById('nome').value.trim();
+                    const local = document.getElementById('local').value.trim();
+                    const observacao = document.getElementById('observacao').value.trim();
+                    const tipo = 'sw';
+                    const ativo = '#00d700';
+        
+                    const messageDiv = document.getElementById('message');
+                    const submitButton = document.querySelector('#editarHostForm .submit-btn');
+                    const ipError = document.getElementById('ip-error');
+                    const localError = document.getElementById('local-error');
+                    const observacaoError = document.getElementById('observacao-error');
+        
+                    // Resetar mensagens de erro
+                    messageDiv.textContent = '';
+                    messageDiv.classList.remove('success', 'error');
+                    ipError.textContent = '';
+                    localError.textContent = '';
+                    observacaoError.textContent = '';
+                    document.querySelectorAll('.form-group input').forEach(input => input.classList.remove('error'));
+        
+                    // Validação
+                    let hasError = false;
+        
+                    if (!ip || !validateIP(ip)) {
+                        ipError.textContent = 'IP inválido ou não selecionado.';
+                        document.getElementById('ip').classList.add('error');
+                        hasError = true;
+                    }
+        
+                    if (local && !validateCoordinates(local)) {
+                        localError.textContent = 'Por favor, insira coordenadas válidas (ex.: -23.5505, -46.6333).';
+                        document.getElementById('local').classList.add('error');
+                        hasError = true;
+                    }
+        
+                    if (!observacao) {
+                        observacaoError.textContent = 'O campo "Observação" é obrigatório.';
+                        document.getElementById('observacao').classList.add('error');
+                        hasError = true;
+                    }
+        
+                    if (hasError) return;
+        
+                    // Enviar solicitação
+                    submitButton.textContent = 'Enviando...';
+                    submitButton.disabled = true;
+                    submitButton.classList.remove('success', 'error');
+        
+                    try {
+                        const response = await fetch(`${server}:5002/editar-host`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ ip, nome, local, observacao, tipo, ativo })
+                        });
+        
+                        const data = await response.json();
+        
+                        if (response.ok) {
+                            submitButton.textContent = 'Enviado';
+                            submitButton.classList.add('success');
+                            messageDiv.textContent = 'Solicitação enviada para aprovação!';
+                            messageDiv.classList.add('success');
+                            setTimeout(() => {
+                                resetForm();
+                            }, 3000);
+                        } else {
+                            submitButton.textContent = 'Solicitar Alterações';
+                            submitButton.classList.add('error');
+                            messageDiv.textContent = `Erro: ${data.erro || 'Falha ao enviar solicitação.'}`;
+                            messageDiv.classList.add('error');
+                            submitButton.disabled = false;
+                        }
+                    } catch (error) {
+                        console.error('Erro:', error);
+                        submitButton.textContent = 'Solicitar Alterações';
+                        submitButton.classList.add('error');
+                        messageDiv.textContent = 'Erro ao conectar ao servidor.';
+                        messageDiv.classList.add('error');
+                        submitButton.disabled = false;
+                    }
+                });
+        
+                // Função para filtrar hosts (fornecida pelo usuário)
+                function filterHosts() {
+                    const searchText = document.getElementById('search').value.toLowerCase().trim();
+                    const showOnlyWithoutLocation = document.getElementById('showOnlyWithoutLocation').checked;
+                    
+                    // Definir um limite para busca em tempo real para conjuntos muito grandes
+                    const isLargeDataset = hosts.length > 1000;
+                    
+                    // Se for uma base de dados muito grande e a busca for menor que 3 caracteres, 
+                    // exigir pelo menos 3 caracteres para iniciar a busca
+                    if (isLargeDataset && searchText.length > 0 && searchText.length < 3) {
+                        document.getElementById('hostList').innerHTML = 
+                            '<div class="search-instruction">Digite pelo menos 3 caracteres para buscar em uma base grande.</div>';
+                        return;
+                    }
+                    
+                    // Se a busca estiver vazia e estiver mostrando apenas sem localização, 
+                    // usar um subconjunto para desempenho
+                    let filteredHosts;
+                    if (!searchText && showOnlyWithoutLocation) {
+                        filteredHosts = hosts.filter(host => !host.local || host.local.trim() === '');
+                    } else if (!searchText && !showOnlyWithoutLocation) {
+                        // Se não houver busca e não estiver filtrando por localização, 
+                        // mostrar apenas os primeiros X hosts para performance
+                        filteredHosts = hosts.slice(0, 200);
+                        if (hosts.length > 200) {
+                            // Adicionar um aviso de que é necessário buscar para ver mais
+                            setTimeout(() => {
+                                const hostList = document.getElementById('hostList');
+                                const endNote = document.createElement('div');
+                                endNote.className = 'end-indicator';
+                                endNote.innerHTML = ``;
+                                hostList.appendChild(endNote);
+                            }, 100);
+                        }
+                    } else {
+                        // Busca normal com filtros
+                        filteredHosts = hosts.filter(host => {
+                            const matchesSearch = host.nome.toLowerCase().includes(searchText) || 
+                                                 host.ip.toLowerCase().includes(searchText);
+                            const hasNoLocation = !host.local || host.local.trim() === '';
+                            return showOnlyWithoutLocation ? matchesSearch && hasNoLocation : matchesSearch;
+                        });
+                    }
+                    
+                    // Usar o sistema de scroll infinito para exibir os hosts
+                    displayHosts(filteredHosts, true);
+                }
+        
+                // Função para exibir hosts na lista (exemplo genérico)
+                function displayHosts(filteredHosts, clearList = true) {
+                    const hostList = document.getElementById('hostList');
+                    if (clearList) {
+                        hostList.innerHTML = '';
+                    }
+        
+                    if (filteredHosts.length === 0) {
+                        hostList.innerHTML = '<div class="no-results">Nenhum host encontrado.</div>';
+                        return;
+                    }
+        
+                    filteredHosts.forEach(host => {
+                        const hostItem = document.createElement('div');
+                        hostItem.className = 'host-item';
+                        hostItem.textContent = `${host.ip} - ${host.nome || 'Sem nome'}`;
+                        hostItem.addEventListener('click', () => {
+                            preencherFormulario(host);
+                        });
+                        hostList.appendChild(hostItem);
+                    });
+                }
+        
+                // Função para preencher o formulário com os dados do host selecionado
+                function preencherFormulario(host) {
+                    document.getElementById('ip').value = host.ip || '';
+                    document.getElementById('nome').value = host.nome || '';
+                    document.getElementById('local').value = host.local || '';
+                    document.getElementById('observacao').value = host.observacao || '';
+                }
+        
+                // Funções para alternar seções
+                function showSection(section) {
+                    document.getElementById('editarSection').classList.add('hidden');
+                    document.getElementById('adicionarSection')?.classList.add('hidden');
+                    document.getElementById('approvalSection').classList.add('hidden');
+                    document.getElementById(`${section}Section`).classList.remove('hidden');
+                }
+        
+                function exibirAprovacao() {
+                    console.log('Exibindo Aprovação');
+                    const editarEquipamento = document.getElementById('editarEquipamento');
+                    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+                    const homebox = document.getElementById('homebox');
+                    const approvalSection = document.getElementById('approvalSection');
+                    const databoxsection = document.getElementById('databox');
+        
+                    editarEquipamento.style.display = 'none';
+                    adicionarEquipamento.style.display = 'none';
+                    homebox.style.display = 'none';
+                    approvalSection.style.display = 'block';
+                    databoxsection.style.display = 'block';
+                    loadPendingEdits();
+                }
+        
+                function limparAprove() {
+                    const approvalSection = document.getElementById('approvalSection');
+                    approvalSection.style.display = 'none';
+                }
+        
+                function exibirEditar() {
+                    const editarEquipamento = document.getElementById('editarEquipamento');
+                    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+                    const homebox = document.getElementById('homebox');
+                    const databoxsection = document.getElementById('databox');
+        
+                    editarEquipamento.style.display = 'block';
+                    adicionarEquipamento.style.display = 'none';
+                    homebox.style.display = 'none';
+                    databoxsection.style.display = 'block';
+                    limparInput?.();
+                }
+        
+                function exibirAdicionar() {
+                    const editarEquipamento = document.getElementById('editarEquipamento');
+                    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+                    const homebox = document.getElementById('homebox');
+                    const databoxsection = document.getElementById('databox');
+        
+                    editarEquipamento.style.display = 'none';
+                    adicionarEquipamento.style.display = 'block';
+                    homebox.style.display = 'none';
+                    databoxsection.style.display = 'block';
+                }
+        
+                function exibirHome() {
+                    const editarEquipamento = document.getElementById('editarEquipamento');
+                    const adicionarEquipamento = document.getElementById('adicionarEquipamento');
+                    const homebox = document.getElementById('homebox');
+                    const databoxsection = document.getElementById('databox');
+        
+                    databoxsection.style.display = 'none';
+                    editarEquipamento.style.display = 'none';
+                    adicionarEquipamento.style.display = 'none';
+                    homebox.style.display = 'flex';
+                }
+        
+                // Funções para a seção de aprovação
+                async function loadPendingEdits() {
+                    try {
+                        console.log('Carregando edições pendentes...');
+                        const response = await fetch(`${server}:5002/pending-edits`, {
+                            method: 'GET',
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+        
+                        if (!response.ok) {
+                            throw new Error(`Erro HTTP: ${response.status}`);
+                        }
+        
+                        const pendingEdits = await response.json();
+                        console.log('Edições:', pendingEdits);
+                        const list = document.getElementById('pendingEditsList');
+                        list.innerHTML = pendingEdits.length === 0 ? '<p>Nenhuma edição pendente.</p>' : '';
+        
+                        pendingEdits.forEach(edit => {
+                            const div = document.createElement('div');
+                            const formattedDate = formatDate(edit.timestamp);
+                            const originalHost = dadosAtuais?.hosts?.find(host => host.ip === edit.changes.ip) || {};
+                            const original = {
+                                ip: originalHost.ip || '',
+                                nome: originalHost.nome || '',
+                                local: originalHost.local || '',
+                                observacao: originalHost.observacao || ''
+                            };
+                            const novo = edit.changes;
+        
+                            const highlightChange = (field, originalValue, newValue) => {
+                                if (originalValue !== newValue) {
+                                    return `${field}:<br><span style="background-color: #00ff0078; font-weight: bold;"> ${newValue || '(vazia)'}</span> -> <span style="background-color: #ff000066; font-weight: bold;">${originalValue || '(vazia)'}</span>`;
+                                }
+                                return `<span>${field}:<br> ${newValue || '(vazia)'}</span>`;
+                            };
+        
+                            const changesHtml = `
+                                <p>${highlightChange('IP', original.ip, novo.ip)}</p>
+                                <p>${highlightChange('Nome', original.nome, novo.nome)}</p>
+                                <p>${highlightChange('Local', original.local, novo.local)}</p>
+                                <p>${highlightChange('Observação', original.observacao, novo.observacao)}</p>
+                            `;
+        
+                            const mapButton = original.local !== novo.local && novo.local 
+                                ? `<br><button class="button is-ghost" onclick="showProposedLocation('${novo.local}', '${novo.ip}')">Ver no Mapa</button>` 
+                                : '';
+        
+                            div.className = 'modal-container';
+                            div.innerHTML = `
+                                <header class="modal-container-header">
+                                    <span class="modal-container-title">
+                                        <svg aria-hidden="true" height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M14 9V4H5v16h6.056c.328.417.724.785 1.18 1.085l1.39.915H3.993琳.993 0 0 1 3 21.008V2.992C3 2.455 3.449 2 4.002 2h10.995L21 8v1h-7zm-2 2h9v5.949c0 .99-.501 1.916-1.336 2.465L16.5 21.498l-3.164-2.084A2.953 2.953 0 0 1 12 16.95V11zm2 5.949c0 .316.162.614.436.795l2.064 1.36 2.064-1.36a.954.954 0 0 0 .436-.795V13h-5v3.949z" fill="var(--color-primary)"></path>
+                                        </svg>
+                                        Solicitação de ${edit.submitted_by}
+                                    </span>
+                                </header>
+                                <section class="modal-container-body rtf">
+                                    ${changesHtml}
+                                    <p style="color: var(--color-secondary); font-size: 0.9em; margin-top: 1em;">Data: ${formattedDate}</p>
+                                </section>
+                                <footer class="modal-container-footer">
+                                    <button class="button is-ghost" onclick="rejectEdit('${edit.id}')">Rejeitar</button>
+                                    <button class="button is-primary" onclick="approveEdit('${edit.id}')">Aprovar</button>
+                                    ${mapButton}
+                                </footer>
+                            `;
+                            list.appendChild(div);
+                        });
+                    } catch (error) {
+                        console.error('Erro:', error);
+                        document.getElementById('pendingEditsList').innerHTML = '<p>Erro ao carregar edições.</p>';
+                    }
+                }
+        
+                function showProposedLocation(local, ip) {
+                    console.log('Chamando showProposedLocation com local:', local, 'e IP:', ip);
+                    const [lat, lng] = local.split(', ').map(Number);
+                    if (!isNaN(lat) && !isNaN(lng)) {
+                        console.log('Coordenadas válidas:', lat, lng);
+                        map.flyTo([lat, lng], 18, { duration: 0.5 });
+                        const tempMarker = L.marker([lat, lng], {
+                            icon: L.divIcon({
+                                className: 'temp-marker',
+                                html: `<div style="background-color: yellow; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
+                                iconSize: [20, 20],
+                                iconAnchor: [10, 10]
+                            })
+                        }).addTo(map);
+                        console.log('Marcador temporário adicionado em:', [lat, lng]);
+                        setTimeout(() => {
+                            map.removeLayer(tempMarker);
+                            console.log('Marcador temporário removido');
+                        }, 5000);
+        
+                        if (ip && pontosMapeados[ip] && pontosMapeados[ip].marker) {
+                            const marker = pontosMapeados[ip].marker;
+                            marker.openPopup();
+                            console.log('Popup aberto para marcador do IP:', ip);
+                        } else {
+                            console.warn('Nenhum marcador encontrado para o IP:', ip);
+                            markersLayer.eachLayer(marker => {
+                                const markerLatLng = marker.getLatLng();
+                                const tolerance = 0.0001;
+                                if (
+                                    Math.abs(markerLatLng.lat - lat) < tolerance &&
+                                    Math.abs(markerLatLng.lng - lng) < tolerance
+                                ) {
+                                    marker.openPopup();
+                                    console.log('Popup aberto por coordenadas como fallback em:', [lat, lng]);
+                                }
+                            });
+                        }
+                    } else {
+                        console.error('Coordenadas inválidas:', local);
+                        alert('Coordenadas inválidas!');
+                    }
+                }
+        
+                function formatDate(isoDate) {
+                    const date = new Date(isoDate);
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const year = date.getFullYear();
+                    const hours = String(date.getHours()).padStart(2, '0');
+                    const minutes = String(date.getMinutes()).padStart(2, '0');
+                    const seconds = String(date.getSeconds()).padStart(2, '0');
+                    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+                }
+        
+                async function approveEdit(id) {
+                    try {
+                        const response = await fetch(`${server}:5002/approve-edit/${id}`, { method: 'POST' });
+                        if (response.ok) {
+                            loadPendingEdits();
+                        }
+                    } catch (error) {
+                        console.error('Erro ao aprovar:', error);
+                    }
+                }
+        
+                async function rejectEdit(id) {
+                    try {
+                        const response = await fetch(`${server}:5002/reject-edit/${id}`, { method: 'DELETE' });
+                        if (response.ok) {
+                            loadPendingEdits();
+                        }
+                    } catch (error) {
+                        console.error('Erro ao rejeitar:', error);
+                    }
+                }
             </script>
+        
         </div>
-
 
 </div>    <div id="listaItensSL">
           </div>    <div id="listaItensOff">
@@ -2096,6 +2780,20 @@ async function rejectEdit(id) {
         <h2>Offline</h2>
         <div id="redHostsList"></div>
     </div>    <style>
+
+        /* Estilo para input readonly */
+.edit-form .form-group input:read-only {
+    background: var(--color-secondary, #404851);
+    cursor: not-allowed;
+    color: var(--color-text, #e2e2e2);
+    opacity: 0.7;
+}
+
+.edit-form .form-group input:read-only:focus {
+    border-color: var(--color-secondary, #404851);
+    box-shadow: none;
+}
+
         /* Estilo do Modal (Popup) */
 .modal {
     display: none; /* Escondido por padrão */
