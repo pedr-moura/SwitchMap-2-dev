@@ -827,7 +827,12 @@ function inicializarMapa() {
         const { lat, lng } = e.latlng;
         L.popup()
             .setLatLng(e.latlng)
-            .setContent(`<div onclick="copiarCoordenadas('${lat.toFixed(6)}', '${lng.toFixed(6)}')"><b>${lat.toFixed(6)}, ${lng.toFixed(6)}</b></div>`)
+            .setContent(`
+                <div class="coordenadas-popup" onclick="copiarCoordenadas('${lat.toFixed(6)}', '${lng.toFixed(6)}')">
+                    <b>${lat.toFixed(6)}, ${lng.toFixed(6)}</b>
+                    <span class="copiar-hint">Clique para copiar</span>
+                </div>
+            `)
             .openOn(map);
     });
 
@@ -1275,13 +1280,67 @@ async function atualizarDadosManualmente() {
     }
 }
 
+// Função para copiar coordenadas com feedback visual
 function copiarCoordenadas(lat, lng) {
-    navigator.clipboard.writeText(`${lat}, ${lng}`)
+    const coordenadas = `${lat}, ${lng}`;
+    
+    navigator.clipboard.writeText(coordenadas)
         .then(() => {
-            exibirFeedbackCopia?.();
+            // Exibir feedback visual
+            exibirFeedbackCopia();
+            // Fechar popups do mapa
             fecharPopups();
         })
-        .catch(err => console.error('Erro ao copiar coordenadas:', err));
+        .catch(err => {
+            console.error('Erro ao copiar coordenadas:', err);
+            // Opcional: exibir mensagem de erro
+            exibirFeedbackErro();
+        });
+}
+
+// Função para exibir feedback de sucesso
+function exibirFeedbackCopia() {
+    // Criar elemento de notificação (toast)
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.innerHTML = `
+        <span>Coordenadas copiadas!</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 6L9 17L4 12" stroke="#00d700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    `;
+    
+    // Adicionar ao corpo da página
+    document.body.appendChild(toast);
+    
+    // Remover após 3 segundos
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+        setTimeout(() => toast.remove(), 300); // Tempo para animação de fade-out
+    }, 3000);
+}
+
+// Função para exibir feedback de erro (opcional)
+function exibirFeedbackErro() {
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification toast-error';
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.innerHTML = `
+        <span>Erro ao copiar coordenadas!</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 12L12 16M12 8V8.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#dc3545" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add('fade-out');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
 
 // Configuração do menu de atalhos
