@@ -622,7 +622,7 @@ function navigateToEditHost(host) {
     document.getElementById('nome').value = host.nome || '';
     document.getElementById('local').value = host.local || '';
     document.getElementById('observacao').value = host.observacao || '';
-    document.getElementById('ativo').value = host.ativo === "#00d700" ? "green" : "red";
+    // document.getElementById('ativo').value = host.ativo === "#00d700" ? "green" : "red";
 }
 
 function atualizarMarcadores(hosts) {
