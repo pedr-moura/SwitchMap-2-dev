@@ -607,9 +607,9 @@ function atualizarInterface(dados) {
         inicializarMapa();
     }
 
-    atualizarMarcadores(dadosFiltrados.hosts);
-    atualizarLinhas(dadosFiltrados.hosts);
-    atualizarListas(dadosFiltrados);
+    atualizarMarcadores(dadosAtuais.hosts);
+    atualizarLinhas(dadosAtuais.hosts);
+    atualizarListas(dadosAtuais);
 }
 
 function navigateToEditHost(host) {
