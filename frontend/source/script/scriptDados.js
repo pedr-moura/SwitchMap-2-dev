@@ -276,40 +276,54 @@ function preloadLines(dados) {
     }
 }
 
-function formatarDataUltimaAtualizacao(isoDate) {
-    const data = new Date(isoDate);
-    const agora = new Date();
-    const diffMs = agora - data;
-    const diffSegundos = Math.floor(diffMs / 1000);
+function formatarDataUltimaAtualizacao(isoDate, elementId) {
+    function atualizarData() {
+        const data = new Date(isoDate);
+        const agora = new Date();
+        const diffMs = agora - data;
+        const diffSegundos = Math.floor(diffMs / 1000);
 
-    const options = {
-        timeZone: 'America/Sao_Paulo',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-    };
-    const dataFormatada = data.toLocaleString('pt-BR', options)
-        .replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}:\d{2}:\d{2})/, '$1/$2/$3 $4');
+        const options = {
+            timeZone: 'America/Sao_Paulo',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        };
+        const dataFormatada = data.toLocaleString('pt-BR', options)
+            .replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}:\d{2}:\d{2})/, '$1/$2/$3 $4');
 
-    let tempoRelativo = '';
-    if (diffSegundos < 60) {
-        tempoRelativo = `há ${diffSegundos} segundos`;
-    } else if (diffSegundos < 3600) {
-        const minutos = Math.floor(diffSegundos / 60);
-        tempoRelativo = `há ${minutos} minuto${minutos > 1 ? 's' : ''}`;
-    } else if (diffSegundos < 86400) {
-        const horas = Math.floor(diffSegundos / 3600);
-        tempoRelativo = `há ${horas} hora${horas > 1 ? 's' : ''}`;
-    } else {
-        const dias = Math.floor(diffSegundos / 86400);
-        tempoRelativo = `há ${dias} dia${dias > 1 ? 's' : ''}`;
+        let tempoRelativo = '';
+        if (diffSegundos < 60) {
+            tempoRelativo = `há ${diffSegundos} segundos`;
+        } else if (diffSegundos < 3600) {
+            const minutos = Math.floor(diffSegundos / 60);
+            tempoRelativo = `há ${minutos} minuto${minutos > 1 ? 's' : ''}`;
+        } else if (diffSegundos < 86400) {
+            const horas = Math.floor(diffSegundos / 3600);
+            tempoRelativo = `há ${horas} hora${horas > 1 ? 's' : ''}`;
+        } else {
+            const dias = Math.floor(diffSegundos / 86400);
+            tempoRelativo = `há ${dias} dia${dias > 1 ? 's' : ''}`;
+        }
+
+        const elemento = document.getElementById(elementId);
+        if (elemento) {
+            elemento.innerHTML = `${dataFormatada} <br> <span style="font-size: 10px;">(${tempoRelativo})</span>`;
+        }
     }
 
-    return `<p style="text-align: center;">${dataFormatada} <br> <span style="font-size: 10px;">(${tempoRelativo})</span></p>`;
+    // Atualizar imediatamente
+    atualizarData();
+
+    // Atualizar a cada 10 segundos
+    const intervalId = setInterval(atualizarData, 10000);
+
+    // Retornar função para limpar o intervalo, se necessário
+    return () => clearInterval(intervalId);
 }
 
 function atualizarInterface(dados) {
