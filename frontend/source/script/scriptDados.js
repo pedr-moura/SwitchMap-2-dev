@@ -276,23 +276,25 @@ function preloadLines(dados) {
     }
 }
 
-// Função auxiliar para formatar a data e calcular o tempo relativo
 function formatarDataUltimaAtualizacao(isoDate) {
-    const data = new Date(isoDate); // Converte a string ISO 8601 para objeto Date
-    const agora = new Date(); // Data atual
-    const diffMs = agora - data; // Diferença em milissegundos
-    const diffSegundos = Math.floor(diffMs / 1000); // Diferença em segundos
+    const data = new Date(isoDate);
+    const agora = new Date();
+    const diffMs = agora - data;
+    const diffSegundos = Math.floor(diffMs / 1000);
 
-    // Formatar a data no estilo brasileiro (DD/MM/AAAA HH:MM:SS)
-    const dia = String(data.getUTCDate()).padStart(2, '0');
-    const mes = String(data.getUTCMonth() + 1).padStart(2, '0'); // +1 porque os meses começam em 0
-    const ano = data.getUTCFullYear();
-    const horas = String(data.getUTCHours()).padStart(2, '0');
-    const minutos = String(data.getUTCMinutes()).padStart(2, '0');
-    const segundos = String(data.getUTCSeconds()).padStart(2, '0');
-    const dataFormatada = `${dia}/${mes}/${ano} ${horas}:${minutos}:${segundos}`;
+    const options = {
+        timeZone: 'America/Sao_Paulo',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    };
+    const dataFormatada = data.toLocaleString('pt-BR', options)
+        .replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}:\d{2}:\d{2})/, '$1/$2/$3 $4');
 
-    // Calcular o tempo relativo
     let tempoRelativo = '';
     if (diffSegundos < 60) {
         tempoRelativo = `há ${diffSegundos} segundos`;
@@ -307,7 +309,7 @@ function formatarDataUltimaAtualizacao(isoDate) {
         tempoRelativo = `há ${dias} dia${dias > 1 ? 's' : ''}`;
     }
 
-    return `<p style="text-align: center;">${dataFormatada} <br> <span style="font-size: 10px;">(${tempoRelativo})</span><p>`;
+    return `<p style="text-align: center;">${dataFormatada} <br> <span style="font-size: 10px;">(${tempoRelativo})</span></p>`;
 }
 
 function atualizarInterface(dados) {
