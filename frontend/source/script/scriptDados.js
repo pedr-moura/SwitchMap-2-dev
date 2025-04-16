@@ -322,7 +322,7 @@ function formatarDataUltimaAtualizacao(isoDate, elementId) {
             tempoRelativo = `há ${dias} dia${dias > 1 ? 's' : ''}`;
         }
 
-        elemento.innerHTML = `${dataFormatada} <br> <span style="font-size: 10px;">(${tempoRelativo})</span>`;
+        elemento.innerHTML = `<span style="text-align: center;">${dataFormatada} <br> <span style="font-size: 10px;">(${tempoRelativo})</span></span>`;
         console.log("Elemento atualizado:", elemento.innerHTML);
     }
 
