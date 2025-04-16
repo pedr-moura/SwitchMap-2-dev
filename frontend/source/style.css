@@ -1114,3 +1114,58 @@ background-color: var(--color-background);
 }
 }
 
+
+/* Estilo para a notificação toast */
+.toast-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--color-glass, #16191ec2);
+    color: var(--color-text, #e2e2e2);
+    padding: 10px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.toast-notification.fade-out {
+    opacity: 0;
+}
+
+.toast-notification svg {
+    flex-shrink: 0;
+}
+
+.toast-error {
+    background-color: rgba(220, 53, 69, 0.9); /* Cor vermelha para erro */
+}
+
+/* Estilo para o popup de coordenadas */
+.coordenadas-popup {
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.coordenadas-popup:hover {
+    background-color: rgba(var(--color-primary-rgb, 74, 135, 192), 0.1);
+}
+
+.copiar-hint {
+    display: block;
+    font-size: 10px;
+    color: var(--color-secondary);
+    margin-top: 2px;
+}
+
+/* Garantir que o popup do Leaflet tenha um estilo consistente */
+.leaflet-popup-content {
+    font-family: Arial, sans-serif;
+    color: var(--color-text, #e2e2e2);
+}
