@@ -10,7 +10,7 @@ const menuContainer = document.getElementById('menu-container');
 const pontosMapeados = {};
 
 // Estado global
-let server = "http://10.94.8.34";
+let server = "http://127.0.0.1";
 let showIconesMaps = 0;
 let showDependencias = 0;
 let mapaAtual;
