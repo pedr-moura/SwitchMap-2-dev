@@ -174,38 +174,26 @@ function showRedHostsPopup(dados = dadosAtuais) {
 }
 
 // Requisição de dados via HTTP ---> AJUSTE PARA CONSULTAR O BACKUP EXTERNO
-async function fetchDadosHTTP() {
+async function fetchDados() {
     try {
-        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-        const targetUrl = 'https://backupswmapsuzano-nine.vercel.app/backend/SWICTHMAP/websocket/dados.json';
-        const response = await fetch(`${proxyUrl}${targetUrl}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
-        });
-        if (!response.ok) throw new Error(`Erro na requisição: ${response.status}`);
+        const url = 'https://backupswmapsuzano-nine.vercel.app/backend/SWICTHMAP/websocket/dados.json';
+        const response = await fetch(url);
+        
+        if (!response.ok) throw new Error(`Erro: ${response.status}`);
+        
         const dados = await response.json();
-        if (dados && dados.hosts) {
-            console.log('Dados carregados via HTTP:', dados);
-            dadosAtuais = dados;
-            atualizarInterface(dados);
-            return dados;
-        }
-        console.error('Dados inválidos:', dados);
-        return null;
+        console.log('Dados carregados:', dados);
+        atualizarInterface(dados); // Supondo que você tenha essa função
+        return dados;
+        
     } catch (error) {
-        console.error('Erro ao carregar dados via HTTP:', error);
-        // Fallback: tenta carregar dados antigos ou exibir mensagem
-        if (dadosAtuais && dadosAtuais.hosts) {
-            console.log('Usando dados antigos como fallback:', dadosAtuais);
-            atualizarInterface(dadosAtuais);
-            return dadosAtuais;
-        }
-        // Exibir mensagem na UI
+        console.error('Erro ao carregar JSON:', error);
         document.getElementById('hostList').innerHTML = 
-            '<div class="error-message">Erro ao carregar dados. Usando dados antigos ou tente novamente mais tarde.</div>';
+            '<div class="error-message">Erro ao carregar dados. Tente novamente mais tarde.</div>';
         return null;
     }
 }
+
 async function loopFetch() {
     while (true) {
         await fetchDadosHTTP();
