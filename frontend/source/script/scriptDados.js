@@ -39,7 +39,7 @@ const mapaPadraoClaro = L.tileLayer(`${server}:3000/tiles/light/{z}/{x}/{y}`, {
 const mapaPadraoEscuro = L.tileLayer('https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', { 
     attribution: '© OpenStreetMap' 
 });
-const mapaSatelite = L.tileLayer(`${server}:3000/tiles/satellite/{z}/{x}/{y}`, { 
+const mapaSatelite = L.tileLayer(`https://mt1.google.com/vt/lyrs=s&{z}/{x}/{y}`, { 
     attribution: 'Tiles © Esri' 
 });
 
