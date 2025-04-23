@@ -174,21 +174,37 @@ function showRedHostsPopup(dados = dadosAtuais) {
 }
 
 // Requisição de dados via HTTP ---> AJUSTE PARA CONSULTAR O BACKUP EXTERNO
-async function fetchDadosHTTP () {
-    try {
-        const url = 'https://backupswmapsuzano-nine.vercel.app/backend/SWICTHMAP/websocket/dados.json';
-        const response = await fetch(url);
-        
-        if (!response.ok) throw new Error(`Erro: ${response.status}`);
-        
-        const dados = await response.json();
-        console.log('Dados carregados:', dados);
-        atualizarInterface(dados); // Supondo que você tenha essa função
-        return dados;
-        
-    } catch (error) {
-        console.error('Erro ao carregar JSON:', error);
-        return null;
+async function fetchDadosHTTP() {
+    const urls = [
+        `http://${server}:5001/get-data`, // Primeiro tenta a URL local
+        'https://raw.githubusercontent.com/swmapsuz/backupswmapsuzano/refs/heads/main/backend/SWICTHMAP/websocket/dados.json' // Fallback
+    ];
+
+    for (let url of urls) {
+        try {
+            // Configura o AbortController para a requisição
+            const controller = new AbortController();
+            const signal = controller.signal;
+
+            // Define o tempo limite de 2 segundos para a URL local
+            let timeoutId;
+            if (url.includes('get-data')) {
+                timeoutId = setTimeout(() => controller.abort(), 2000);
+            }
+
+            const response = await fetch(url, { signal });
+            if (!response.ok) throw new Error(`Erro: ${response.status} em ${url}`);
+
+            // Limpa o timeout se a requisição for bem-sucedida
+            if (timeoutId) clearTimeout(timeoutId);
+
+            const dados = await response.json();
+            console.log(`Dados carregados de ${url}:`, dados);
+            atualizarInterface(dados);
+            return dados;
+        } catch (error) {
+            console.warn(`Falha ao acessar ${url}:`, error);
+        }
     }
 }
 
