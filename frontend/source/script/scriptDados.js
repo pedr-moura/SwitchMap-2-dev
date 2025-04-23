@@ -174,31 +174,22 @@ function showRedHostsPopup(dados = dadosAtuais) {
 }
 
 // Requisição de dados via HTTP ---> AJUSTE PARA CONSULTAR O BACKUP EXTERNO
-async function fetchDadosHTTP() {
-    const urls = [
-        `http://${server}:5001/get-data`, // Primeiro tenta a URL local
-        'https://backupswmapsuzano-nine.vercel.app/backend/SWICTHMAP/websocket/dados.json' // Fallback online
-    ];
-
-    for (let url of urls) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`Erro: ${response.status} em ${url}`);
-
-            const dados = await response.json();
-            console.log(`Dados carregados de ${url}:`, dados);
-            atualizarInterface(dados);
-            return dados;
-        } catch (error) {
-            console.warn(`Falha ao acessar ${url}:`, error);
-        }
+async function fetchDadosHTTP () {
+    try {
+        const url = 'https://backupswmapsuzano-nine.vercel.app/backend/SWICTHMAP/websocket/dados.json';
+        const response = await fetch(url);
+        
+        if (!response.ok) throw new Error(`Erro: ${response.status}`);
+        
+        const dados = await response.json();
+        console.log('Dados carregados:', dados);
+        atualizarInterface(dados); // Supondo que você tenha essa função
+        return dados;
+        
+    } catch (error) {
+        console.error('Erro ao carregar JSON:', error);
+        return null;
     }
-
-    // Se nenhuma das URLs funcionou
-    console.error('Erro ao carregar JSON de todas as fontes.');
-    document.getElementById('hostList').innerHTML = 
-        '<div class="error-message">Erro ao carregar dados. Tente novamente mais tarde.</div>';
-    return null;
 }
 
 
