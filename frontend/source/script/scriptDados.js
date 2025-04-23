@@ -196,8 +196,16 @@ async function fetchDadosHTTP() {
     }
 }
 
-// Função para pesquisar por IP
-// Otimizar a pesquisa
+async function loopFetch() {
+    while (true) {
+        await fetchDadosHTTP();
+        await new Promise(resolve => setTimeout(resolve, 30000)); // Pausa de 30 segundos
+    }
+}
+
+// Inicia o loop
+loopFetch();
+
 function pesquisarPorIP(hostsArray = dadosAtuais.hosts) {
     const ipBusca = document.getElementById('ipBusca').value.toLowerCase().trim();
     
