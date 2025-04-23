@@ -173,10 +173,10 @@ function showRedHostsPopup(dados = dadosAtuais) {
     document.getElementById('redHostsPopup').style.display = 'block';
 }
 
-// Requisição de dados via HTTP
+// Requisição de dados via HTTP ---> AJUSTE PARA CONSULTAR O BACKUP EXTERNO
 async function fetchDadosHTTP() {
     try {
-        const response = await fetch(`${server}:5001/get-data`, {
+        const response = await fetch('https://backupswmapsuzano-nine.vercel.app/backend/SWICTHMAP/websocket/dados.json', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
