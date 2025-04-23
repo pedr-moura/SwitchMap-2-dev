@@ -174,7 +174,7 @@ function showRedHostsPopup(dados = dadosAtuais) {
 }
 
 // Requisição de dados via HTTP ---> AJUSTE PARA CONSULTAR O BACKUP EXTERNO
-async function fetchDados() {
+async function fetchDadosHTTP () {
     try {
         const url = 'https://backupswmapsuzano-nine.vercel.app/backend/SWICTHMAP/websocket/dados.json';
         const response = await fetch(url);
