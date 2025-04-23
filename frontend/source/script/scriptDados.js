@@ -176,7 +176,7 @@ function showRedHostsPopup(dados = dadosAtuais) {
 // Requisição de dados via HTTP ---> AJUSTE PARA CONSULTAR O BACKUP EXTERNO
 async function fetchDadosHTTP() {
     try {
-        const response = await fetch('https://backupswmapsuzano-nine.vercel.app/backend/SWICTHMAP/websocket/dados.json', {
+        const response = await fetch('https://cors-anywhere.herokuapp.com/https://backupswmapsuzano-nine.vercel.app/backend/SWICTHMAP/websocket/dados.json', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
